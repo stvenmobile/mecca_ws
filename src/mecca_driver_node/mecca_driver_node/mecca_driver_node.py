@@ -1,6 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+from geometry_msgs.msg import Twist
 
 class MotorDriverNode(Node):
     def __init__(self):
@@ -11,16 +12,29 @@ class MotorDriverNode(Node):
         self.baud_rate = self.declare_parameter('baud_rate', 115200).get_parameter_value().integer_value
         self.debug_serial = self.declare_parameter('serial_debug', True).get_parameter_value().bool_value
         
+        # Subscribe to /cmd_vel topic for velocity commands
+        self.cmd_vel_sub = self.create_subscription(
+            Twist,
+            '/cmd_vel',
+            self.cmd_vel_callback,
+            10
+        )
+
         # Subscribe to the output from serial_driver
         self.serial_output_sub = self.create_subscription(
             String,
             'serial_driver/output_data',
-        self.serial_output_callback, 10)
+            self.serial_output_callback, 
+            10
+        )
 
         # Subscribe to motor_command topic for both motor and encoder requests
         self.motor_command_sub = self.create_subscription(
-            String, 'motor_command',
-            self.motor_command_callback, 10)
+            String, 
+            'motor_command',
+            self.motor_command_callback, 
+            10
+        )
         
         # Publisher for encoder values
         self.encoder_publisher = self.create_publisher(String, 'encoder_values', 10)
@@ -30,7 +44,6 @@ class MotorDriverNode(Node):
 
     def motor_command_callback(self, msg):
         command = msg.data.strip()  # Clean up the incoming command
-        
         # Check if it's an encoder request
         if command.startswith("I ENC"):
             self.request_encoder_values()
@@ -38,6 +51,20 @@ class MotorDriverNode(Node):
         
         # Otherwise, treat it as a motor command
         self.send_command(command)
+
+    def cmd_vel_callback(self, msg):
+        # Extract linear and angular velocities
+        linear_x = msg.linear.x
+        linear_y = msg.linear.y
+        angular_z = msg.angular.z
+
+        # Convert the Twist message into a motor command
+        # Example: Using a simple proportional conversion
+        cmd_string = f"V {int(linear_x * 1000)} {int(linear_y * 1000)} {int(angular_z * 1000)}"
+    
+        self.send_command(cmd_string)
+        if self.debug_serial:
+            self.get_logger().info(f"Converted /cmd_vel to motor command: {cmd_string}")
 
     def send_command(self, cmd_string):
         cmd_string += "\r\n"  # Ensure command ends with CRLF

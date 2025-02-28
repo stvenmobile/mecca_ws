@@ -17,7 +17,6 @@ setup(
     maintainer_email='stvenmobile@gmail.com',
     description='TODO: Package description',
     license='TODO: License declaration',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [
         'nav_node = nav_node.nav_node:main',

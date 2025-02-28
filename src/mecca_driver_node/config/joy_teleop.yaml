@@ -1,29 +1,30 @@
 teleop_twist_joy_node:
+
   ros__parameters:
-    joy_config: "xbox"
-    enable_button: 7         # Right Bumper (Enable movement)
-    enable_turbo_button: 6   # Left Bumper (Turbo mode)
+
+    enable_button: 6          # RB Button
+    enable_turbo_button: 3    # X Button
 
     axis_linear:
-      x: 1                   # Left Stick Vertical Axis
-      y: 0                   # Left Stick Horizontal Axis
-      z: 3                   # Right Stick Vertical Axis
+      x: 1                    # Left Stick Fwd/Back
+      y: 0                    # Left Stick Left/Right
+      z: 0                    # Not used (Mecanum doesn't need vertical)
 
     axis_angular:
-      yaw: 2                 # Right Stick Horizontal Axis
+      yaw: 3                  # Right Stick Left/Right
 
     scale_linear:
-      x: 0.5
-      y: 0.5
-      z: 0.5
-
-    scale_linear_turbo:
       x: 1.0
       y: 1.0
-      z: 1.0
+      z: 0.0
 
     scale_angular:
-      yaw: 0.5
+      yaw: 1.0                # Adjust to control rotation speed
+
+    scale_linear_turbo:
+      x: 2.0
+      y: 2.0
+      z: 0.0
 
     scale_angular_turbo:
-      yaw: 1.0
+      yaw: 2.0                # Faster rotation in Turbo mode

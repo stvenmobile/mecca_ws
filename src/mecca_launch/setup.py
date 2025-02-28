@@ -20,7 +20,6 @@ setup(
     maintainer_email='stvenmobile@gmail.com',
     description='Launch package for Mecca robot',
     license='Apache License 2.0',
-    tests_require=['pytest'],
     entry_points={
         'console_scripts': [],
     },
