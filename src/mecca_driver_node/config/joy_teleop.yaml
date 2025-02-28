@@ -1,0 +1,29 @@
+teleop_twist_joy_node:
+  ros__parameters:
+    joy_config: "xbox"
+    enable_button: 7         # Right Bumper (Enable movement)
+    enable_turbo_button: 6   # Left Bumper (Turbo mode)
+
+    axis_linear:
+      x: 1                   # Left Stick Vertical Axis
+      y: 0                   # Left Stick Horizontal Axis
+      z: 3                   # Right Stick Vertical Axis
+
+    axis_angular:
+      yaw: 2                 # Right Stick Horizontal Axis
+
+    scale_linear:
+      x: 0.5
+      y: 0.5
+      z: 0.5
+
+    scale_linear_turbo:
+      x: 1.0
+      y: 1.0
+      z: 1.0
+
+    scale_angular:
+      yaw: 0.5
+
+    scale_angular_turbo:
+      yaw: 1.0
