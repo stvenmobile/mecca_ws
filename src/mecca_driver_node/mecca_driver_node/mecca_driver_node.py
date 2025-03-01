@@ -1,101 +1,63 @@
 import rclpy
 from rclpy.node import Node
-from std_msgs.msg import String
 from geometry_msgs.msg import Twist
+import serial
 
 class MotorDriverNode(Node):
     def __init__(self):
-        super().__init__('mecca_driver_node')
+        super().__init__('motor_driver_node')
 
-        # Declare and retrieve ROS2 parameters
-        self.serial_port_name = self.declare_parameter('serial_port', '/dev/stm32_serial').get_parameter_value().string_value
-        self.baud_rate = self.declare_parameter('baud_rate', 115200).get_parameter_value().integer_value
-        self.debug_serial = self.declare_parameter('serial_debug', True).get_parameter_value().bool_value
-        
-        # Subscribe to /cmd_vel topic for velocity commands
-        self.cmd_vel_sub = self.create_subscription(
+        # Subscribe to the velocity commands (Twist messages)
+        self.subscription = self.create_subscription(
             Twist,
-            '/cmd_vel',
+            'cmd_vel',
             self.cmd_vel_callback,
             10
         )
+
+        # Serial communication with STM32
+        self.serial_port = serial.Serial('/dev/stm32_serial', 115200, timeout=0.1)
+
+        # Speed scaling factors
+        self.MAX_SPEED = 1200  # Maximum possible speed
+        self.NORMAL_SCALE = 0.5  # Default scaling for linear movement (50% of MAX_SPEED)
+        self.TURBO_SCALE = 0.7   # Turbo mode scaling (70% of MAX_SPEED)
         
-        # Publisher to /motor_command (used by simple_serial_node)
-        self.motor_command_pub = self.create_publisher(String, 'motor_command', 10)
+        self.NORMAL_ROTATE_SCALE = 0.7  # 🚀 Boosted rotation scale
+        self.TURBO_ROTATE_SCALE = 0.9   # 🚀 20% more for turbo rotation
 
-        # Publisher for encoder values
-        self.encoder_publisher = self.create_publisher(String, 'encoder_values', 10)
+        self.speed_scale = self.NORMAL_SCALE  # Default to normal mode
 
-        # Subscribe to the output from serial_driver for feedback
-        self.serial_output_sub = self.create_subscription(
-            String,
-            'serial_driver/output_data',
-            self.serial_output_callback, 
-            10
-        )
+        self.get_logger().info("Motor driver node initialized.")
 
     def cmd_vel_callback(self, msg):
-        # Extract linear and angular velocities
-        linear_x = msg.linear.x
-        linear_y = msg.linear.y
-        angular_z = msg.angular.z
+        """ Processes joystick velocity commands and sends motor control signals. """
+        linear_x = msg.linear.x  # Forward/backward
+        linear_y = msg.linear.y  # Left/right (strafing for Mecanum)
+        angular_z = msg.angular.z  # Rotation
 
-        # Clamp the values to avoid overflow
-        MAX_VEL = 1200  # Maximum safe velocity value
-        linear_x = max(min(linear_x * 1200, MAX_VEL), -MAX_VEL)
-        linear_y = max(min(linear_y * 1200, MAX_VEL), -MAX_VEL)
-        angular_z = max(min(angular_z * 1200, MAX_VEL), -MAX_VEL)
+        # Scale linear movement normally
+        scaled_x = int(linear_x * self.MAX_SPEED * self.speed_scale)
+        scaled_y = int(linear_y * self.MAX_SPEED * self.speed_scale)
 
-        # Convert the Twist message into a motor command
-        cmd_string = f"V {int(linear_x)} {int(linear_y)} {int(angular_z)}"
-    
-        self.publish_motor_command(cmd_string)
-        if self.debug_serial:
-            self.get_logger().info(f"Converted /cmd_vel to motor command: {cmd_string}")
+        # Scale rotation separately with higher boost
+        if self.speed_scale == self.TURBO_SCALE:
+            scaled_rot = int(angular_z * self.MAX_SPEED * self.TURBO_ROTATE_SCALE)
+        else:
+            scaled_rot = int(angular_z * self.MAX_SPEED * self.NORMAL_ROTATE_SCALE)
 
-    def publish_motor_command(self, cmd_string):
-        cmd_string += "\r\n"  # Ensure command ends with CRLF
-        msg = String()
-        msg.data = cmd_string
-        self.motor_command_pub.publish(msg)
+        # Send the scaled command via serial
+        command = f"V {scaled_x} {scaled_y} {scaled_rot}\n"
+        self.serial_port.write(command.encode())
 
-        if self.debug_serial:
-            self.get_logger().info(f"Published to /motor_command: {cmd_string.strip()}")
-
-    def serial_output_callback(self, msg):
-        response = msg.data.strip()
-        if response:
-            if self.debug_serial:
-                self.get_logger().info(f"Received from serial: {response}")
-            
-            # Check if the response is an encoder value
-            if response.startswith("ENC"):
-                encoder_msg = String()
-                encoder_msg.data = response
-                self.encoder_publisher.publish(encoder_msg)
-                if self.debug_serial:
-                    self.get_logger().info(f"Published encoder values: {response}")
-
-    def request_encoder_values(self):
-        cmd_string = "I ENC"
-        self.publish_motor_command(cmd_string)
-
-    def close_connection(self):
-        self.get_logger().info("Closed serial connection.")
+        self.get_logger().info(f"Sent command: {command.strip()}")
 
 def main(args=None):
     rclpy.init(args=args)
-
-    mecca_driver = MotorDriverNode()
-
-    try:
-        rclpy.spin(mecca_driver)
-    except KeyboardInterrupt:
-        mecca_driver.get_logger().info("Shutting down motor driver node.")
-    finally:
-        mecca_driver.close_connection()
-        mecca_driver.destroy_node()
-        rclpy.shutdown()
+    node = MotorDriverNode()
+    rclpy.spin(node)
+    node.destroy_node()
+    rclpy.shutdown()
 
 if __name__ == '__main__':
     main()
