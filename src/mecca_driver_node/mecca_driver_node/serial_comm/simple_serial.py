@@ -4,45 +4,47 @@ from std_msgs.msg import String
 import serial
 
 class SimpleSerialNode(Node):
-
     def __init__(self):
         super().__init__('simple_serial_node')
 
         # Serial port configuration
-        self.port = '/dev/ttyUSB0'   # Adjust as needed
-        self.baudrate = 115200       # Confirm with Yahboom controller settings
+        self.port = '/dev/stm32_serial'   # Matches udev rule
+        self.baudrate = 115200            # Confirmed with Yahboom controller
 
+        # Attempt to establish serial connection
         try:
             self.serial_conn = serial.Serial(self.port, self.baudrate, timeout=1)
             self.get_logger().info(f"Connected to {self.port} at {self.baudrate} baud.")
         except Exception as e:
             self.get_logger().error(f"Failed to connect to {self.port}: {e}")
+            self.serial_conn = None
 
-        # ROS2 Subscriber to send commands to the serial device
+        # ROS2 Subscriber to receive commands for the STM32
         self.subscription = self.create_subscription(
             String,
-            'serial_write',
+            '/serial_driver/input',
             self.send_serial_data,
             10
         )
 
-        # ROS2 Publisher to read incoming data
-        self.publisher = self.create_publisher(String, 'serial_read', 10)
+        # ROS2 Publisher to publish incoming data from STM32
+        self.publisher = self.create_publisher(String, '/serial_driver/output_data', 10)
 
         # Timer to periodically read from serial port
         self.timer = self.create_timer(0.1, self.read_serial_data)  # 10 Hz
 
     def send_serial_data(self, msg):
         """Send data to the serial device."""
-        if self.serial_conn.is_open:
-            self.serial_conn.write((msg.data + '\n').encode())
+        if self.serial_conn and self.serial_conn.is_open:
+            cmd = (msg.data + '\r\n').encode()  # Add CRLF
+            self.serial_conn.write(cmd)
             self.get_logger().info(f"Sent: {msg.data}")
         else:
             self.get_logger().error("Serial connection is not open.")
 
     def read_serial_data(self):
         """Read data from the serial device."""
-        if self.serial_conn.is_open:
+        if self.serial_conn and self.serial_conn.is_open:
             if self.serial_conn.in_waiting > 0:
                 incoming_data = self.serial_conn.readline().decode().strip()
                 if incoming_data:
@@ -55,7 +57,7 @@ class SimpleSerialNode(Node):
 
     def destroy_node(self):
         """Close serial connection when shutting down."""
-        if self.serial_conn.is_open:
+        if self.serial_conn and self.serial_conn.is_open:
             self.serial_conn.close()
             self.get_logger().info("Serial connection closed.")
         super().destroy_node()

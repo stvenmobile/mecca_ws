@@ -2,8 +2,10 @@ teleop_twist_joy_node:
 
   ros__parameters:
 
-    enable_button: 6          # RB Button
-    enable_turbo_button: 3    # X Button
+    enable_button: 5          # RB Button
+    enable_turbo_button: 2    # X Button
+    panic_button: 1           # B Button (for Emergency Stop)
+
 
     axis_linear:
       x: 1                    # Left Stick Fwd/Back

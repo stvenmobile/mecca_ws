@@ -11,7 +11,9 @@ def generate_launch_description():
             package='mecca_driver_node',
             executable='mecca_driver_node',
             name='mecca_driver_node',
-            output='screen'
+            output='screen',
+            remappings=[
+                ('/motor_command', '/serial_driver/input')],
         ),
         Node(
             package='joy',
