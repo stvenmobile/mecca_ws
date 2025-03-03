@@ -1,0 +1,22 @@
+/home/steve/.local/lib/python3.12/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+  warnings.warn(msg)
+running develop
+running egg_info
+creating navigator.egg-info
+writing navigator.egg-info/PKG-INFO
+writing dependency_links to navigator.egg-info/dependency_links.txt
+writing entry points to navigator.egg-info/entry_points.txt
+writing requirements to navigator.egg-info/requires.txt
+writing top-level names to navigator.egg-info/top_level.txt
+writing manifest file 'navigator.egg-info/SOURCES.txt'
+reading manifest file 'navigator.egg-info/SOURCES.txt'
+writing manifest file 'navigator.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages/navigator.egg-link (link to .)
+Installing navigator_node script to /home/steve/mecca_ws/install/navigator/lib/navigator
+
+Installed /home/steve/mecca_ws/build/navigator
+running symlink_data
+creating /home/steve/mecca_ws/install/navigator/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/navigator/resource/navigator -> /home/steve/mecca_ws/install/navigator/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/navigator/package.xml -> /home/steve/mecca_ws/install/navigator/share/navigator

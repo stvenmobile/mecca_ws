@@ -16,6 +16,12 @@ def generate_launch_description():
                 ('/motor_command', '/serial_driver/input')],
         ),
         Node(
+            package='navigator',
+            executable='navigator_node',
+            name='navigator_node',
+            output='screen'
+        ),
+        Node(
             package='joy',
             executable='joy_node',
             name='joy_node',
@@ -32,9 +38,16 @@ def generate_launch_description():
                     'config',
                     'joy_teleop.yaml'
                 ),
-                {'use_sim_time': False}   # Corrected to be a dictionary
+                {'use_sim_time': False}
             ]
         ),
+        # Obstruction Sensor Node
+        Node(
+            package='vl53l1x_sensor',
+            executable='vl53l1x_node',
+            name='vl53l1x_node',
+            output='screen'
+    ),
         # New Serial Node
         Node(
             package='mecca_driver_node',
@@ -45,6 +58,14 @@ def generate_launch_description():
                 'port': '/dev/stm32_serial',
                 'baudrate': 115200
             }]
+        ),
+         # New Serial Node
+        Node(
+            package='mecca_driver_node',
+            executable='led_controller_node',
+            name='led_controller_node',
+            output='screen'
+            
         )
     ])
 

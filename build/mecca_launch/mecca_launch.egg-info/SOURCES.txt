@@ -1,0 +1,13 @@
+package.xml
+setup.cfg
+setup.py
+launch/mecca_bringup.launch.py
+mecca_launch/__init__.py
+mecca_launch.egg-info/PKG-INFO
+mecca_launch.egg-info/SOURCES.txt
+mecca_launch.egg-info/dependency_links.txt
+mecca_launch.egg-info/entry_points.txt
+mecca_launch.egg-info/requires.txt
+mecca_launch.egg-info/top_level.txt
+mecca_launch.egg-info/zip-safe
+resource/mecca_launch

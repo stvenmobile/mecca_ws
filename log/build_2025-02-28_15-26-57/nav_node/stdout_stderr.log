@@ -1,0 +1,22 @@
+/home/steve/.local/lib/python3.12/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+  warnings.warn(msg)
+running develop
+running egg_info
+creating nav_node.egg-info
+writing nav_node.egg-info/PKG-INFO
+writing dependency_links to nav_node.egg-info/dependency_links.txt
+writing entry points to nav_node.egg-info/entry_points.txt
+writing requirements to nav_node.egg-info/requires.txt
+writing top-level names to nav_node.egg-info/top_level.txt
+writing manifest file 'nav_node.egg-info/SOURCES.txt'
+reading manifest file 'nav_node.egg-info/SOURCES.txt'
+writing manifest file 'nav_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages/nav-node.egg-link (link to .)
+Installing nav_node script to /home/steve/mecca_ws/install/nav_node/lib/nav_node
+
+Installed /home/steve/mecca_ws/build/nav_node
+running symlink_data
+creating /home/steve/mecca_ws/install/nav_node/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/nav_node/resource/nav_node -> /home/steve/mecca_ws/install/nav_node/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/nav_node/package.xml -> /home/steve/mecca_ws/install/nav_node/share/nav_node

@@ -5,7 +5,7 @@
   <version>0.0.0</version>
   <description>TODO: Package description</description>
   <maintainer email="stvenmobile@gmail.com">jetson</maintainer>
-  <license>TODO: License declaration</license>
+  <license>MIT</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
@@ -14,7 +14,7 @@
 
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
-  <exec_depend>nav_node</exec_depend>
+  <exec_depend>vl53l1x_sensor</exec_depend>
   <exec_depend>mecca_driver_node</exec_depend>
 
   <export>

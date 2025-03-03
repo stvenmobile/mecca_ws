@@ -1,0 +1,2 @@
+[console_scripts]
+nav_node = nav_node.nav_node:main

@@ -1,0 +1,106 @@
+[0.000000] (-) TimerEvent: {}
+[0.000643] (mecca_driver_node) JobQueued: {'identifier': 'mecca_driver_node', 'dependencies': OrderedDict()}
+[0.000834] (nav_node) JobQueued: {'identifier': 'nav_node', 'dependencies': OrderedDict()}
+[0.000862] (mecca_launch) JobQueued: {'identifier': 'mecca_launch', 'dependencies': OrderedDict({'mecca_driver_node': '/home/steve/mecca_ws/install/mecca_driver_node', 'nav_node': '/home/steve/mecca_ws/install/nav_node'})}
+[0.000894] (mecca_driver_node) JobStarted: {'identifier': 'mecca_driver_node'}
+[0.012210] (nav_node) JobStarted: {'identifier': 'nav_node'}
+[0.099605] (-) TimerEvent: {}
+[0.199962] (-) TimerEvent: {}
+[0.300312] (-) TimerEvent: {}
+[0.400729] (-) TimerEvent: {}
+[0.501076] (-) TimerEvent: {}
+[0.601410] (-) TimerEvent: {}
+[0.701838] (-) TimerEvent: {}
+[0.802749] (-) TimerEvent: {}
+[0.903069] (-) TimerEvent: {}
+[1.003399] (-) TimerEvent: {}
+[1.103734] (-) TimerEvent: {}
+[1.204057] (-) TimerEvent: {}
+[1.304415] (-) TimerEvent: {}
+[1.404792] (-) TimerEvent: {}
+[1.505390] (-) TimerEvent: {}
+[1.517647] (nav_node) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/steve/mecca_ws/build/nav_node/build', '--no-deps', 'symlink_data'], 'cwd': '/home/steve/mecca_ws/build/nav_node', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'steve', 'SSH_CLIENT': '192.168.2.150 27674 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/steve', 'OLDPWD': '/home/steve/mecca_ws/src', 'SSH_TTY': '/dev/pts/1', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'COLCON_PREFIX_PATH': '/home/steve/mecca_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'steve', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1002', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/steve/mecca_ws/install/mecca_launch:/home/steve/mecca_ws/install/nav_node:/home/steve/mecca_ws/install/mecca_driver_node:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/steve/mecca_ws/build/nav_node', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.2.150 27674 192.168.2.60 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/steve/mecca_ws/build/nav_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor'}, 'shell': False}
+[1.524668] (mecca_driver_node) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/steve/mecca_ws/build/mecca_driver_node/build', '--no-deps', 'symlink_data'], 'cwd': '/home/steve/mecca_ws/build/mecca_driver_node', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'steve', 'SSH_CLIENT': '192.168.2.150 27674 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/steve', 'OLDPWD': '/home/steve/mecca_ws/src', 'SSH_TTY': '/dev/pts/1', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'COLCON_PREFIX_PATH': '/home/steve/mecca_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'steve', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1002', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/steve/mecca_ws/install/mecca_launch:/home/steve/mecca_ws/install/nav_node:/home/steve/mecca_ws/install/mecca_driver_node:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/steve/mecca_ws/build/mecca_driver_node', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.2.150 27674 192.168.2.60 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/steve/mecca_ws/build/mecca_driver_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor'}, 'shell': False}
+[1.605449] (-) TimerEvent: {}
+[1.705838] (-) TimerEvent: {}
+[1.806199] (-) TimerEvent: {}
+[1.906546] (-) TimerEvent: {}
+[1.984237] (mecca_driver_node) StdoutLine: {'line': b'running develop\n'}
+[1.984723] (nav_node) StdoutLine: {'line': b'running develop\n'}
+[2.006639] (-) TimerEvent: {}
+[2.106960] (-) TimerEvent: {}
+[2.207284] (-) TimerEvent: {}
+[2.256097] (mecca_driver_node) StdoutLine: {'line': b'running egg_info\n'}
+[2.256398] (nav_node) StdoutLine: {'line': b'running egg_info\n'}
+[2.283236] (mecca_driver_node) StdoutLine: {'line': b'writing mecca_driver_node.egg-info/PKG-INFO\n'}
+[2.284254] (nav_node) StdoutLine: {'line': b'writing nav_node.egg-info/PKG-INFO\n'}
+[2.284402] (mecca_driver_node) StdoutLine: {'line': b'writing dependency_links to mecca_driver_node.egg-info/dependency_links.txt\n'}
+[2.284506] (mecca_driver_node) StdoutLine: {'line': b'writing entry points to mecca_driver_node.egg-info/entry_points.txt\n'}
+[2.284602] (mecca_driver_node) StdoutLine: {'line': b'writing requirements to mecca_driver_node.egg-info/requires.txt\n'}
+[2.284719] (mecca_driver_node) StdoutLine: {'line': b'writing top-level names to mecca_driver_node.egg-info/top_level.txt\n'}
+[2.286291] (nav_node) StdoutLine: {'line': b'writing dependency_links to nav_node.egg-info/dependency_links.txt\n'}
+[2.287441] (nav_node) StdoutLine: {'line': b'writing entry points to nav_node.egg-info/entry_points.txt\n'}
+[2.288549] (nav_node) StdoutLine: {'line': b'writing requirements to nav_node.egg-info/requires.txt\n'}
+[2.289633] (nav_node) StdoutLine: {'line': b'writing top-level names to nav_node.egg-info/top_level.txt\n'}
+[2.307383] (-) TimerEvent: {}
+[2.336773] (mecca_driver_node) StdoutLine: {'line': b"reading manifest file 'mecca_driver_node.egg-info/SOURCES.txt'\n"}
+[2.338217] (mecca_driver_node) StdoutLine: {'line': b"writing manifest file 'mecca_driver_node.egg-info/SOURCES.txt'\n"}
+[2.345007] (nav_node) StdoutLine: {'line': b"reading manifest file 'nav_node.egg-info/SOURCES.txt'\n"}
+[2.346407] (nav_node) StdoutLine: {'line': b"writing manifest file 'nav_node.egg-info/SOURCES.txt'\n"}
+[2.365665] (mecca_driver_node) StdoutLine: {'line': b'running build_ext\n'}
+[2.365958] (mecca_driver_node) StdoutLine: {'line': b'Creating /home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages/mecca-driver-node.egg-link (link to .)\n'}
+[2.366980] (mecca_driver_node) StdoutLine: {'line': b'Installing mecca_driver_node script to /home/steve/mecca_ws/install/mecca_driver_node/lib/mecca_driver_node\n'}
+[2.367312] (mecca_driver_node) StdoutLine: {'line': b'Installing simple_serial script to /home/steve/mecca_ws/install/mecca_driver_node/lib/mecca_driver_node\n'}
+[2.367682] (mecca_driver_node) StdoutLine: {'line': b'\n'}
+[2.367799] (mecca_driver_node) StdoutLine: {'line': b'Installed /home/steve/mecca_ws/build/mecca_driver_node\n'}
+[2.367923] (mecca_driver_node) StdoutLine: {'line': b'running symlink_data\n'}
+[2.376850] (nav_node) StdoutLine: {'line': b'running build_ext\n'}
+[2.377415] (nav_node) StdoutLine: {'line': b'Creating /home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages/nav-node.egg-link (link to .)\n'}
+[2.378925] (nav_node) StdoutLine: {'line': b'Installing nav_node script to /home/steve/mecca_ws/install/nav_node/lib/nav_node\n'}
+[2.379752] (nav_node) StdoutLine: {'line': b'\n'}
+[2.379965] (nav_node) StdoutLine: {'line': b'Installed /home/steve/mecca_ws/build/nav_node\n'}
+[2.380175] (nav_node) StdoutLine: {'line': b'running symlink_data\n'}
+[2.407545] (-) TimerEvent: {}
+[2.486474] (mecca_driver_node) CommandEnded: {'returncode': 0}
+[2.507627] (-) TimerEvent: {}
+[2.508451] (mecca_driver_node) JobEnded: {'identifier': 'mecca_driver_node', 'rc': 0}
+[2.509671] (nav_node) CommandEnded: {'returncode': 0}
+[2.528715] (nav_node) JobEnded: {'identifier': 'nav_node', 'rc': 0}
+[2.530139] (mecca_launch) JobStarted: {'identifier': 'mecca_launch'}
+[2.607727] (-) TimerEvent: {}
+[2.708073] (-) TimerEvent: {}
+[2.808433] (-) TimerEvent: {}
+[2.908748] (-) TimerEvent: {}
+[3.009094] (-) TimerEvent: {}
+[3.109425] (-) TimerEvent: {}
+[3.209754] (-) TimerEvent: {}
+[3.310168] (-) TimerEvent: {}
+[3.410521] (-) TimerEvent: {}
+[3.510850] (-) TimerEvent: {}
+[3.611177] (-) TimerEvent: {}
+[3.650632] (mecca_launch) Command: {'cmd': ['/usr/bin/python3', '-W', 'ignore:setup.py install is deprecated', '-W', 'ignore:easy_install command is deprecated', 'setup.py', 'develop', '--editable', '--build-directory', '/home/steve/mecca_ws/build/mecca_launch/build', '--no-deps', 'symlink_data'], 'cwd': '/home/steve/mecca_ws/build/mecca_launch', 'env': {'LESSOPEN': '| /usr/bin/lesspipe %s', 'USER': 'steve', 'SSH_CLIENT': '192.168.2.150 27674 22', 'XDG_SESSION_TYPE': 'tty', 'SHLVL': '1', 'LD_LIBRARY_PATH': '/opt/ros/jazzy/opt/rviz_ogre_vendor/lib:/opt/ros/jazzy/lib/aarch64-linux-gnu:/opt/ros/jazzy/opt/gz_math_vendor/lib:/opt/ros/jazzy/opt/gz_utils_vendor/lib:/opt/ros/jazzy/opt/gz_cmake_vendor/lib:/opt/ros/jazzy/lib', 'HOME': '/home/steve', 'OLDPWD': '/home/steve/mecca_ws/src', 'SSH_TTY': '/dev/pts/1', 'ROS_PYTHON_VERSION': '3', 'DBUS_SESSION_BUS_ADDRESS': 'unix:path=/run/user/1002/bus', 'DEBUGINFOD_URLS': 'https://debuginfod.ubuntu.com', 'COLCON_PREFIX_PATH': '/home/steve/mecca_ws/install', 'ROS_DISTRO': 'jazzy', 'LOGNAME': 'steve', '_': '/usr/bin/colcon', 'ROS_VERSION': '2', 'XDG_SESSION_CLASS': 'user', 'TERM': 'xterm-256color', 'XDG_SESSION_ID': '1', 'PATH': '/opt/ros/jazzy/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin', 'XDG_RUNTIME_DIR': '/run/user/1002', 'LANG': 'en_US.UTF-8', 'LS_COLORS': 'rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:mi=00:su=37;41:sg=30;43:ca=00:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arc=01;31:*.arj=01;31:*.taz=01;31:*.lha=01;31:*.lz4=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.tzo=01;31:*.t7z=01;31:*.zip=01;31:*.z=01;31:*.dz=01;31:*.gz=01;31:*.lrz=01;31:*.lz=01;31:*.lzo=01;31:*.xz=01;31:*.zst=01;31:*.tzst=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.war=01;31:*.ear=01;31:*.sar=01;31:*.rar=01;31:*.alz=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.cab=01;31:*.wim=01;31:*.swm=01;31:*.dwm=01;31:*.esd=01;31:*.avif=01;35:*.jpg=01;35:*.jpeg=01;35:*.mjpg=01;35:*.mjpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.webm=01;35:*.webp=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.m4a=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.oga=00;36:*.opus=00;36:*.spx=00;36:*.xspf=00;36:*~=00;90:*#=00;90:*.bak=00;90:*.crdownload=00;90:*.dpkg-dist=00;90:*.dpkg-new=00;90:*.dpkg-old=00;90:*.dpkg-tmp=00;90:*.old=00;90:*.orig=00;90:*.part=00;90:*.rej=00;90:*.rpmnew=00;90:*.rpmorig=00;90:*.rpmsave=00;90:*.swp=00;90:*.tmp=00;90:*.ucf-dist=00;90:*.ucf-new=00;90:*.ucf-old=00;90:', 'AMENT_PREFIX_PATH': '/home/steve/mecca_ws/install/nav_node:/home/steve/mecca_ws/install/mecca_driver_node:/home/steve/mecca_ws/install/mecca_launch:/opt/ros/jazzy', 'SHELL': '/bin/bash', 'LESSCLOSE': '/usr/bin/lesspipe %s %s', 'ROS_AUTOMATIC_DISCOVERY_RANGE': 'SUBNET', 'PWD': '/home/steve/mecca_ws/build/mecca_launch', 'LC_ALL': 'en_US.UTF-8', 'SSH_CONNECTION': '192.168.2.150 27674 192.168.2.60 22', 'XDG_DATA_DIRS': '/usr/share/gnome:/usr/local/share:/usr/share:/var/lib/snapd/desktop', 'PYTHONPATH': '/home/steve/mecca_ws/build/mecca_launch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages', 'COLCON': '1', 'CMAKE_PREFIX_PATH': '/opt/ros/jazzy/opt/gz_math_vendor:/opt/ros/jazzy/opt/gz_utils_vendor:/opt/ros/jazzy/opt/gz_cmake_vendor'}, 'shell': False}
+[3.711281] (-) TimerEvent: {}
+[3.811647] (-) TimerEvent: {}
+[3.911981] (-) TimerEvent: {}
+[4.012292] (-) TimerEvent: {}
+[4.086825] (mecca_launch) StdoutLine: {'line': b'running develop\n'}
+[4.112408] (-) TimerEvent: {}
+[4.212717] (-) TimerEvent: {}
+[4.313024] (-) TimerEvent: {}
+[4.353705] (mecca_launch) StdoutLine: {'line': b'running egg_info\n'}
+[4.379954] (mecca_launch) StdoutLine: {'line': b'writing mecca_launch.egg-info/PKG-INFO\n'}
+[4.380711] (mecca_launch) StdoutLine: {'line': b'writing dependency_links to mecca_launch.egg-info/dependency_links.txt\n'}
+[4.382003] (mecca_launch) StdoutLine: {'line': b'writing requirements to mecca_launch.egg-info/requires.txt\n'}
+[4.383008] (mecca_launch) StdoutLine: {'line': b'writing top-level names to mecca_launch.egg-info/top_level.txt\n'}
+[4.413112] (-) TimerEvent: {}
+[4.436701] (mecca_launch) StdoutLine: {'line': b"reading manifest file 'mecca_launch.egg-info/SOURCES.txt'\n"}
+[4.438018] (mecca_launch) StdoutLine: {'line': b"writing manifest file 'mecca_launch.egg-info/SOURCES.txt'\n"}
+[4.465090] (mecca_launch) StdoutLine: {'line': b'running build_ext\n'}
+[4.465387] (mecca_launch) StdoutLine: {'line': b'Creating /home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages/mecca-launch.egg-link (link to .)\n'}
+[4.466297] (mecca_launch) StdoutLine: {'line': b'\n'}
+[4.466415] (mecca_launch) StdoutLine: {'line': b'Installed /home/steve/mecca_ws/build/mecca_launch\n'}
+[4.466783] (mecca_launch) StdoutLine: {'line': b'running symlink_data\n'}
+[4.513206] (-) TimerEvent: {}
+[4.553230] (mecca_launch) CommandEnded: {'returncode': 0}
+[4.572551] (mecca_launch) JobEnded: {'identifier': 'mecca_launch', 'rc': 0}
+[4.573754] (-) EventReactorShutdown: {}

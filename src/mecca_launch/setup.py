@@ -14,14 +14,15 @@ setup(
         ('share/' + package_name, ['package.xml']),
         (os.path.join('share', package_name), glob('launch/*.launch.py')),
     ],
-    install_requires=['setuptools'],
+    install_requires=['setuptools', 'vl53l1x_sensor'],
     zip_safe=True,
     maintainer='steve phillips',
     maintainer_email='stvenmobile@gmail.com',
     description='Launch package for Mecca robot',
-    license='Apache License 2.0',
+    license='MIT',
     entry_points={
-        'console_scripts': [],
+    'console_scripts': [
+        'vl53l1x_node = vl53l1x_sensor.vl53l1x_node:main'],
     },
 )
 

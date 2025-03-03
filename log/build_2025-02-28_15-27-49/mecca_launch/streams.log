@@ -1,0 +1,17 @@
+[1.111s] Invoking command in '/home/steve/mecca_ws/build/mecca_launch': AMENT_PREFIX_PATH=/home/steve/mecca_ws/install/nav_node:/home/steve/mecca_ws/install/mecca_driver_node:/home/steve/mecca_ws/install/mecca_launch:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_launch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_launch/build --no-deps symlink_data
+[1.332s] /home/steve/.local/lib/python3.12/site-packages/setuptools/_distutils/dist.py:270: UserWarning: Unknown distribution option: 'tests_require'
+[1.332s]   warnings.warn(msg)
+[1.544s] running develop
+[1.809s] running egg_info
+[1.835s] writing mecca_launch.egg-info/PKG-INFO
+[1.835s] writing dependency_links to mecca_launch.egg-info/dependency_links.txt
+[1.837s] writing requirements to mecca_launch.egg-info/requires.txt
+[1.838s] writing top-level names to mecca_launch.egg-info/top_level.txt
+[1.891s] reading manifest file 'mecca_launch.egg-info/SOURCES.txt'
+[1.892s] writing manifest file 'mecca_launch.egg-info/SOURCES.txt'
+[1.919s] running build_ext
+[1.919s] Creating /home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages/mecca-launch.egg-link (link to .)
+[1.920s] 
+[1.920s] Installed /home/steve/mecca_ws/build/mecca_launch
+[1.921s] running symlink_data
+[2.010s] Invoked command in '/home/steve/mecca_ws/build/mecca_launch' returned '0': AMENT_PREFIX_PATH=/home/steve/mecca_ws/install/nav_node:/home/steve/mecca_ws/install/mecca_driver_node:/home/steve/mecca_ws/install/mecca_launch:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_launch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_launch/build --no-deps symlink_data

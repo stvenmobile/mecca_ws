@@ -1,0 +1,9 @@
+source;share/vl53l1x_sensor/hook/pythonpath.ps1
+source;share/vl53l1x_sensor/hook/pythonpath.dsv
+source;share/vl53l1x_sensor/hook/pythonpath.sh
+source;share/vl53l1x_sensor/hook/ament_prefix_path.ps1
+source;share/vl53l1x_sensor/hook/ament_prefix_path.dsv
+source;share/vl53l1x_sensor/hook/ament_prefix_path.sh
+source;../../build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.ps1
+source;../../build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.dsv
+source;../../build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.sh

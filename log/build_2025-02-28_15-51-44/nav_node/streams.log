@@ -1,0 +1,17 @@
+[1.566s] Invoking command in '/home/steve/mecca_ws/build/nav_node': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/nav_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/nav_node/build --no-deps symlink_data
+[2.025s] running develop
+[2.294s] running egg_info
+[2.320s] writing nav_node.egg-info/PKG-INFO
+[2.321s] writing dependency_links to nav_node.egg-info/dependency_links.txt
+[2.324s] writing entry points to nav_node.egg-info/entry_points.txt
+[2.324s] writing requirements to nav_node.egg-info/requires.txt
+[2.324s] writing top-level names to nav_node.egg-info/top_level.txt
+[2.376s] reading manifest file 'nav_node.egg-info/SOURCES.txt'
+[2.378s] writing manifest file 'nav_node.egg-info/SOURCES.txt'
+[2.406s] running build_ext
+[2.406s] Creating /home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages/nav-node.egg-link (link to .)
+[2.407s] Installing nav_node script to /home/steve/mecca_ws/install/nav_node/lib/nav_node
+[2.408s] 
+[2.408s] Installed /home/steve/mecca_ws/build/nav_node
+[2.408s] running symlink_data
+[2.552s] Invoked command in '/home/steve/mecca_ws/build/nav_node' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/nav_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/nav_node/build --no-deps symlink_data

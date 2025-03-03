@@ -1,0 +1,311 @@
+[0.208s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build', '--symlink-install']
+[0.208s] DEBUG:colcon:Parsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=4, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffffaaf6c860>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffab0ccd40>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffab0ccd40>>, mixin_verb=('build',))
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.304s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.304s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/steve/mecca_ws'
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.304s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.305s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.305s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.305s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['cmake', 'python']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'cmake'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['python_setup_py']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'python_setup_py'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(build) by extension 'ignore'
+[0.358s] Level 1:colcon.colcon_core.package_identification:_identify(build) ignored
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(install) by extension 'ignore'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(install) ignored
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(log) by extension 'ignore'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(log) ignored
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ignore', 'ignore_ament_install']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ignore_ament_install'
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_pkg']
+[0.359s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_pkg'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['colcon_meta']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'colcon_meta'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['ros']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'ros'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['cmake', 'python']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'cmake'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extensions ['python_setup_py']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src) by extension 'python_setup_py'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/deprecated) by extensions ['ignore', 'ignore_ament_install']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/deprecated) by extension 'ignore'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/deprecated) ignored
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extensions ['ignore', 'ignore_ament_install']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extension 'ignore'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extension 'ignore_ament_install'
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extensions ['colcon_pkg']
+[0.360s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extension 'colcon_pkg'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extensions ['colcon_meta']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extension 'colcon_meta'
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extensions ['ros']
+[0.361s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_driver_node) by extension 'ros'
+[0.366s] DEBUG:colcon.colcon_core.package_identification:Package 'src/mecca_driver_node' with type 'ros.ament_python' and name 'mecca_driver_node'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extensions ['ignore', 'ignore_ament_install']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extension 'ignore'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extension 'ignore_ament_install'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extensions ['colcon_pkg']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extension 'colcon_pkg'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extensions ['colcon_meta']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extension 'colcon_meta'
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extensions ['ros']
+[0.366s] Level 1:colcon.colcon_core.package_identification:_identify(src/mecca_launch) by extension 'ros'
+[0.367s] DEBUG:colcon.colcon_core.package_identification:Package 'src/mecca_launch' with type 'ros.ament_python' and name 'mecca_launch'
+[0.367s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extensions ['ignore', 'ignore_ament_install']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extension 'ignore'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extension 'ignore_ament_install'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extensions ['colcon_pkg']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extension 'colcon_pkg'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extensions ['colcon_meta']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extension 'colcon_meta'
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extensions ['ros']
+[0.368s] Level 1:colcon.colcon_core.package_identification:_identify(src/navigator) by extension 'ros'
+[0.369s] DEBUG:colcon.colcon_core.package_identification:Package 'src/navigator' with type 'ros.ament_python' and name 'navigator'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['ignore', 'ignore_ament_install']
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'ignore'
+[0.369s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'ignore_ament_install'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['colcon_pkg']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'colcon_pkg'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['colcon_meta']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'colcon_meta'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['ros']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'ros'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['cmake', 'python']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'cmake'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'python'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extensions ['python_setup_py']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/utilities) by extension 'python_setup_py'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extensions ['ignore', 'ignore_ament_install']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extension 'ignore'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extension 'ignore_ament_install'
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extensions ['colcon_pkg']
+[0.370s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extension 'colcon_pkg'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extensions ['colcon_meta']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extension 'colcon_meta'
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extensions ['ros']
+[0.371s] Level 1:colcon.colcon_core.package_identification:_identify(src/vl53l1x_sensor) by extension 'ros'
+[0.372s] DEBUG:colcon.colcon_core.package_identification:Package 'src/vl53l1x_sensor' with type 'ros.ament_python' and name 'vl53l1x_sensor'
+[0.372s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.372s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.372s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.372s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.372s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.404s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.404s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.409s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 5 installed packages in /home/steve/mecca_ws/install
+[0.409s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 3 installed packages in /home/steve/micro_ws/install
+[0.411s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 285 installed packages in /opt/ros/jazzy
+[0.414s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_args' from command line to 'None'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_target' from command line to 'None'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_clean_cache' from command line to 'False'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_clean_first' from command line to 'False'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'cmake_force_configure' from command line to 'False'
+[0.478s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'ament_cmake_args' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'catkin_cmake_args' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'mecca_driver_node' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.479s] DEBUG:colcon.colcon_core.verb:Building package 'mecca_driver_node' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/steve/mecca_ws/build/mecca_driver_node', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/steve/mecca_ws/install/mecca_driver_node', 'merge_install': False, 'path': '/home/steve/mecca_ws/src/mecca_driver_node', 'symlink_install': True, 'test_result_base': None}
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_args' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_target' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_clean_cache' from command line to 'False'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_clean_first' from command line to 'False'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'cmake_force_configure' from command line to 'False'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'ament_cmake_args' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'catkin_cmake_args' from command line to 'None'
+[0.479s] Level 5:colcon.colcon_core.verb:set package 'navigator' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.479s] DEBUG:colcon.colcon_core.verb:Building package 'navigator' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/steve/mecca_ws/build/navigator', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/steve/mecca_ws/install/navigator', 'merge_install': False, 'path': '/home/steve/mecca_ws/src/navigator', 'symlink_install': True, 'test_result_base': None}
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_target' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_clean_cache' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_clean_first' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'cmake_force_configure' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'ament_cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'catkin_cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'vl53l1x_sensor' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.480s] DEBUG:colcon.colcon_core.verb:Building package 'vl53l1x_sensor' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/steve/mecca_ws/build/vl53l1x_sensor', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/steve/mecca_ws/install/vl53l1x_sensor', 'merge_install': False, 'path': '/home/steve/mecca_ws/src/vl53l1x_sensor', 'symlink_install': True, 'test_result_base': None}
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_target' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_clean_cache' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_clean_first' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'cmake_force_configure' from command line to 'False'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'ament_cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'catkin_cmake_args' from command line to 'None'
+[0.480s] Level 5:colcon.colcon_core.verb:set package 'mecca_launch' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.480s] DEBUG:colcon.colcon_core.verb:Building package 'mecca_launch' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/steve/mecca_ws/build/mecca_launch', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/steve/mecca_ws/install/mecca_launch', 'merge_install': False, 'path': '/home/steve/mecca_ws/src/mecca_launch', 'symlink_install': True, 'test_result_base': None}
+[0.481s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.482s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.482s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/steve/mecca_ws/src/mecca_driver_node' with build type 'ament_python'
+[0.482s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_driver_node', 'ament_prefix_path')
+[0.488s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.488s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/ament_prefix_path.ps1'
+[0.489s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/ament_prefix_path.dsv'
+[0.491s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/ament_prefix_path.sh'
+[0.494s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.494s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.500s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/steve/mecca_ws/src/vl53l1x_sensor' with build type 'ament_python'
+[0.500s] Level 1:colcon.colcon_core.shell:create_environment_hook('vl53l1x_sensor', 'ament_prefix_path')
+[0.501s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/ament_prefix_path.ps1'
+[0.502s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/ament_prefix_path.dsv'
+[0.502s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/ament_prefix_path.sh'
+[0.503s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.503s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.509s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/steve/mecca_ws/src/navigator' with build type 'ament_python'
+[0.509s] Level 1:colcon.colcon_core.shell:create_environment_hook('navigator', 'ament_prefix_path')
+[0.509s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/navigator/share/navigator/hook/ament_prefix_path.ps1'
+[0.510s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/navigator/share/navigator/hook/ament_prefix_path.dsv'
+[0.511s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/navigator/share/navigator/hook/ament_prefix_path.sh'
+[0.512s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.512s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.863s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/steve/mecca_ws/src/mecca_driver_node'
+[0.863s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.863s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.214s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/steve/mecca_ws/src/vl53l1x_sensor'
+[1.215s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.215s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[1.563s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/steve/mecca_ws/src/navigator'
+[1.564s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.564s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[2.805s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/steve/mecca_ws/build/mecca_driver_node': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_driver_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_driver_node/build --no-deps symlink_data
+[2.811s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/steve/mecca_ws/build/navigator': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/navigator/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/navigator/build --no-deps symlink_data
+[2.815s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/steve/mecca_ws/build/vl53l1x_sensor': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/vl53l1x_sensor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/vl53l1x_sensor/build --no-deps symlink_data
+[3.886s] Level 1:colcon.colcon_core.shell:create_environment_hook('vl53l1x_sensor', 'pythonpath_develop')
+[3.887s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.ps1'
+[3.888s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/steve/mecca_ws/build/vl53l1x_sensor' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/vl53l1x_sensor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/vl53l1x_sensor/build --no-deps symlink_data
+[3.889s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.dsv'
+[3.890s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath_develop.sh'
+[3.900s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor' for CMake module files
+[3.901s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor' for CMake config files
+[3.901s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor/lib'
+[3.902s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor/bin'
+[3.902s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor/lib/pkgconfig/vl53l1x_sensor.pc'
+[3.902s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages'
+[3.902s] Level 1:colcon.colcon_core.shell:create_environment_hook('vl53l1x_sensor', 'pythonpath')
+[3.903s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath.ps1'
+[3.903s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath.dsv'
+[3.905s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/hook/pythonpath.sh'
+[3.907s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/vl53l1x_sensor/bin'
+[3.907s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(vl53l1x_sensor)
+[3.907s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/package.ps1'
+[3.909s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/package.dsv'
+[3.912s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/package.sh'
+[3.916s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/package.bash'
+[3.919s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/vl53l1x_sensor/share/vl53l1x_sensor/package.zsh'
+[3.924s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/steve/mecca_ws/install/vl53l1x_sensor/share/colcon-core/packages/vl53l1x_sensor)
+[3.926s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_driver_node', 'pythonpath_develop')
+[3.927s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/mecca_driver_node/share/mecca_driver_node/hook/pythonpath_develop.ps1'
+[3.927s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/steve/mecca_ws/build/mecca_driver_node' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_driver_node/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_driver_node/build --no-deps symlink_data
+[3.928s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/build/mecca_driver_node/share/mecca_driver_node/hook/pythonpath_develop.dsv'
+[3.929s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/mecca_driver_node/share/mecca_driver_node/hook/pythonpath_develop.sh'
+[3.930s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node' for CMake module files
+[3.931s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node' for CMake config files
+[3.932s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node/lib'
+[3.932s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node/bin'
+[3.932s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node/lib/pkgconfig/mecca_driver_node.pc'
+[3.932s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages'
+[3.932s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_driver_node', 'pythonpath')
+[3.933s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/pythonpath.ps1'
+[3.933s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/pythonpath.dsv'
+[3.934s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/hook/pythonpath.sh'
+[3.935s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_driver_node/bin'
+[3.935s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mecca_driver_node)
+[3.936s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/package.ps1'
+[3.937s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/package.dsv'
+[3.938s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/package.sh'
+[3.939s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/package.bash'
+[3.940s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/package.zsh'
+[3.941s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/steve/mecca_ws/install/mecca_driver_node/share/colcon-core/packages/mecca_driver_node)
+[3.943s] INFO:colcon.colcon_ros.task.ament_python.build:Building ROS package in '/home/steve/mecca_ws/src/mecca_launch' with build type 'ament_python'
+[3.943s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_launch', 'ament_prefix_path')
+[3.943s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/ament_prefix_path.ps1'
+[3.945s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/ament_prefix_path.dsv'
+[3.947s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/ament_prefix_path.sh'
+[3.949s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[3.949s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[3.954s] Level 1:colcon.colcon_core.shell:create_environment_hook('navigator', 'pythonpath_develop')
+[3.955s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/navigator/share/navigator/hook/pythonpath_develop.ps1'
+[3.955s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/steve/mecca_ws/build/navigator' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/navigator/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/navigator/build --no-deps symlink_data
+[3.956s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/build/navigator/share/navigator/hook/pythonpath_develop.dsv'
+[3.958s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/navigator/share/navigator/hook/pythonpath_develop.sh'
+[3.959s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator' for CMake module files
+[3.960s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator' for CMake config files
+[3.961s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator/lib'
+[3.961s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator/bin'
+[3.961s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator/lib/pkgconfig/navigator.pc'
+[3.962s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages'
+[3.962s] Level 1:colcon.colcon_core.shell:create_environment_hook('navigator', 'pythonpath')
+[3.962s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/navigator/share/navigator/hook/pythonpath.ps1'
+[3.963s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/navigator/share/navigator/hook/pythonpath.dsv'
+[3.966s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/navigator/share/navigator/hook/pythonpath.sh'
+[3.967s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/navigator/bin'
+[3.967s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(navigator)
+[3.968s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/navigator/share/navigator/package.ps1'
+[3.968s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/steve/mecca_ws/install/navigator/share/navigator/package.dsv'
+[3.969s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/navigator/share/navigator/package.sh'
+[3.970s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/navigator/share/navigator/package.bash'
+[3.970s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/navigator/share/navigator/package.zsh'
+[3.971s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/steve/mecca_ws/install/navigator/share/colcon-core/packages/navigator)
+[4.347s] INFO:colcon.colcon_core.task.python.build:Building Python package in '/home/steve/mecca_ws/src/mecca_launch'
+[4.348s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[4.348s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[5.130s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/steve/mecca_ws/build/mecca_launch': AMENT_PREFIX_PATH=/home/steve/mecca_ws/install/vl53l1x_sensor:/home/steve/mecca_ws/install/mecca_driver_node:/home/steve/mecca_ws/install/mecca_launch:/home/steve/mecca_ws/install/navigator:/home/steve/mecca_ws/install/nav_node:/home/steve/micro_ws/install/micro_ros_setup:/home/steve/micro_ws/install/micro_ros_agent:/home/steve/micro_ws/install/micro_ros_msgs:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_launch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/vl53l1x_sensor:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/navigator:/home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/micro_ws/install/micro_ros_msgs/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_launch/build --no-deps symlink_data
+[6.071s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_launch', 'pythonpath_develop')
+[6.071s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/mecca_launch/share/mecca_launch/hook/pythonpath_develop.ps1'
+[6.072s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/steve/mecca_ws/build/mecca_launch' returned '0': AMENT_PREFIX_PATH=/home/steve/mecca_ws/install/vl53l1x_sensor:/home/steve/mecca_ws/install/mecca_driver_node:/home/steve/mecca_ws/install/mecca_launch:/home/steve/mecca_ws/install/navigator:/home/steve/mecca_ws/install/nav_node:/home/steve/micro_ws/install/micro_ros_setup:/home/steve/micro_ws/install/micro_ros_agent:/home/steve/micro_ws/install/micro_ros_msgs:/opt/ros/jazzy DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/mecca_launch/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/vl53l1x_sensor:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_driver_node:/home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages:/home/steve/mecca_ws/build/mecca_launch:/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages:/home/steve/mecca_ws/build/navigator:/home/steve/mecca_ws/install/navigator/lib/python3.12/site-packages:/home/steve/mecca_ws/build/nav_node:/home/steve/mecca_ws/install/nav_node/lib/python3.12/site-packages:/home/steve/micro_ws/install/micro_ros_msgs/lib/python3.12/site-packages:/opt/ros/jazzy/lib/python3.12/site-packages /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/mecca_launch/build --no-deps symlink_data
+[6.072s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/build/mecca_launch/share/mecca_launch/hook/pythonpath_develop.dsv'
+[6.074s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/build/mecca_launch/share/mecca_launch/hook/pythonpath_develop.sh'
+[6.075s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch' for CMake module files
+[6.076s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch' for CMake config files
+[6.076s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch/lib'
+[6.077s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch/bin'
+[6.077s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch/lib/pkgconfig/mecca_launch.pc'
+[6.077s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch/lib/python3.12/site-packages'
+[6.077s] Level 1:colcon.colcon_core.shell:create_environment_hook('mecca_launch', 'pythonpath')
+[6.077s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/pythonpath.ps1'
+[6.078s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/pythonpath.dsv'
+[6.079s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/hook/pythonpath.sh'
+[6.081s] Level 1:colcon.colcon_core.environment:checking '/home/steve/mecca_ws/install/mecca_launch/bin'
+[6.081s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(mecca_launch)
+[6.081s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/package.ps1'
+[6.082s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/package.dsv'
+[6.084s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/package.sh'
+[6.085s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/package.bash'
+[6.087s] INFO:colcon.colcon_core.shell:Creating package script '/home/steve/mecca_ws/install/mecca_launch/share/mecca_launch/package.zsh'
+[6.088s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/steve/mecca_ws/install/mecca_launch/share/colcon-core/packages/mecca_launch)
+[6.090s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[6.091s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[6.091s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '0'
+[6.091s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[6.104s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[6.104s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[6.105s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[6.140s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[6.141s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/steve/mecca_ws/install/local_setup.ps1'
+[6.143s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/steve/mecca_ws/install/_local_setup_util_ps1.py'
+[6.146s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/steve/mecca_ws/install/setup.ps1'
+[6.148s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/steve/mecca_ws/install/local_setup.sh'
+[6.150s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/steve/mecca_ws/install/_local_setup_util_sh.py'
+[6.152s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/steve/mecca_ws/install/setup.sh'
+[6.154s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/steve/mecca_ws/install/local_setup.bash'
+[6.157s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/steve/mecca_ws/install/setup.bash'
+[6.159s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/steve/mecca_ws/install/local_setup.zsh'
+[6.162s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/steve/mecca_ws/install/setup.zsh'

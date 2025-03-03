@@ -1,0 +1,23 @@
+running develop
+running egg_info
+creating mecca_driver_node.egg-info
+writing mecca_driver_node.egg-info/PKG-INFO
+writing dependency_links to mecca_driver_node.egg-info/dependency_links.txt
+writing entry points to mecca_driver_node.egg-info/entry_points.txt
+writing requirements to mecca_driver_node.egg-info/requires.txt
+writing top-level names to mecca_driver_node.egg-info/top_level.txt
+writing manifest file 'mecca_driver_node.egg-info/SOURCES.txt'
+reading manifest file 'mecca_driver_node.egg-info/SOURCES.txt'
+writing manifest file 'mecca_driver_node.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/steve/mecca_ws/install/mecca_driver_node/lib/python3.12/site-packages/mecca-driver-node.egg-link (link to .)
+Installing mecca_driver_node script to /home/steve/mecca_ws/install/mecca_driver_node/lib/mecca_driver_node
+Installing simple_serial script to /home/steve/mecca_ws/install/mecca_driver_node/lib/mecca_driver_node
+
+Installed /home/steve/mecca_ws/build/mecca_driver_node
+running symlink_data
+creating /home/steve/mecca_ws/install/mecca_driver_node/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/mecca_driver_node/resource/mecca_driver_node -> /home/steve/mecca_ws/install/mecca_driver_node/share/ament_index/resource_index/packages
+symbolically linking /home/steve/mecca_ws/build/mecca_driver_node/package.xml -> /home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node
+creating /home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/config
+symbolically linking /home/steve/mecca_ws/build/mecca_driver_node/config/joy_teleop.yaml -> /home/steve/mecca_ws/install/mecca_driver_node/share/mecca_driver_node/config

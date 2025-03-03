@@ -1,0 +1,9 @@
+source;share/navigator/hook/pythonpath.ps1
+source;share/navigator/hook/pythonpath.dsv
+source;share/navigator/hook/pythonpath.sh
+source;share/navigator/hook/ament_prefix_path.ps1
+source;share/navigator/hook/ament_prefix_path.dsv
+source;share/navigator/hook/ament_prefix_path.sh
+source;../../build/navigator/share/navigator/hook/pythonpath_develop.ps1
+source;../../build/navigator/share/navigator/hook/pythonpath_develop.dsv
+source;../../build/navigator/share/navigator/hook/pythonpath_develop.sh

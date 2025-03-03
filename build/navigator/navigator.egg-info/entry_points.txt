@@ -1,0 +1,2 @@
+[console_scripts]
+navigator_node = navigator.navigator_node:main

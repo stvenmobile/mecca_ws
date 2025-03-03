@@ -1,0 +1,15 @@
+[2.006s] Invoking command in '/home/steve/mecca_ws/build/vl53l1x_sensor': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/vl53l1x_sensor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/vl53l1x_sensor/build --no-deps symlink_data
+[2.488s] running develop
+[2.768s] running egg_info
+[2.796s] writing vl53l1x_sensor.egg-info/PKG-INFO
+[2.797s] writing dependency_links to vl53l1x_sensor.egg-info/dependency_links.txt
+[2.801s] writing requirements to vl53l1x_sensor.egg-info/requires.txt
+[2.801s] writing top-level names to vl53l1x_sensor.egg-info/top_level.txt
+[2.878s] reading manifest file 'vl53l1x_sensor.egg-info/SOURCES.txt'
+[2.881s] writing manifest file 'vl53l1x_sensor.egg-info/SOURCES.txt'
+[2.929s] running build_ext
+[2.929s] Creating /home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages/vl53l1x-sensor.egg-link (link to .)
+[2.932s] 
+[2.932s] Installed /home/steve/mecca_ws/build/vl53l1x_sensor
+[2.933s] running symlink_data
+[3.353s] Invoked command in '/home/steve/mecca_ws/build/vl53l1x_sensor' returned '0': DEBUGINFOD_URLS=https://debuginfod.ubuntu.com PYTHONPATH=/home/steve/mecca_ws/build/vl53l1x_sensor/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/steve/mecca_ws/install/vl53l1x_sensor/lib/python3.12/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/steve/mecca_ws/build/vl53l1x_sensor/build --no-deps symlink_data
