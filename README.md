@@ -12,7 +12,7 @@ The hardware for the robot consists of:
 The STM32 controller board listens on Serial port for motor commands coming from the Raspberry Pi.
 The STM32 also uses PID algorithm to mainntain precise speeds for accurate navigation.
 The Raspberry Pi accepts basic mecanum wheel movement commands from Joystick, but also filters 
-user commands with safety overrides base don data from the VL53L1X ranges sensor for obstacle avoidance.
+user commands with safety overrides based on data from the VL53L1X ranges sensor for obstacle avoidance.
 
 The aluminum chassis and mecanum wheels were obtained from HiWonder in this kit:
 Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor
