@@ -1,2 +1,0 @@
-[console_scripts]
-vl53l1x_node = vl53l1x_sensor.vl53l1x_node:main

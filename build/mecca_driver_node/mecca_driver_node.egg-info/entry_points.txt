@@ -1,4 +1,0 @@
-[console_scripts]
-led_controller_node = mecca_driver_node.led_controller_node:main
-mecca_driver_node = mecca_driver_node.mecca_driver_node:main
-simple_serial = mecca_driver_node.serial_comm.simple_serial:main

@@ -1,1 +1,0 @@
-/home/steve/mecca_ws/src/mecca_launch/launch/mecca_bringup.launch.py

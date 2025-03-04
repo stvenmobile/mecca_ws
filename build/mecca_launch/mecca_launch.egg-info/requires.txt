@@ -1,2 +1,0 @@
-setuptools
-vl53l1x_sensor
