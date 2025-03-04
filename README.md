@@ -55,5 +55,5 @@ The hardware for the robot consists of:
 2. **Run the ROS2 launch file** to start all necessary nodes:
    ```bash
    ros2 launch mecca_ws mecca_bringup.launch.py
-**Use a joystick to control the robot, or allow it to navigate autonomously.
-**The LED strip will reflect motion state changes with different light effects.
+3. **Use a joystick to control the robot, or allow it to navigate autonomously.
+4. **The LED strip will reflect motion state changes with different light effects.
