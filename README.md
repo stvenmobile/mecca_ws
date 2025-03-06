@@ -26,7 +26,7 @@ The hardware for the robot consists of:
 
 - The **aluminum chassis and mecanum wheels** were obtained from HiWonder as part of this kit:
   - *Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor*
-- The motors were later replaced with **Yahboom motors** for better integration with the STM32 board.
+- The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.
 - Additional **3D-printed components** were added to extend the chassis and simplify electronics mounting.
 
 ## ROS Nodes
