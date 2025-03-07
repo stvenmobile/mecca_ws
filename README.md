@@ -1,10 +1,10 @@
-20250305_210829# Mecca_WS - ROS2 Jazzy Mecanum Wheels Robot
+##  Mecca_WS - ROS2 Jazzy Mecanum Wheels Robot
 
 This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 
 ![  Mecca the Robot  ](images/20250304_111006.png)
 
-     *Mecca the Robot - fully assembled!*
+     Mecca the Robot - fully assembled!
 
 
 ## Hardware Components
