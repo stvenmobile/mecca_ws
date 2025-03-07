@@ -27,7 +27,7 @@ class VL53L1XNode(Node):
         msg = Float32()
         msg.data = distance_m
         self.publisher_.publish(msg)
-        self.get_logger().info(f"Published distance: {distance_m:.3f} meters")
+        # self.get_logger().info(f"Published distance: {distance_m:.3f} meters")
 
     def stop_sensor(self):
         """Stops the sensor cleanly."""

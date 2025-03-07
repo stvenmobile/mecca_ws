@@ -1,8 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from geometry_msgs.msg import Twist
-from sensor_msgs.msg import LaserScan  # For obstacle detection
-import serial
+from std_msgs.msg import String  # Needed for publishing velocity commands
 
 class MotorDriverNode(Node):
     def __init__(self):
@@ -16,8 +15,8 @@ class MotorDriverNode(Node):
             10
         )
 
-        # Serial communication with STM32
-        self.serial_port = serial.Serial('/dev/stm32_serial', 115200, timeout=0.1)
+        # Publisher to send velocity commands to serial communication node
+        self.serial_publisher = self.create_publisher(String, '/serial_driver/input', 10)
 
         # Speed scaling factors
         self.MAX_SPEED = 1100  # Maximum possible speed
@@ -30,6 +29,7 @@ class MotorDriverNode(Node):
         self.speed_scale = self.NORMAL_SCALE  # Default to normal mode
 
     def cmd_vel_callback(self, msg):
+        """Convert velocity message into serial command and publish."""
         linear_x = msg.linear.x
         linear_y = msg.linear.y
         angular_z = msg.angular.z
@@ -42,19 +42,16 @@ class MotorDriverNode(Node):
         else:
             scaled_rot = int(angular_z * self.MAX_SPEED * self.NORMAL_ROTATE_SCALE)
 
-        # Send the final command to STM32
-        command = f"V {scaled_x} {scaled_y} {scaled_rot}\n"
-        self.serial_port.write(command.encode())
+        # Construct command string
+        command = f"V {scaled_x} {scaled_y} {scaled_rot}"
 
-        # Reduce log frequency (only print 1 in every 20 commands)
-        if hasattr(self, "log_counter"):
-            self.log_counter += 1
-        else:
-            self.log_counter = 0
+        # Publish to serial node
+        msg_out = String()
+        msg_out.data = command
+        self.serial_publisher.publish(msg_out)
 
-        if self.log_counter % 20 == 0:  # Only log every 10th message
-            self.get_logger().info(f"Sent command: {command.strip()}")
-
+        # Log for debugging
+        self.get_logger().info(f"Published: {command}")
 
 def main(args=None):
     rclpy.init(args=args)

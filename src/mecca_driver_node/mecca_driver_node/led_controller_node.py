@@ -8,7 +8,6 @@ import numpy as np
 from numpy import sin, pi
 import threading
 
-
 # Define LED strip configuration
 LED_COUNT = 7  # Number of LEDs in your strip
 SPI_BUS = 0     # SPI bus number
@@ -44,7 +43,7 @@ class LEDControllerNode(Node):
         if command == "fwd":
             self.set_forward_effect()
         elif command == "bwd":
-            self.set_red_flashing_effect()
+            self.set_backward_effect()
         elif command == "left":
             self.set_turn_effect("LEFT")
         elif command == "right":
@@ -63,7 +62,7 @@ class LEDControllerNode(Node):
 
     def startup_sequence(self):
         self.set_rainbow_wave_effect()
-        time.sleep(3)
+        time.sleep(2)
 
     def on_shutdown(self):
         """Turn off LEDs when the node shuts down"""
@@ -93,52 +92,46 @@ class LEDControllerNode(Node):
         """BWD: Flashes red at 0.5s intervals for 2 seconds."""
         red_array = [(255, 0, 0)] * LED_COUNT  
         off_array = [(0, 0, 0)] * LED_COUNT
-        end_time = time.time() + 2
+        end_time = time.time() + 1.0
         while time.time() < end_time:
             self.set_leds((255, 0, 0))  # Red
             self.update_strip(red_array)
             time.sleep(0.5)
             self.set_leds((0, 0, 0))    # Off
             self.update_strip(off_array)
-            time.sleep(0.5)
+            time.sleep(0.3)
         self.set_leds((0, 0, 0))
         self.update_strip(off_array)
 
     
     def set_turn_effect(self, direction):
         """ Green scrolling effect: moves left/right based on turn direction """
-        
-        # Stop any currently running animation before starting a new one
-        self.turning = False  
-        time.sleep(0.1)  # Small delay to ensure old animation stops
+        off_array = [(0, 0, 0)] * LED_COUNT
+        end_time = time.time() + 1.0
+        # Stop any previously running turn effect
+        time.sleep(0.1)  # Allow any old animation to stop
+        led_array = [(0, 0, 0)] * LED_COUNT  # Start with all off
 
-        self.turning = True  # Indicate that we are turning
+        if direction == "LEFT":
+            while time.time() < end_time:
+                for i in range(self.num_leds):
+                    led_array[i] = (0, 255, 0)  # Green
+                    self.update_strip(led_array)
+                    time.sleep(0.10)  # Adjust scrolling speed
+                #self.set_leds((0, 0, 0))
+                self.update_strip([(0, 0, 0)] * self.num_leds)
+ 
+        elif direction == "RIGHT":
+            while time.time() < end_time:
+                for i in reversed(range(self.num_leds)):
+                    led_array[i] = (0, 255, 0)  # Green
+                    self.update_strip(led_array)
+                    time.sleep(0.10)  # Adjust scrolling speed
+                #self.set_leds((0, 0, 0))
+                self.update_strip([(0, 0, 0)] * self.num_leds)
 
-        def animate_turn():
-            while self.turning:
-                led_array = [(0, 0, 0)] * LED_COUNT  # Start with all off
-
-                if direction == "LEFT":
-                    for i in range(self.num_leds):
-                        if not self.turning:  # Check if we should stop the animation
-                            return
-                        led_array[i] = (0, 255, 0)  # Green
-                        self.update_strip(led_array)
-                        time.sleep(0.05)  # Scrolling speed
-
-                elif direction == "RIGHT":
-                    for i in reversed(range(self.num_leds)):
-                        if not self.turning:
-                            return
-                        led_array[i] = (0, 255, 0)  # Green
-                        self.update_strip(led_array)
-                        time.sleep(0.05)  # Scrolling speed
-
-            self.update_strip([(0, 0, 0)] * self.num_leds)  # Reset LEDs to off
-
-        # ✅ **Start the thread properly**
-        threading.Thread(target=animate_turn, daemon=True).start()
-
+        # **🚀 Exit condition: Turn off LEDs when turning stops**
+        self.update_strip(off_array)  
 
 
 
@@ -153,7 +146,7 @@ class LEDControllerNode(Node):
         led_array[-1] = (255, 255, 255)  # Last LED White
         self.update_strip(led_array)
 
-        self.get_logger().info("Stopped all animations and reset to STOP effect.")
+        # self.get_logger().info("Stopped all animations and reset to STOP effect.")
 
 
     def set_rainbow_wave_effect(self, duration=6):
@@ -192,12 +185,13 @@ class LEDControllerNode(Node):
         # Run the effect in a separate thread
         threading.Thread(target=animate_rainbow, daemon=True).start()
 
+    
     def color_sequence(self):
         led_array = [(0, 0, 0)] * LED_COUNT 
         """Flash the LED strip Red → Blue → Green three times"""
 
         sequence = [(255, 0, 0), (0, 0, 255), (0, 255, 0)]  # Red → Blue → Green
-        self.get_logger().info(f"LED_COUNT: {LED_COUNT}")
+        #self.get_logger().info(f"LED_COUNT: {LED_COUNT}")
         for _ in range(2):  # Three cycles
             for color in sequence:
                 self.set_leds(color)
@@ -247,8 +241,6 @@ class LEDControllerNode(Node):
         self.get_logger().info("LED Test Sequence Complete")
 
 
-
-    
     def set_leds(self, color):
         """Set all LEDs to a static color."""
         data = [self.encode_color(color) for _ in range(LED_COUNT)]
@@ -267,12 +259,10 @@ class LEDControllerNode(Node):
         # Convert list of RGB tuples into a flat numpy array
         data = np.array(corrected_leds, dtype=np.uint8).flatten()
 
-        self.get_logger().info(f"LED Data Sent: {data.tolist()}")  # Debug Output
+        #self.get_logger().info(f"LED Data Sent: {data.tolist()}")  # Debug Output
 
         # Send data to SPI using ws2812.write2812
         ws2812.write2812(self.spi, data)  # Ensure `ws2812` is imported
-
-
 
 
     def encode_color(self, color):
@@ -289,6 +279,7 @@ class LEDControllerNode(Node):
         self.spi.close()
         self.get_logger().info("LED Controller Node Stopped")
         super().destroy_node()
+
 
 def main(args=None):
     rclpy.init(args=args)
