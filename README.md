@@ -111,4 +111,6 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 4. The LED strip will reflect motion state changes with different light effects.
 
 
+![Joystick COntrols ](images/joystick_controls.png)
+
 
