@@ -85,9 +85,10 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 - **I2C/SPI Configuration:** If I2C or SPI is disabled, enable them via:
   ```bash
   sudo raspi-config
+  ```
 
-Navigate to Interface Options > SPI > Enable.
-Navigate to Interface Options > I2C > Enable.
+- Navigate to Interface Options > I2C or SPI > Enable.
+
 
 
 ---
