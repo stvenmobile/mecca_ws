@@ -2,7 +2,7 @@
 
 This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 
-![  Mecca the Robot  ](images/mecca_1.jpg)
+![  Mecca the Robot  ](images/mecca_1.png)
 
 <p align="center">Mecca the Robot - fully assembled!</p>
 
