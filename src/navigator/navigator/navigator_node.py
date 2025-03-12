@@ -3,10 +3,19 @@ from rclpy.node import Node
 from std_msgs.msg import Float32, String
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
+import time
 
 class NavigatorNode(Node):
     def __init__(self):
         super().__init__('navigator_node')
+        
+        self.safe_cmd_pub = self.create_publisher(Twist, 'safe_cmd_vel', 10)
+        self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
+        
+        self.safe_to_move = True  # Updated dynamically based on sensors
+        self.last_safe_cmd = Twist()  # Track the last sent command
+        self.stop_command_counter = 0  # Counter for reducing redundant stops
+        self.stop_publish_interval = 10  # Send stop command once every N cycles (adjustable)
 
         # Subscribe to ToF sensor
         self.tof_subscription = self.create_subscription(
@@ -61,9 +70,11 @@ class NavigatorNode(Node):
         self.info_response_pub = self.create_publisher(String, '/mecca_info_response', 10)
 
         # Safety thresholds
-        self.TOF_SAFETY_DISTANCE = 0.15  # 15 cm for ToF
-        self.LIDAR_SAFETY_DISTANCE = 0.30  # 30 cm for Lidar
-        self.safe_to_move = True  # Default: assume safe to move
+        self.TOF_SAFETY_DISTANCE = 0.15     # 15cm 
+        self.LIDAR_SAFETY_DISTANCE = 0.15   # 15cm 
+        self.safe_to_move = True            # Default: assume safe to move
+        self.stopped_for_obstacle = False   # Track if robot stopped for an obstacle
+
 
         # Latest sensor values
         self.tof_distance = float('inf')
@@ -72,6 +83,18 @@ class NavigatorNode(Node):
 
         self.get_logger().info("Navigator Node Initialized.")
 
+    def evaluate_safety(self):
+        """Determines if movement is safe based on sensor inputs."""
+        if self.tof_distance < self.TOF_SAFETY_DISTANCE or self.lidar_distance < self.LIDAR_SAFETY_DISTANCE:
+            if not self.stopped_for_obstacle:
+                self.safe_to_move = False
+                self.stopped_for_obstacle = True  # Mark as stopped
+                self.get_logger().warn("🚨 Obstacle detected! Stopping movement.")
+        else:
+            self.safe_to_move = True
+            self.stopped_for_obstacle = False  # Reset once clear
+
+    
     def mecca_info_callback(self, msg):
         """Handles general info requests from /mecca_info."""
         request = msg.data.lower()
@@ -104,7 +127,7 @@ class NavigatorNode(Node):
     def serial_output_callback(self, msg):
         """Processes responses from /serial_driver/output_data."""
         if "I ENC" in msg.data:
-            self.get_logger().info(f"Encoder Data Received: {msg.data}")
+            self.get_logger().debug(f"Encoder Data Received: {msg.data}")
             # Optionally, parse and store encoder values
             response_msg = String()
             response_msg.data = msg.data
@@ -112,11 +135,9 @@ class NavigatorNode(Node):
 
     def tof_callback(self, msg):
         """Updates ToF sensor reading and filters invalid values."""
-        if msg.data < 0:  # Ignore negative readings
-            return  # Skip processing this bad value
-
-        self.tof_distance = msg.data
-        self.evaluate_safety()
+        if msg.data > 0:  # Only accept valid values
+            self.tof_distance = msg.data
+            self.evaluate_safety()  # Re-evaluate after every valid reading
 
     def lidar_callback(self, msg):
         """Processes Lidar scan and updates safety check."""
@@ -124,16 +145,25 @@ class NavigatorNode(Node):
         self.evaluate_safety()
 
     def evaluate_safety(self):
-        """Determines if movement is safe based on sensor inputs."""
+        """Determines if movement is safe and stops immediately if needed."""
         if self.tof_distance < self.TOF_SAFETY_DISTANCE or self.lidar_distance < self.LIDAR_SAFETY_DISTANCE:
-            self.safe_to_move = False
-            self.get_logger().warn("🚨 Obstacle detected! Stopping movement.")
+            if not self.stopped_for_obstacle:  # Avoid redundant stop commands
+                self.safe_to_move = False
+                self.stopped_for_obstacle = True
+                self.get_logger().warn("🚨 EMERGENCY STOP! Object detected.")
+
+                # 🚨 Publish stop command only once
+                stop_cmd = Twist()
+                self.safe_cmd_pub.publish(stop_cmd)
         else:
             self.safe_to_move = True
+            self.stopped_for_obstacle = False  # Reset state
+
 
     def cmd_vel_callback(self, msg):
         """Applies safety rules to movement commands and sends LED updates."""
         safe_cmd = Twist()
+        led_msg = String()  # Add LED message object
 
         if not self.safe_to_move:
             if msg.linear.x > 0 or abs(msg.linear.y) > 0.1:  # 🚨 Block forward & significant strafing
@@ -141,28 +171,57 @@ class NavigatorNode(Node):
                 safe_cmd.linear.y = 0.0   # Block strafing movement
                 safe_cmd.angular.z = msg.angular.z  # Allow turning
                 self.get_logger().warn("🚨 Movement blocked: Obstacle detected.")
+                led_msg.data = "stop"  # Indicate obstacle
             else:
                 safe_cmd = msg  # Allow reverse and small adjustments
+                led_msg.data = "reverse" if msg.linear.x < 0 else "idle"
         else:
             safe_cmd = msg  # If safe, allow all movement
 
-        # Publish the "safe" movement command
+            # **Determine LED state**
+            if safe_cmd.linear.x > 0:
+                led_msg.data = "fwd"
+            elif safe_cmd.linear.x < 0:
+                led_msg.data = "bwd"
+            elif safe_cmd.linear.y > 0:
+                led_msg.data = "right"
+            elif safe_cmd.linear.y < 0:
+                led_msg.data = "left"
+            elif safe_cmd.angular.z > 0:
+                led_msg.data = "left"
+            elif safe_cmd.angular.z < 0: 
+                led_msg.data = "right"
+            else:
+                led_msg.data = "stop"  # Robot is idle
+
+        # **Ensure stop command is published when joystick is centered**
+        if (
+            safe_cmd.linear.x == 0.0
+            and safe_cmd.linear.y == 0.0
+            and safe_cmd.angular.z == 0.0
+        ):
+            # **Check if the last command was already stop**
+            if (
+                self.last_safe_cmd.linear.x == 0.0
+                and self.last_safe_cmd.linear.y == 0.0
+                and self.last_safe_cmd.angular.z == 0.0
+            ):
+                # **Send stop only once every N cycles**
+                self.stop_command_counter += 1
+                if self.stop_command_counter < self.stop_publish_interval:
+                    self.led_cmd_pub.publish(led_msg)  # Ensure LED still updates
+                    return  # Skip sending redundant stop
+                self.stop_command_counter = 0  # Reset counter
+                self.get_logger().info("🔴 Joystick idle, sending periodic stop command.")
+            else:
+                self.get_logger().info("🔴 Joystick idle, sending immediate stop command.")
+
+        # **Publish the "safe" movement command**
         self.safe_cmd_pub.publish(safe_cmd)
+        self.last_safe_cmd = safe_cmd  # Update last sent command
 
-        led_msg = String()
-        if safe_cmd.linear.x > 0:  # Forward
-            led_msg.data = "fwd"
-        elif safe_cmd.linear.x < 0:  # Backward
-            led_msg.data = "bwd"
-        elif safe_cmd.angular.z > 0:  # Left Turn
-            led_msg.data = "left"
-        elif safe_cmd.angular.z < 0:  # Right Turn 
-            led_msg.data = "right"
-        else:  # Stopped
-            led_msg.data = "stop"
-
-        # Publish LED command
-        self.led_cmd_pub.publish(led_msg)
+        # **Ensure LED is updated after movement command**
+        self.led_cmd_pub.publish(led_msg)  # This now always gets called
 
 
 def main(args=None):

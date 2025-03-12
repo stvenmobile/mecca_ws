@@ -23,8 +23,8 @@ class MotorDriverNode(Node):
         self.NORMAL_SCALE = 0.4  # Default scaling (40% of MAX_SPEED)
         self.TURBO_SCALE = 0.6   # Turbo mode scaling (60% of MAX_SPEED)
         
-        self.NORMAL_ROTATE_SCALE = 0.8  # Boosted rotation scale
-        self.TURBO_ROTATE_SCALE = 0.9   # 30% more for turbo rotation
+        self.NORMAL_ROTATE_SCALE = 1.4  # Boosted rotation scale
+        self.TURBO_ROTATE_SCALE = 2.0   # 30% more for turbo rotation
 
         self.speed_scale = self.NORMAL_SCALE  # Default to normal mode
 
@@ -51,7 +51,7 @@ class MotorDriverNode(Node):
         self.serial_publisher.publish(msg_out)
 
         # Log for debugging
-        self.get_logger().info(f"Published: {command}")
+        self.get_logger().debug(f"Published: {command}")
 
 def main(args=None):
     rclpy.init(args=args)

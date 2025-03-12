@@ -56,6 +56,8 @@ class LEDControllerNode(Node):
             self.set_rainbow_wave_effect()
         elif command == "test":
             self.run_test_sequence()
+        elif command == "idle":
+            pass  # do nothing for idle
         else:
             self.get_logger().warn(f"Unknown LED command: {command}")
 
@@ -72,20 +74,29 @@ class LEDControllerNode(Node):
 
 
     def set_forward_effect(self):
-        """ Blue strobe: LEDs light from center to edges, then back to center """
-        led_array = [(0, 0, 255)] * LED_COUNT  # Use the global LED_COUNT
-        for i in range(self.num_leds // 2):
-            led_array[i] = (0, 0, 0)  # Black (off)
-            led_array[-(i + 1)] = (0, 0, 0)  # Black (off)
-            self.update_strip(led_array)
-            time.sleep(0.1)  # Fast effect
+        """ Forward movement effect: Hardcoded sequence for precise LED transitions. """
+        
+        # Define LED sequence (0 = Off, 1 = Blue)
+        sequence = [
+            [(1, 0, 0, 0, 0, 0, 1)],  # Step 1
+            [(0, 1, 0, 0, 0, 1, 0)],  # Step 2
+            [(0, 0, 1, 0, 1, 0, 0)],  # Step 3
+            [(0, 0, 0, 1, 0, 0, 0)],  # Step 4 (Center flash)
+            [(0, 0, 1, 0, 1, 0, 0)],  # Step 5
+            [(0, 1, 0, 0, 0, 1, 0)],  # Step 6
+            [(1, 0, 0, 0, 0, 0, 1)]   # Step 7 (Back to start)
+        ]
 
-        # Reverse (back to full blue)
-        for i in range(self.num_leds // 2):
-            led_array[i] = (0, 0, 255)
-            led_array[-(i + 1)] = ( 0, 0, 255)
-            self.update_strip(led_array)
-            time.sleep(0.1)  # Fast effect
+        end_time = time.time() + 1.0
+        while time.time() < end_time:
+            for step in sequence:
+                led_array = [(0, 0, 255) if val else (0, 0, 0) for val in step[0]]
+                self.update_strip(led_array)
+                time.sleep(0.03)  # Adjust delay for smoother effect
+
+            #time.sleep(0.5)  # Small pause before repeating the sequence
+
+
 
     
     def set_backward_effect(self):

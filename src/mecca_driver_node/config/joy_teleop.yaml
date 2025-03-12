@@ -3,7 +3,7 @@ teleop_twist_joy_node:
   ros__parameters:
 
     enable_button: 5          # RB Button
-    enable_turbo_button: 2    # X Button
+    enable_turbo_button: 0    # A Button
     panic_button: 1           # B Button (for Emergency Stop)
 
 
@@ -21,7 +21,7 @@ teleop_twist_joy_node:
       z: 0.0
 
     scale_angular:
-      yaw: 1.0                # Adjust to control rotation speed
+      yaw: 1.4                # Adjust to control rotation speed
 
     scale_linear_turbo:
       x: 2.0

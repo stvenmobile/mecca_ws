@@ -40,7 +40,7 @@ class SimpleSerialNode(Node):
             # self.get_logger().info(f"DEBUG: Sending -> {cmd}")  # Log raw bytes
             self.serial_conn.write(cmd)
             self.serial_conn.flush()
-            self.get_logger().info(f"Sent: {msg.data}")
+            # self.get_logger().info(f"Sent: {msg.data}")
         else:
             self.get_logger().error("Serial connection is not open.")
 
@@ -51,17 +51,17 @@ class SimpleSerialNode(Node):
             if self.serial_conn.in_waiting > 0:
                 # Read raw data
                 raw_data = self.serial_conn.readline()
-                self.get_logger().info(f"DEBUG: Raw RX Bytes -> {raw_data}")  # Log bytes received
+                # self.get_logger().info(f"DEBUG: Raw RX Bytes -> {raw_data}")  # Log bytes received
                 
                 try:
                     incoming_data = raw_data.decode().strip()
-                    self.get_logger().info(f"DEBUG: Decoded RX -> {incoming_data}")  # Log decoded data
+                    # self.get_logger().info(f"DEBUG: Decoded RX -> {incoming_data}")  # Log decoded data
                 except UnicodeDecodeError as e:
                     self.get_logger().error(f"Unicode Decode Error: {e}")
                     return
 
                 if incoming_data:
-                    self.get_logger().info(f"Received: {incoming_data}")
+                    # self.get_logger().info(f"Received: {incoming_data}")
                     ros_msg = String()
                     ros_msg.data = incoming_data
                     self.publisher.publish(ros_msg)
