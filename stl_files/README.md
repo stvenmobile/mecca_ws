@@ -1,1 +1,1 @@
-# STL Files for 3D Printing
+This directory contains STL files for 3D printing the Mecca robot cab.
