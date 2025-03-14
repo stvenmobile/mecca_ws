@@ -7,73 +7,61 @@ This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 
 <p align="center">Mecca the Robot - fully assembled!</p>
 
-&nbsp;
+---
+Table of Contents
 
 <!-- TOC -->
-- [1. Hardware Components](#1-hardware-components)
-- [| 4  | JGB37-520 12V 205RPM Motors with Encoders       |](#-4---jgb37-520-12v-205rpm-motors-with-encoders-------)
-- [2. System Overview](#2-system-overview)
-- [3. Chassis and Customizations](#3-chassis-and-customizations)
-- [4. ROS Nodes](#4-ros-nodes)
-- [ ](#)
-- [5. 1. VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C)](#5-1-vl53l1x-time-of-flight-tof-sensor-wiring-i2c)
-- [6. 2. WS2812 7-Light RGB LED Strip Wiring (SPI)](#6-2-ws2812-7-light-rgb-led-strip-wiring-spi)
-- [7. Additional Notes](#7-additional-notes)
-- [8. How to Use](#8-how-to-use)
-- [9. Future Enhancements](#9-future-enhancements)
-
-&nbsp;
-&nbsp;
+- [System Overview](#system-overview)
+- [Hardware Components](#hardware-components)
+- [Chassis and Construction](#chassis-and-construction)
+    - [Configuration Settings](#configuration-settings)
+- [Software Notes](#software-notes)
+- [How to Use](#how-to-use)
+- [Future Enhancements](#future-enhancements)
 
 
-##  1. <a name='HardwareComponents'></a>Hardware Components
+---
+##  <a name='SystemOverview'></a>System Overview
+- The **STM32 controller board** listens on the serial port for motor commands from the Raspberry Pi.
+- The STM32 also uses a **PID algorithm** to maintain precise speeds for accurate navigation.
+- The **Raspberry Pi** accepts joystick commands for movement but **filters user inputs** with safety overrides based on data from the VL53L1X range sensor for **obstacle avoidance**.
+---
+##  <a name='HardwareComponents'></a>Hardware Components 
 
+<!-- Prevent ToC Generator from Including Table -->
+<!-- Table Start -->
 The hardware for the robot consists of:
 
 | #  | Item                                              |
 |----|--------------------------------------------------|
+| 1  | HiWonder Large Metal 4WD Vehicle Chassis         |
 | 1  | Yahboom YB-ERF01-V3.0 STM32 robot controller board |
 | 1  | Raspberry Pi 5 running Ubuntu 24.04 and ROS2 Jazzy |
 | 1  | VL53L1X Range Sensor                             |
 | 1  | WS2812 Strip RGB (7 LEDs)                        |
 | 1  | 12V Volt Meter for battery status indication     |
 | 1  | 11.1V 3S LiPo Battery                            |
-| 4  | JGB37-520 12V 205RPM Motors with Encoders       |
----
-&nbsp;
-##  2. <a name='SystemOverview'></a>System Overview
-
-- The **STM32 controller board** listens on the serial port for motor commands from the Raspberry Pi.
-- The STM32 also uses a **PID algorithm** to maintain precise speeds for accurate navigation.
-- The **Raspberry Pi** accepts joystick commands for movement but **filters user inputs** with safety overrides based on data from the VL53L1X range sensor for **obstacle avoidance**.
-&nbsp;
-
----
-&nbsp;
-##  3. <a name='ChassisandCustomizations'></a>Chassis and Customizations
-
+| 4  | JGB37-520 12V 205RPM Motors with Encoders        |
+| 1  | Double Pole Double Throw rocker switch           |
+| 1  | Panel mount banana jack for bench power supply input |
+| 1  | USB-A to Micro USB cable                         |
+| 1  | USB-C to USB-C cable                             |
+<!-- Table End -->
+##  <a name='ChassisandCustomizations'></a>Chassis and Construction
 - The **aluminum chassis and mecanum wheels** were obtained from HiWonder as part of this kit:
-  - *Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor*
-- The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.
-- Additional **3D-printed components** were added to extend the chassis and simplify electronics mounting.
-&nbsp;
+  - *Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor* https://www.hiwonder.com/products/large-metal-4wd-vehicle-chassis-green
+- The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.https://category.yahboom.net/products/md520
+- Additional **3D-printed components** were added to extend the chassis to llok like a truck cab and provide mounting for additional components.
+- The cab is split into two components to fit on a 255mm square print bed.
+- Two strips of 20x20 aluminum extrusion 24cm long are botled to the top of the chassis at each side to secure the 3D printed truck cab front and back.
+- The robot controller board is mounted under the aluminum chassis along with the four DC motors.
+- The Raspberry Pi, DPDT Switch, Voltage Meter, banana jack and 5200 mAh LiPo battery are4 mounted inside the 3d printed cab. 
+- The 7 segment RGB strip is mounted in a cutout slot in the cab top.
+- The VL53L1X sensor is mounted in the front part of the cab in a special cutout and secured with two M3 bolts.
+- An A1 RPLIDAR unit can optionally be bolted to the cab top flat section as shown in the images folder.
 
 ---
-&nbsp;
-##  4. <a name='ROSNodes'></a>ROS Nodes
-
-| Node Name              | Function                                               |
-|------------------------|-------------------------------------------------------|
-| `Mecca_Driver_Node`    | Publishes motor commands                              |
-| `Serial_Comm`          | Handles serial communication between Raspberry Pi & STM32 |
-| `LED_Controller_Node`  | Controls the LED strip with different patterns based on movement |
-| `VL53L1X_Sensor`       | Publishes distance to objects in front of the robot  |
-| `Navigator_Node`       | Overrides motor commands when an obstacle is detected |
-
-&nbsp;
----
-
-##  5. <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a>1. VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C)
+###  <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a> VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C) <!-- omit in toc -->
 The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
 
 | **VL53L1X Pin** | **Raspberry Pi 5 Pin** | **Function** |
@@ -90,11 +78,7 @@ The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
 - **GPIO1 Interrupt:** Used if interrupt-based sensor reading is needed.
 
 ---
-&nbsp
-
-##  6. <a name='WS28127-LightRGBLEDStripWiringSPI'></a>2. WS2812 7-Light RGB LED Strip Wiring (SPI)
-
-&nbsp
+###  <a name='WS28127-LightRGBLEDStripWiringSPI'></a> WS2812 7-Light RGB LED Strip Wiring (SPI)  <!-- omit in toc -->
 The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following connections:
 
 | **WS2812 Pin** | **Raspberry Pi 5 Pin** | **Function** |
@@ -108,36 +92,51 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 - **Power Requirements:** Each LED can draw **~60mA** at full brightness. Ensure your power supply can handle the total current demand.
 
 ---
-
-##  7. <a name='AdditionalNotes'></a>Additional Notes
+####  <a name='ConfigurationSettings'></a>Configuration Settings
 - **I2C/SPI Configuration:** If I2C or SPI is disabled, enable them via:
   ```bash
   sudo raspi-config
   ```
 
 - Navigate to Interface Options > I2C or SPI > Enable.
+  
+---
+## <a name='SoftwareNotes'></a>Software Notes
+- There is a companion github repository for the STM32 project that controls PID tuning and general motor control via the serial connection between the controller board and the Raspberry PI. This repository is available here: https://github.com/stvenmobile/Car_Motion.git
+- 
+These are the ROS2 Jazzy nodes included in the current project:
+
+ <!-- omit in toc -->
+
+<!-- Prevent ToC Generator from Including Table -->
+<!-- Table Start -->
+| Node Name              | Function                                               |
+|------------------------|-------------------------------------------------------|
+| `Mecca_Driver_Node`    | Publishes motor commands                              |
+| `Serial_Comm`          | Handles serial communication between Raspberry Pi & STM32 |
+| `LED_Controller_Node`  | Controls the LED strip with different patterns based on movement |
+| `VL53L1X_Sensor`       | Publishes distance to objects in front of the robot  |
+| `Navigator_Node`       | Overrides motor commands when an obstacle is detected |
+<!-- Table End -->
 
 ---
-
-##  8. <a name='HowtoUse'></a>How to Use
-
+##  <a name='HowtoUse'></a>How to Use
 1. **Power on the robot** and ensure the STM32 controller is connected to the Raspberry Pi.
 2. **Run the ROS2 launch file** to start all necessary nodes:
    ```bash
    ros2 launch mecca_ws mecca_bringup.launch.py
-3. **Use a joystick** to control the robot, or allow it to navigate autonomously.
+3. Alternatively, start the launch file as a system service.
+4. **Use a joystick** to control the robot, or allow it to navigate autonomously.
 4. The LED strip will reflect motion state changes with different light effects.
-
+6. Joystick controls:
+   
 ![Joystick COntrols ](images/joystick_controls.png)
 
 
 ---
 
-##  9. <a name='FutureEnhancements'></a>Future Enhancements
-
+##  <a name='FutureEnhancements'></a>Future Enhancements
 - **SLAM Navigation:** Implementing mapping and autonomous movement.
 - **Voice Commands:** Exploring ESP32-based voice control for movement.
 - **Camera Integration:** Adding real-time video streaming.
-
-
-
+- ---

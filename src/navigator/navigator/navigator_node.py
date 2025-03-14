@@ -166,18 +166,17 @@ class NavigatorNode(Node):
         led_msg = String()  # Add LED message object
 
         if not self.safe_to_move:
-            if msg.linear.x > 0 or abs(msg.linear.y) > 0.1:  # 🚨 Block forward & significant strafing
+            if msg.linear.x > 0:  # 🚨 Block only forward movement
                 safe_cmd.linear.x = 0.0   # Block forward movement
-                safe_cmd.linear.y = 0.0   # Block strafing movement
+                safe_cmd.linear.y = msg.linear.y  # Allow strafing
                 safe_cmd.angular.z = msg.angular.z  # Allow turning
-                self.get_logger().warn("🚨 Movement blocked: Obstacle detected.")
+                self.get_logger().warn("🚨 Forward movement blocked: Obstacle detected.")
                 led_msg.data = "stop"  # Indicate obstacle
             else:
-                safe_cmd = msg  # Allow reverse and small adjustments
-                led_msg.data = "reverse" if msg.linear.x < 0 else "idle"
+                safe_cmd = msg  # Allow all other movements, including reverse + turning
+                led_msg.data = "bwd" if msg.linear.x < 0 else "idle"
         else:
             safe_cmd = msg  # If safe, allow all movement
-
             # **Determine LED state**
             if safe_cmd.linear.x > 0:
                 led_msg.data = "fwd"
@@ -199,22 +198,22 @@ class NavigatorNode(Node):
             safe_cmd.linear.x == 0.0
             and safe_cmd.linear.y == 0.0
             and safe_cmd.angular.z == 0.0
-        ):
+            ):
             # **Check if the last command was already stop**
             if (
                 self.last_safe_cmd.linear.x == 0.0
                 and self.last_safe_cmd.linear.y == 0.0
                 and self.last_safe_cmd.angular.z == 0.0
-            ):
+                ):
                 # **Send stop only once every N cycles**
                 self.stop_command_counter += 1
                 if self.stop_command_counter < self.stop_publish_interval:
                     self.led_cmd_pub.publish(led_msg)  # Ensure LED still updates
                     return  # Skip sending redundant stop
                 self.stop_command_counter = 0  # Reset counter
-                self.get_logger().info("🔴 Joystick idle, sending periodic stop command.")
-            else:
-                self.get_logger().info("🔴 Joystick idle, sending immediate stop command.")
+                #self.get_logger().info("🔴 Joystick idle, sending periodic stop command.")
+            #else:
+                #self.get_logger().info("🔴 Joystick idle, sending immediate stop command.")
 
         # **Publish the "safe" movement command**
         self.safe_cmd_pub.publish(safe_cmd)
