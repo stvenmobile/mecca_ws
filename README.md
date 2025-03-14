@@ -1,4 +1,5 @@
-##  Mecca_WS - ROS2 Jazzy Mecanum Wheels Robot
+
+##  <a name='Mecca_WS-ROS2JazzyMecanumWheelsRobot'></a> Mecca_WS - ROS2 Jazzy Mecanum Wheels Robot <!-- omit in toc -->
 
 This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 
@@ -6,8 +7,26 @@ This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 
 <p align="center">Mecca the Robot - fully assembled!</p>
 
+&nbsp;
 
-## Hardware Components
+<!-- TOC -->
+- [1. Hardware Components](#1-hardware-components)
+- [| 4  | JGB37-520 12V 205RPM Motors with Encoders       |](#-4---jgb37-520-12v-205rpm-motors-with-encoders-------)
+- [2. System Overview](#2-system-overview)
+- [3. Chassis and Customizations](#3-chassis-and-customizations)
+- [4. ROS Nodes](#4-ros-nodes)
+- [ ](#)
+- [5. 1. VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C)](#5-1-vl53l1x-time-of-flight-tof-sensor-wiring-i2c)
+- [6. 2. WS2812 7-Light RGB LED Strip Wiring (SPI)](#6-2-ws2812-7-light-rgb-led-strip-wiring-spi)
+- [7. Additional Notes](#7-additional-notes)
+- [8. How to Use](#8-how-to-use)
+- [9. Future Enhancements](#9-future-enhancements)
+
+&nbsp;
+&nbsp;
+
+
+##  1. <a name='HardwareComponents'></a>Hardware Components
 
 The hardware for the robot consists of:
 
@@ -20,21 +39,28 @@ The hardware for the robot consists of:
 | 1  | 12V Volt Meter for battery status indication     |
 | 1  | 11.1V 3S LiPo Battery                            |
 | 4  | JGB37-520 12V 205RPM Motors with Encoders       |
-
-## System Overview
+---
+&nbsp;
+##  2. <a name='SystemOverview'></a>System Overview
 
 - The **STM32 controller board** listens on the serial port for motor commands from the Raspberry Pi.
 - The STM32 also uses a **PID algorithm** to maintain precise speeds for accurate navigation.
 - The **Raspberry Pi** accepts joystick commands for movement but **filters user inputs** with safety overrides based on data from the VL53L1X range sensor for **obstacle avoidance**.
+&nbsp;
 
-## Chassis and Customizations
+---
+&nbsp;
+##  3. <a name='ChassisandCustomizations'></a>Chassis and Customizations
 
 - The **aluminum chassis and mecanum wheels** were obtained from HiWonder as part of this kit:
   - *Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor*
 - The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.
 - Additional **3D-printed components** were added to extend the chassis and simplify electronics mounting.
+&nbsp;
 
-## ROS Nodes
+---
+&nbsp;
+##  4. <a name='ROSNodes'></a>ROS Nodes
 
 | Node Name              | Function                                               |
 |------------------------|-------------------------------------------------------|
@@ -44,11 +70,10 @@ The hardware for the robot consists of:
 | `VL53L1X_Sensor`       | Publishes distance to objects in front of the robot  |
 | `Navigator_Node`       | Overrides motor commands when an obstacle is detected |
 
+&nbsp;
 ---
 
-# Mecca Robot Wiring Documentation
-
-## 1. VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C)
+##  5. <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a>1. VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C)
 The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
 
 | **VL53L1X Pin** | **Raspberry Pi 5 Pin** | **Function** |
@@ -65,8 +90,11 @@ The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
 - **GPIO1 Interrupt:** Used if interrupt-based sensor reading is needed.
 
 ---
+&nbsp
 
-## 2. WS2812 7-Light RGB LED Strip Wiring (SPI)
+##  6. <a name='WS28127-LightRGBLEDStripWiringSPI'></a>2. WS2812 7-Light RGB LED Strip Wiring (SPI)
+
+&nbsp
 The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following connections:
 
 | **WS2812 Pin** | **Raspberry Pi 5 Pin** | **Function** |
@@ -81,7 +109,7 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 
 ---
 
-## Additional Notes
+##  7. <a name='AdditionalNotes'></a>Additional Notes
 - **I2C/SPI Configuration:** If I2C or SPI is disabled, enable them via:
   ```bash
   sudo raspi-config
@@ -89,19 +117,9 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 
 - Navigate to Interface Options > I2C or SPI > Enable.
 
-
-
 ---
 
-## Future Enhancements
-
-- **SLAM Navigation:** Implementing mapping and autonomous movement.
-- **Voice Commands:** Exploring ESP32-based voice control for movement.
-- **Camera Integration:** Adding real-time video streaming.
-
----
-
-### How to Use
+##  8. <a name='HowtoUse'></a>How to Use
 
 1. **Power on the robot** and ensure the STM32 controller is connected to the Raspberry Pi.
 2. **Run the ROS2 launch file** to start all necessary nodes:
@@ -110,7 +128,16 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 3. **Use a joystick** to control the robot, or allow it to navigate autonomously.
 4. The LED strip will reflect motion state changes with different light effects.
 
-
 ![Joystick COntrols ](images/joystick_controls.png)
+
+
+---
+
+##  9. <a name='FutureEnhancements'></a>Future Enhancements
+
+- **SLAM Navigation:** Implementing mapping and autonomous movement.
+- **Voice Commands:** Exploring ESP32-based voice control for movement.
+- **Camera Integration:** Adding real-time video streaming.
+
 
 
