@@ -34,8 +34,8 @@ The hardware for the robot consists of:
 
 | #  | Item                                              |
 |----|--------------------------------------------------|
-| 1  | HiWonder Large Metal 4WD Vehicle Chassis         |
-| 1  | Yahboom YB-ERF01-V3.0 STM32 robot controller board |
+| 1  | HiWonder Vehicle Chassis with Mecanum wheels        |
+| 1  | Yahboom YB-ERF01-V3.0 STM32 robot controller |
 | 1  | Raspberry Pi 5 running Ubuntu 24.04 and ROS2 Jazzy |
 | 1  | VL53L1X Range Sensor                             |
 | 1  | WS2812 Strip RGB (7 LEDs)                        |
