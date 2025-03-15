@@ -70,6 +70,47 @@ The hardware for the robot consists of:
 ![Motor Orientation](images/motors.png)
 
 ---
+
+---
+###  <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a> VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C) <!-- omit in toc -->
+The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
+
+| **VL53L1X Pin** | **Raspberry Pi 5 Pin** | **Function** |
+|---------------|------------------|------------|
+| **VCC** | Pin **1** (3.3V) or Pin **2/4** (5V) | Power Supply |
+| **GND** | Pin **6** (GND) | Ground |
+| **SDA** | Pin **3** (GPIO2 - I2C SDA) | I2C Data |
+| **SCL** | Pin **5** (GPIO3 - I2C SCL) | I2C Clock |
+| **XSHUT** *(optional)* | Any GPIO (e.g., GPIO17 - Pin 11) | Enable/Disable Sensor |
+| **GPIO1 (Interrupt)** *(optional)* | Any GPIO (e.g., GPIO27 - Pin 13) | Interrupt Signal |
+
+- **Power Selection:** The sensor supports **both 3.3V and 5V**. If using 3.3V logic, connect to **Pin 1** (3.3V).
+- **XSHUT Pin:** If controlled via software, connect it to a GPIO. Otherwise, pull it **high** to enable the sensor.
+- **GPIO1 Interrupt:** Used if interrupt-based sensor reading is needed.
+
+---
+###  <a name='WS28127-LightRGBLEDStripWiringSPI'></a> WS2812 7-Light RGB LED Strip Wiring (SPI)  <!-- omit in toc -->
+The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following connections:
+
+| **WS2812 Pin** | **Raspberry Pi 5 Pin** | **Function** |
+|---------------|------------------|------------|
+| **VCC** | Pin **2** or **4** (5V) | Power Supply |
+| **GND** | Pin **6** (GND) | Ground |
+| **DIN** (Data In) | Pin **19** (GPIO10 - SPI0 MOSI) | SPI Data Line |
+
+- **Data Line Control:** The LED strip **receives data via SPI0 MOSI (GPIO10, Pin 19)** instead of a standard GPIO-PWM method.
+- **Level Shifting:** Ensure the LED strip operates at **5V logic**, as the Raspberry Pi’s GPIO runs at **3.3V**.
+- **Power Requirements:** Each LED can draw **~60mA** at full brightness. Ensure your power supply can handle the total current demand.
+---
+
+Here is a pictorial diagram of the wiring to the Raspberry Pi 5:
+![Wiring Diagram](images/fritzing.png)
+
+
+---
+
+
+
 ## <a name='ConfigurationSettings'></a>Configuration Settings
 - **I2C/SPI Configuration:** If I2C or SPI is disabled, enable them via:
   ```bash
@@ -79,8 +120,21 @@ The hardware for the robot consists of:
 
 ---
 ## <a name='SoftwareNotes'></a>Software Notes
-- There is a companion GitHub repository for the STM32 project that controls PID tuning and general motor control via the serial connection between the controller board and the Raspberry Pi. 
-  - [Car_Motion GitHub Repository](https://github.com/stvenmobile/Car_Motion.git)
+- There is a companion github repository for the STM32 project that controls PID tuning and general motor control via the serial connection between the controller board and the Raspberry PI. This repository is available here: https://github.com/stvenmobile/Car_Motion.git
+- These are the ROS2 Jazzy nodes included in the current project:
+
+ <!-- omit in toc -->
+
+<!-- Prevent ToC Generator from Including Table -->
+<!-- Table Start -->
+| Node Name              | Function                                               |
+|------------------------|-------------------------------------------------------|
+| Mecca_Driver_Node    | Publishes motor commands                              |
+| Serial_Comm          | Handles serial communication between Raspberry Pi & STM32 |
+| LED_Controller_Node  | Controls the LED strip with different patterns based on movement |
+| VL53L1X_Sensor       | Publishes distance to objects in front of the robot  |
+| Navigator_Node       | Overrides motor commands when an obstacle is detected |
+<!-- Table End -->
 
 ---
 ## <a name='HowtoUse'></a>How to Use
