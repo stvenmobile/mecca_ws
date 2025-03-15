@@ -18,6 +18,10 @@ Table of Contents
   - [1. The Deans connector is connected to the center poles of the DPDT Rocker Switch.](#1-the-deans-connector-is-connected-to-the-center-poles-of-the-dpdt-rocker-switch)
   - [4. The Micro USB connector is connected to one of the USB ports on the Raspberry Pi.](#4-the-micro-usb-connector-is-connected-to-one-of-the-usb-ports-on-the-raspberry-pi)
   - [5. The USB-C connector on the controller board is connected to the USB-C power input jack on the Raspberry Pi 5.](#5-the-usb-c-connector-on-the-controller-board-is-connected-to-the-usb-c-power-input-jack-on-the-raspberry-pi-5)
+  - [6. The 5v barrel jack output is connected to the Vin and GND for the WS2812 RGB LED strip.](#6-the-5v-barrel-jack-output-is-connected-to-the-vin-and-gnd-for-the-ws2812-rgb-led-strip)
+  - [10. The power switch on the ocntroller board is left in the ON position.](#10-the-power-switch-on-the-ocntroller-board-is-left-in-the-on-position)
+  - [20. The four motors are connected via 6-condutor cables to the four motor jacks. The motors are connected as shown in the diagram below.](#20-the-four-motors-are-connected-via-6-condutor-cables-to-the-four-motor-jacks-the-motors-are-connected-as-shown-in-the-diagram-below)
+- [This completes the wiring for the robot's STM32 controller board.](#this-completes-the-wiring-for-the-robots-stm32-controller-board)
     - [Configuration Settings](#configuration-settings)
 - [Software Notes](#software-notes)
 - [How to Use](#how-to-use)
@@ -69,7 +73,13 @@ The hardware for the robot consists of:
 ### 1. The Deans connector is connected to the center poles of the DPDT Rocker Switch. 
 ### 4. The Micro USB connector is connected to one of the USB ports on the Raspberry Pi.
 ### 5. The USB-C connector on the controller board is connected to the USB-C power input jack on the Raspberry Pi 5.
+### 6. The 5v barrel jack output is connected to the Vin and GND for the WS2812 RGB LED strip.
+### 10. The power switch on the ocntroller board is left in the ON position.
+### 20. The four motors are connected via 6-condutor cables to the four motor jacks. The motors are connected as shown in the diagram below.
 
+![Motor Orientation](images/motors.png)
+
+This completes the wiring for the robot's STM32 controller board.
 ---
 ###  <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a> VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C) <!-- omit in toc -->
 The **VL53L1X ToF sensor** communicates via **I2C** and is connected as follows:
@@ -100,6 +110,10 @@ The **WS2812 LED strip** is controlled via **SPI Bus 0**, using the following co
 - **Data Line Control:** The LED strip **receives data via SPI0 MOSI (GPIO10, Pin 19)** instead of a standard GPIO-PWM method.
 - **Level Shifting:** Ensure the LED strip operates at **5V logic**, as the Raspberry Pi’s GPIO runs at **3.3V**.
 - **Power Requirements:** Each LED can draw **~60mA** at full brightness. Ensure your power supply can handle the total current demand.
+
+Here is a pictorial diagram of the wiring to the Raspberry Pi 5:
+![Wiring Diagram](images/fritzing.png)
+
 
 ---
 ####  <a name='ConfigurationSettings'></a>Configuration Settings
