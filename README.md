@@ -15,6 +15,9 @@ Table of Contents
 - [Hardware Components](#hardware-components)
 - [Chassis and Construction](#chassis-and-construction)
 - [Wiring](#wiring)
+  - [1. The Deans connector is connected to the center poles of the DPDT Rocker Switch.](#1-the-deans-connector-is-connected-to-the-center-poles-of-the-dpdt-rocker-switch)
+  - [4. The Micro USB connector is connected to one of the USB ports on the Raspberry Pi.](#4-the-micro-usb-connector-is-connected-to-one-of-the-usb-ports-on-the-raspberry-pi)
+  - [5. The USB-C connector on the controller board is connected to the USB-C power input jack on the Raspberry Pi 5.](#5-the-usb-c-connector-on-the-controller-board-is-connected-to-the-usb-c-power-input-jack-on-the-raspberry-pi-5)
     - [Configuration Settings](#configuration-settings)
 - [Software Notes](#software-notes)
 - [How to Use](#how-to-use)
@@ -63,7 +66,9 @@ The hardware for the robot consists of:
 ---
 ## Wiring
 ![Controller Board ](images/YB-ERF01-V3.0.png)
-
+### 1. The Deans connector is connected to the center poles of the DPDT Rocker Switch. 
+### 4. The Micro USB connector is connected to one of the USB ports on the Raspberry Pi.
+### 5. The USB-C connector on the controller board is connected to the USB-C power input jack on the Raspberry Pi 5.
 
 ---
 ###  <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a> VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C) <!-- omit in toc -->
