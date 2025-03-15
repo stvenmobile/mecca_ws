@@ -14,6 +14,7 @@ Table of Contents
 - [System Overview](#system-overview)
 - [Hardware Components](#hardware-components)
 - [Chassis and Construction](#chassis-and-construction)
+- [Wiring](#wiring)
     - [Configuration Settings](#configuration-settings)
 - [Software Notes](#software-notes)
 - [How to Use](#how-to-use)
@@ -47,7 +48,7 @@ The hardware for the robot consists of:
 | 1  | USB-A to Micro USB cable                         |
 | 1  | USB-C to USB-C cable                             |
 <!-- Table End -->
-##  <a name='ChassisandCustomizations'></a>Chassis and Construction
+##  <a name='ChassisandConstruction'></a>Chassis and Construction
 - The **aluminum chassis and mecanum wheels** were obtained from HiWonder as part of this kit:
   - *Hiwonder Large Metal 4WD Vehicle Chassis for Arduino/Raspberry Pi/ROS Robot with 12V Encoder Geared Motor* https://www.hiwonder.com/products/large-metal-4wd-vehicle-chassis-green
 - The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.https://category.yahboom.net/products/md520
@@ -59,6 +60,10 @@ The hardware for the robot consists of:
 - The 7 segment RGB strip is mounted in a cutout slot in the cab top.
 - The VL53L1X sensor is mounted in the front part of the cab in a special cutout and secured with two M3 bolts.
 - An A1 RPLIDAR unit can optionally be bolted to the cab top flat section as shown in the images folder.
+---
+## Wiring
+![Controller Board ](images/YB-ERF01-V3.0.png)
+
 
 ---
 ###  <a name='VL53L1XTime-of-FlightToFSensorWiringI2C'></a> VL53L1X Time-of-Flight (ToF) Sensor Wiring (I2C) <!-- omit in toc -->
