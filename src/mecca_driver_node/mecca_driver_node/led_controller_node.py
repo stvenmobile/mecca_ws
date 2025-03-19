@@ -222,33 +222,38 @@ class LEDControllerNode(Node):
         time.sleep(3)
 
         # Rainbow effect
+        self.get_logger().info("Starting Rainbow effect.")
         self.set_rainbow_wave_effect()
-        time.sleep(3)
+        time.sleep(7)
 
         # FWD Effect
+        self.get_logger().info("Starting FWD effect.")
         self.set_forward_effect()
         time.sleep(3)
 
         # BWD Effect
+        self.get_logger().info("Starting BWD effect.")
         self.set_backward_effect()
         time.sleep(3)
 
         # LEFT Turn Effect
+        self.get_logger().info("Starting Left Turn effect.")
         self.set_turn_effect("LEFT")
         time.sleep(3)
         self.set_stop_effect()  # Stop turning before switching effects
 
         # RIGHT Turn Effect
+        self.get_logger().info("Starting Right Turn effect.")
         self.set_turn_effect("RIGHT")
         time.sleep(3)
         self.set_stop_effect()  # Stop turning before switching effects
 
         # Stop Effect
+        self.get_logger().info("Starting Stop effect.")
         self.set_stop_effect()
         time.sleep(3)
         
         self.update_strip([(0, 0, 0)] * self.num_leds)
-        self.update_strip(led_array)
         self.get_logger().info("LED Test Sequence Complete")
 
 
