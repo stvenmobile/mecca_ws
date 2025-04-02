@@ -1,6 +1,6 @@
-##  <a name='Mecca_WS-ROS2JazzyMecanumWheelsRobot'></a> Mecca_WS - ROS2 Jazzy Mecanum Wheels Robot <!-- omit in toc -->
+##  <a name='Mecca_WS-ROS2HumbleMecanumWheelsRobot'></a> Mecca_WS - ROS2 Humble Mecanum Wheels Robot <!-- omit in toc -->
 
-This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
+This is a **ROS2 Humble** project supporting a **Mecanum Wheels** robot.
 
 ![  Mecca the Robot  ](images/mecca_1.png)
 
@@ -32,7 +32,7 @@ The hardware for the robot consists of:
 |----|--------------------------------------------------|
 | 1  | HiWonder Vehicle Chassis with Mecanum wheels        |
 | 1  | Yahboom YB-ERF01-V3.0 STM32 robot controller |
-| 1  | Raspberry Pi 5 running Ubuntu 24.04 and ROS2 Jazzy |
+| 1  | Raspberry Pi 5 running Ubuntu 24.04 and ROS2 Humble |
 | 1  | VL53L1X Range Sensor                             |
 | 1  | WS2812 Strip RGB (7 LEDs)                        |
 | 1  | 12V Volt Meter for battery status indication     |
@@ -121,7 +121,7 @@ Here is a pictorial diagram of the wiring to the Raspberry Pi 5:
 ---
 ## <a name='SoftwareNotes'></a>Software Notes
 - There is a companion github repository for the STM32 project that controls PID tuning and general motor control via the serial connection between the controller board and the Raspberry PI. This repository is available here: https://github.com/stvenmobile/Car_Motion.git
-- These are the ROS2 Jazzy nodes included in the current project:
+- These are the ROS2 Humble nodes included in the current project:
 
  <!-- omit in toc -->
 
