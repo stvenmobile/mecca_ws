@@ -129,7 +129,7 @@ Here is a pictorial diagram of the wiring to the Raspberry Pi 5:
 <!-- Table Start -->
 | Node Name              | Function                                               |
 |------------------------|-------------------------------------------------------|
-| Mecca_Driver_Node    | Publishes motor commands                              |
+| mecca_driver    | Publishes motor commands                              |
 | Serial_Comm          | Handles serial communication between Raspberry Pi & STM32 |
 | LED_Controller_Node  | Controls the LED strip with different patterns based on movement |
 | VL53L1X_Sensor       | Publishes distance to objects in front of the robot  |
