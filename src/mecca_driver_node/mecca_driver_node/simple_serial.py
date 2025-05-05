@@ -62,7 +62,7 @@ class SimpleSerialNode(Node):
                     ros_msg = String()
                     ros_msg.data = incoming_data
                     self.publisher.publish(ros_msg)
-                    self.get_logger().info(f"Published: {ros_msg.data}")
+                    # self.get_logger().info(f"Published: {ros_msg.data}")
         else:
             self.get_logger().error("Serial connection is not open.")
 

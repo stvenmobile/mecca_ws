@@ -5,6 +5,7 @@ teleop_twist_joy_node:
     enable_button: 5          # RB Button
     enable_turbo_button: 0    # A Button
     panic_button: 1           # B Button (for Emergency Stop)
+    deadzone: 0.25            # Adjust as needed
 
 
     axis_linear:

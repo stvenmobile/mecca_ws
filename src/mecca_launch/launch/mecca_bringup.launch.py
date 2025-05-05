@@ -1,30 +1,54 @@
 # mecca_bringup.launch.py
-import os
 
-from ament_index_python.packages import get_package_share_directory
+import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from ament_index_python.packages import get_package_share_directory
+from launch_ros.parameter_descriptions import ParameterValue
+from launch.substitutions import Command, PathJoinSubstitution
 
 
 def generate_launch_description():
-    # Path to our teleop parameters YAML
+    # Path to joy teleop config
     teleop_params = os.path.join(
-        get_package_share_directory('mecca_driver'),
+        get_package_share_directory('mecca_driver_node'),
         'config',
         'joy_teleop.yaml'
     )
 
+    # Path to the robot xacro file
+    urdf_file = PathJoinSubstitution([
+        get_package_share_directory('mecca_description'),
+        'urdf',
+        'meccabot.xacro'
+    ])
+
     return LaunchDescription([
-        # Motor driver node
+        # Robot State Publisher
         Node(
-            package='mecca_driver',
-            executable='mecca_driver',
-            name='mecca_driver',
+            package='robot_state_publisher',
+            executable='robot_state_publisher',
+            name='robot_state_publisher',
+            output='screen',
+            parameters=[{
+                'robot_description': ParameterValue(
+                    Command(['xacro ', urdf_file]),
+                    value_type=str
+                ),
+                'use_sim_time': False,
+            }],
+        ),
+
+        # Motor driver node (includes encoder polling and joint_state publisher)
+        Node(
+            package='mecca_driver_node',
+            executable='mecca_driver_node',
+            name='mecca_driver_node',
             output='screen',
             remappings=[('/motor_command', '/serial_driver/input')],
         ),
 
-        # Navigator (path‐planning) node
+        # Navigator (path-planning logic)
         Node(
             package='navigator',
             executable='navigator_node',
@@ -32,7 +56,7 @@ def generate_launch_description():
             output='screen',
         ),
 
-        # Joystick input
+        # Joystick reader node
         Node(
             package='joy',
             executable='joy_node',
@@ -40,7 +64,7 @@ def generate_launch_description():
             output='screen',
         ),
 
-        # Teleop-to-Twist converter
+        # Teleop twist converter
         Node(
             package='teleop_twist_joy',
             executable='teleop_node',
@@ -52,7 +76,7 @@ def generate_launch_description():
             ],
         ),
 
-        # VL53L1X distance sensor
+        # ToF distance sensor (VL53L1X)
         Node(
             package='vl53l1x_sensor',
             executable='vl53l1x_node',
@@ -60,9 +84,9 @@ def generate_launch_description():
             output='screen',
         ),
 
-        # Simple serial transport node
+        # Serial transport node (to STM32)
         Node(
-            package='mecca_driver',
+            package='mecca_driver_node',
             executable='simple_serial',
             name='simple_serial_node',
             output='screen',
@@ -72,9 +96,9 @@ def generate_launch_description():
             }],
         ),
 
-        # LED controller
+        # LED controller node
         Node(
-            package='mecca_driver',
+            package='mecca_driver_node',
             executable='led_controller_node',
             name='led_controller_node',
             output='screen',
