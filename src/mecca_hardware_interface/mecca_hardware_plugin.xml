@@ -1,0 +1,9 @@
+<library path="mecca_hardware_interface">
+  <class name="mecca_hardware_interface/MeccaHardware"
+         type="mecca_hardware_interface::MeccaHardware"
+         base_class_type="hardware_interface::SystemInterface">
+    <description>
+      Hardware interface for Mecca Mecanum wheel robot.
+    </description>
+  </class>
+</library>

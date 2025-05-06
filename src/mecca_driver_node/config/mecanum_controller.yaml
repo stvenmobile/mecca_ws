@@ -1,0 +1,19 @@
+mecanum_drive_controller:
+  ros__parameters:
+    type: "mecanum_drive_controller/MecanumDriveController"
+    left_front_wheel_name: "front_left_wheel_joint"
+    left_back_wheel_name: "rear_left_wheel_joint"
+    right_front_wheel_name: "front_right_wheel_joint"
+    right_back_wheel_name: "rear_right_wheel_joint"
+
+    wheel_separation_x: 0.175
+    wheel_separation_y: 0.175
+    wheel_radius: 0.05
+
+
+    odom_frame_id: odom
+    base_frame_id: base_link
+
+    publish_rate: 50.0
+    open_loop: false
+    enable_odom_tf: true

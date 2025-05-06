@@ -9,9 +9,11 @@ setup(
     packages=[package_name],
     data_files=[
         ('share/' + package_name, ['package.xml']),
-        (os.path.join('share', package_name, 'config'), ['config/joy_teleop.yaml']),
+        ('share/' + package_name + '/config', ['config/joy_teleop.yaml']),
+        ('share/' + package_name + '/config', ['config/mecanum_controller.yaml']),
         ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
     ],
+
 
     install_requires=['setuptools'],
     zip_safe=True,
