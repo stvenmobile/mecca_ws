@@ -40,7 +40,7 @@ class SimpleSerialNode(Node):
             # self.get_logger().info(f"DEBUG: Sending -> {cmd}")  # Log raw bytes
             self.serial_conn.write(cmd)
             self.serial_conn.flush()
-            self.get_logger().info(f"Sent: {msg.data}")
+            # self.get_logger().info(f"Sent: {msg.data}")
         else:
             self.get_logger().error("Serial connection is not open.")
 

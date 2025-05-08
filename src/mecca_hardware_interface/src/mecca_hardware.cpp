@@ -25,8 +25,11 @@ std::vector<hardware_interface::StateInterface> MeccaHardware::export_state_inte
   std::vector<hardware_interface::StateInterface> state_interfaces;
   for (size_t i = 0; i < info_.joints.size(); ++i) {
     state_interfaces.emplace_back(hardware_interface::StateInterface(
+      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_states_[i].position));
+    state_interfaces.emplace_back(hardware_interface::StateInterface(
       info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_states_[i].velocity));
   }
+  
   return state_interfaces;
 }
 

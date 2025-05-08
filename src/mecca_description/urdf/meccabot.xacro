@@ -174,7 +174,7 @@
 
 <ros2_control name="MecanumRobot" type="system">
   <hardware>
-    <plugin>mecanum_hardware_interface/MecanumHardware</plugin>
+    <plugin>mecca_hardware_interface/MeccaHardware</plugin>
   </hardware>
   <joint name="front_left_wheel_joint">
     <command_interface name="velocity"/>

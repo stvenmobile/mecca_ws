@@ -16,7 +16,7 @@ find_package(rclcpp REQUIRED)
 include_directories(include)
 
 # Build the hardware plugin library
-add_library(${PROJECT_NAME}
+add_library(${PROJECT_NAME} SHARED
   src/mecca_hardware.cpp
 )
 
@@ -29,10 +29,14 @@ ament_target_dependencies(${PROJECT_NAME}
 # Export plugin description to ROS
 pluginlib_export_plugin_description_file(hardware_interface mecca_hardware_plugin.xml)
 
+
 # Install targets and headers
 install(TARGETS ${PROJECT_NAME}
-  DESTINATION lib/${PROJECT_NAME}
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION bin
 )
+
 
 install(DIRECTORY include/
   DESTINATION include/
@@ -42,6 +46,8 @@ install(DIRECTORY include/
 ament_export_include_directories(include)
 ament_export_libraries(${PROJECT_NAME})
 ament_export_dependencies(rclcpp hardware_interface pluginlib)
+
+
 
 # Optional: enable linting
 if(BUILD_TESTING)

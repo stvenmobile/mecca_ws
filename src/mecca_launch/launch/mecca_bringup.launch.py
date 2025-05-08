@@ -89,13 +89,13 @@ def generate_launch_description():
             output='screen'
         ),
 
-        # Controller Manager
+        # Load Controller Manager
         Node(
             package='controller_manager',
             executable='ros2_control_node',
             parameters=[
-                os.path.join(mecca_driver_dir, 'config', 'mecanum_controller.yaml'),
-                {'robot_description': open(os.path.join(mecca_desc_dir, 'urdf', 'meccabot.xacro')).read()}
+                robot_description,
+                os.path.join(mecca_driver_dir, 'config', 'mecanum_controller.yaml')
             ],
             output='screen'
         ),
@@ -104,7 +104,7 @@ def generate_launch_description():
         Node(
             package='controller_manager',
             executable='spawner',
-            arguments=['joint_state_broadcaster'],
+            arguments=['joint_broad'],
             output='screen'
         ),
 
