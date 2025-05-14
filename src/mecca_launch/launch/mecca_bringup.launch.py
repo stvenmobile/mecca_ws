@@ -1,118 +1,82 @@
 from launch import LaunchDescription
+from launch.actions import TimerAction
 from launch_ros.actions import Node
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription, TimerAction
-from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
-import os
-import xacro
+from launch.substitutions import Command, PathJoinSubstitution, FindExecutable
+from launch_ros.substitutions import FindPackageShare
+from launch_ros.parameter_descriptions import ParameterValue
 
-from ament_index_python.packages import get_package_share_directory
 
 def generate_launch_description():
-    mecca_driver_dir = get_package_share_directory('mecca_driver_node')
-    mecca_desc_dir = get_package_share_directory('mecca_description')
-    mecca_nav_dir = get_package_share_directory('navigator')
+    # Generate robot_description from xacro
+    robot_description_content = ParameterValue(
+        Command([
+            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            " ",
+            PathJoinSubstitution([
+                FindPackageShare("mecca_description"),
+                "urdf",
+                "meccabot.xacro"
+            ])
+        ]),
+        value_type=str  # 🛠️ Ensures it's treated as a string param
+    )
 
-    # ✅ PROCESS the xacro file properly
-    xacro_file = os.path.join(mecca_desc_dir, 'urdf', 'meccabot.xacro')
-    robot_description_config = xacro.process_file(xacro_file)
-    robot_description = {'robot_description': robot_description_config.toxml()}
+    # Load robot_state_publisher
+    robot_state_publisher_node = Node(
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        name="robot_state_publisher",
+        parameters=[{"robot_description": robot_description_content}]
+    )
+
+    # Load ros2_control_node with its parameter file
+    ros2_control_node = Node(
+        package="controller_manager",
+        executable="ros2_control_node",
+        name="ros2_control_node",
+        parameters=[
+            PathJoinSubstitution([
+                FindPackageShare("mecca_driver_node"),
+                "config",
+                "ros2_control_node.yaml"
+            ])
+        ]
+    )
+
+    # Delay the controller spawners until ros2_control_node is ready
+    mecanum_controller_spawner = TimerAction(
+        period=3.0,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=[
+                    "mecanum_drive_controller",
+                    "--param-file",
+                    PathJoinSubstitution([
+                        FindPackageShare("mecca_driver_node"),
+                        "config",
+                        "mecanum_drive_controller.yaml"
+                    ])
+                ]
+            )
+        ]
+    )
+
+    joint_broadcaster_spawner = TimerAction(
+        period=3.0,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=["joint_broad"]
+            )
+        ]
+    )
 
     return LaunchDescription([
-        # Robot State Publisher
-        Node(
-            package='robot_state_publisher',
-            executable='robot_state_publisher',
-            name='robot_state_publisher',
-            output='screen',
-            parameters=[robot_description],
-        ),
-
-        # Mecca Driver Node (handles encoder and cmd_vel I/O)
-        Node(
-            package='mecca_driver_node',
-            executable='mecca_driver_node',
-            name='mecca_driver_node',
-            output='screen'
-        ),
-
-        # Navigator Node
-        Node(
-            package='navigator',
-            executable='navigator_node',
-            name='navigator_node',
-            output='screen'
-        ),
-
-        # Joy Node
-        Node(
-            package='joy',
-            executable='joy_node',
-            name='joy_node',
-            output='screen'
-        ),
-
-        # Teleop Twist Joy Node
-        Node(
-            package='teleop_twist_joy',
-            executable='teleop_node',
-            name='teleop_twist_joy_node',
-            parameters=[os.path.join(mecca_driver_dir, 'config', 'joy_teleop.yaml')],
-            output='screen'
-        ),
-
-        # Simple Serial Node
-        Node(
-            package='mecca_driver_node',
-            executable='simple_serial',
-            name='simple_serial_node',
-            parameters=[{
-                'port': '/dev/stm32_serial',
-                'baudrate': 115200
-            }],
-            output='screen'
-        ),
-
-        # LED Controller Node
-        Node(
-            package='mecca_driver_node',
-            executable='led_controller_node',
-            name='led_controller_node',
-            output='screen'
-        ),
-
-        # VL53L1X Sensor Node
-        Node(
-            package='vl53l1x_sensor',
-            executable='vl53l1x_node',
-            name='vl53l1x_node',
-            output='screen'
-        ),
-
-        # Load Controller Manager
-        Node(
-            package='controller_manager',
-            executable='ros2_control_node',
-            parameters=[
-                robot_description,
-                os.path.join(mecca_driver_dir, 'config', 'mecanum_controller.yaml')
-            ],
-            output='screen'
-        ),
-
-        # Load Joint State Broadcaster
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['joint_broad'],
-            output='screen'
-        ),
-
-        # Load Mecanum Drive Controller
-        Node(
-            package='controller_manager',
-            executable='spawner',
-            arguments=['mecanum_drive_controller'],
-            output='screen'
-        )
+        robot_state_publisher_node,
+        ros2_control_node,
+        mecanum_controller_spawner,
+        joint_broadcaster_spawner
     ])

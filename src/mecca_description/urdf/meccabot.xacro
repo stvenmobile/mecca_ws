@@ -176,27 +176,33 @@
   <hardware>
     <plugin>mecca_hardware_interface/MeccaHardware</plugin>
   </hardware>
+
+  <!-- Joint 1: Front Left Wheel -->
   <joint name="front_left_wheel_joint">
     <command_interface name="velocity"/>
-    <state_interface name="position"/>
     <state_interface name="velocity"/>
   </joint>
+
+  <!-- Joint 2: Front Right Wheel -->
   <joint name="front_right_wheel_joint">
     <command_interface name="velocity"/>
-    <state_interface name="position"/>
     <state_interface name="velocity"/>
   </joint>
+
+  <!-- Joint 3: Rear Left Wheel -->
   <joint name="rear_left_wheel_joint">
     <command_interface name="velocity"/>
-    <state_interface name="position"/>
     <state_interface name="velocity"/>
   </joint>
+
+  <!-- Joint 4: Rear Right Wheel -->
   <joint name="rear_right_wheel_joint">
     <command_interface name="velocity"/>
-    <state_interface name="position"/>
     <state_interface name="velocity"/>
   </joint>
 </ros2_control>
+
+
 
 
 </robot>

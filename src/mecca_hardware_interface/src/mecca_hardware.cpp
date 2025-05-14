@@ -36,12 +36,18 @@ std::vector<hardware_interface::StateInterface> MeccaHardware::export_state_inte
 std::vector<hardware_interface::CommandInterface> MeccaHardware::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
+
   for (size_t i = 0; i < info_.joints.size(); ++i) {
+    // Exporting with the correct format expected by the controller
+    std::string command_name = info_.joints[i].name + "/velocity";
     command_interfaces.emplace_back(hardware_interface::CommandInterface(
       info_.joints[i].name, hardware_interface::HW_IF_VELOCITY, &hw_commands_[i]));
+    RCLCPP_INFO(rclcpp::get_logger("MeccaHardware"), "Exported command interface: %s", command_name.c_str());
   }
+
   return command_interfaces;
 }
+
 
 hardware_interface::CallbackReturn MeccaHardware::on_activate(const rclcpp_lifecycle::State &)
 {

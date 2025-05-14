@@ -1,0 +1,4 @@
+controller_manager:
+  ros__parameters:
+    joint_broad:
+      type: "joint_state_broadcaster/JointStateBroadcaster"
