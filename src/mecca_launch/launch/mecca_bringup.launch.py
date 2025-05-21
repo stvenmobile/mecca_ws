@@ -33,7 +33,7 @@ def generate_launch_description():
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        name="ros2_control_node",
+        name="controller_manager",
         parameters=[
             PathJoinSubstitution([
                 FindPackageShare("mecca_driver_node"),
