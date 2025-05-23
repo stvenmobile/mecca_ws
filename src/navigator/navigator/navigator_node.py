@@ -5,13 +5,14 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import time
 
+
 class NavigatorNode(Node):
     def __init__(self):
         super().__init__('navigator_node')
-        
+
         self.safe_cmd_pub = self.create_publisher(Twist, 'safe_cmd_vel', 10)
         self.subscription = self.create_subscription(Twist, 'cmd_vel', self.cmd_vel_callback, 10)
-        
+
         self.safe_to_move = True  # Updated dynamically based on sensors
         self.last_safe_cmd = Twist()  # Track the last sent command
         self.stop_command_counter = 0  # Counter for reducing redundant stops
@@ -70,11 +71,10 @@ class NavigatorNode(Node):
         self.info_response_pub = self.create_publisher(String, '/mecca_info_response', 10)
 
         # Safety thresholds
-        self.TOF_SAFETY_DISTANCE = 0.15     # 15cm 
-        self.LIDAR_SAFETY_DISTANCE = 0.15   # 15cm 
+        self.TOF_SAFETY_DISTANCE = 0.15     # 15cm
+        self.LIDAR_SAFETY_DISTANCE = 0.15   # 15cm
         self.safe_to_move = True            # Default: assume safe to move
         self.stopped_for_obstacle = False   # Track if robot stopped for an obstacle
-
 
         # Latest sensor values
         self.tof_distance = float('inf')
@@ -94,7 +94,7 @@ class NavigatorNode(Node):
             self.safe_to_move = True
             self.stopped_for_obstacle = False  # Reset once clear
 
-    
+
     def mecca_info_callback(self, msg):
         """Handles general info requests from /mecca_info."""
         request = msg.data.lower()
@@ -188,7 +188,7 @@ class NavigatorNode(Node):
                 led_msg.data = "left"
             elif safe_cmd.angular.z > 0:
                 led_msg.data = "left"
-            elif safe_cmd.angular.z < 0: 
+            elif safe_cmd.angular.z < 0:
                 led_msg.data = "right"
             else:
                 led_msg.data = "stop"  # Robot is idle
@@ -211,9 +211,9 @@ class NavigatorNode(Node):
                     self.led_cmd_pub.publish(led_msg)  # Ensure LED still updates
                     return  # Skip sending redundant stop
                 self.stop_command_counter = 0  # Reset counter
-                #self.get_logger().info("🔴 Joystick idle, sending periodic stop command.")
-            #else:
-                #self.get_logger().info("🔴 Joystick idle, sending immediate stop command.")
+                # self.get_logger().info("🔴 Joystick idle, sending periodic stop command.")
+            # else:
+                # self.get_logger().info("🔴 Joystick idle, sending immediate stop command.")
 
         # **Publish the "safe" movement command**
         self.safe_cmd_pub.publish(safe_cmd)
@@ -229,6 +229,8 @@ def main(args=None):
     rclpy.spin(node)
     node.destroy_node()
     rclpy.shutdown()
+
+
 
 if __name__ == '__main__':
     main()

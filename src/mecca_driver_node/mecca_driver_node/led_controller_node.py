@@ -13,6 +13,7 @@ LED_COUNT = 7  # Number of LEDs in your strip
 SPI_BUS = 0     # SPI bus number
 SPI_DEVICE = 0  # SPI device number
 
+
 class LEDControllerNode(Node):
     def __init__(self):
         super().__init__('led_controller_node')
@@ -75,7 +76,7 @@ class LEDControllerNode(Node):
 
     def set_forward_effect(self):
         """ Forward movement effect: Hardcoded sequence for precise LED transitions. """
-        
+
         # Define LED sequence (0 = Off, 1 = Blue)
         sequence = [
             [(1, 0, 0, 0, 0, 0, 1)],  # Step 1
@@ -94,14 +95,12 @@ class LEDControllerNode(Node):
                 self.update_strip(led_array)
                 time.sleep(0.03)  # Adjust delay for smoother effect
 
-            #time.sleep(0.5)  # Small pause before repeating the sequence
+            # time.sleep(0.5)  # Small pause before repeating the sequence
 
 
-
-    
     def set_backward_effect(self):
         """BWD: Flashes red at 0.5s intervals for 2 seconds."""
-        red_array = [(255, 0, 0)] * LED_COUNT  
+        red_array = [(255, 0, 0)] * LED_COUNT
         off_array = [(0, 0, 0)] * LED_COUNT
         end_time = time.time() + 1.0
         while time.time() < end_time:
@@ -114,7 +113,7 @@ class LEDControllerNode(Node):
         self.set_leds((0, 0, 0))
         self.update_strip(off_array)
 
-    
+
     def set_turn_effect(self, direction):
         """ Green scrolling effect: moves left/right based on turn direction """
         off_array = [(0, 0, 0)] * LED_COUNT
@@ -129,20 +128,20 @@ class LEDControllerNode(Node):
                     led_array[i] = (0, 255, 0)  # Green
                     self.update_strip(led_array)
                     time.sleep(0.10)  # Adjust scrolling speed
-                #self.set_leds((0, 0, 0))
+                # self.set_leds((0, 0, 0))
                 self.update_strip([(0, 0, 0)] * self.num_leds)
- 
+
         elif direction == "RIGHT":
             while time.time() < end_time:
                 for i in reversed(range(self.num_leds)):
                     led_array[i] = (0, 255, 0)  # Green
                     self.update_strip(led_array)
                     time.sleep(0.10)  # Adjust scrolling speed
-                #self.set_leds((0, 0, 0))
+                # self.set_leds((0, 0, 0))
                 self.update_strip([(0, 0, 0)] * self.num_leds)
 
         # **🚀 Exit condition: Turn off LEDs when turning stops**
-        self.update_strip(off_array)  
+        self.update_strip(off_array)
 
 
 
@@ -162,7 +161,7 @@ class LEDControllerNode(Node):
 
     def set_rainbow_wave_effect(self, duration=6):
         """ Rainbow wave effect that runs for a set duration and then turns off. """
-        
+
         self.running_effect = False  # Stop any previously running effect
         time.sleep(0.1)  # Small delay to ensure old animation stops
 
@@ -196,13 +195,13 @@ class LEDControllerNode(Node):
         # Run the effect in a separate thread
         threading.Thread(target=animate_rainbow, daemon=True).start()
 
-    
+
     def color_sequence(self):
-        led_array = [(0, 0, 0)] * LED_COUNT 
+        led_array = [(0, 0, 0)] * LED_COUNT
         """Flash the LED strip Red → Blue → Green three times"""
 
         sequence = [(255, 0, 0), (0, 0, 255), (0, 255, 0)]  # Red → Blue → Green
-        #self.get_logger().info(f"LED_COUNT: {LED_COUNT}")
+        # self.get_logger().info(f"LED_COUNT: {LED_COUNT}")
         for _ in range(2):  # Three cycles
             for color in sequence:
                 self.set_leds(color)
@@ -252,7 +251,7 @@ class LEDControllerNode(Node):
         self.get_logger().info("Starting Stop effect.")
         self.set_stop_effect()
         time.sleep(3)
-        
+
         self.update_strip([(0, 0, 0)] * self.num_leds)
         self.get_logger().info("LED Test Sequence Complete")
 
@@ -263,7 +262,7 @@ class LEDControllerNode(Node):
         data = [val for sublist in data for val in sublist]  # Flatten list
         self.spi.xfer2(data)
 
-    
+
     def update_strip(self, led_array):
         """ Update LED strip with a color pattern based on motion """
         if len(led_array) != self.num_leds:
@@ -275,7 +274,7 @@ class LEDControllerNode(Node):
         # Convert list of RGB tuples into a flat numpy array
         data = np.array(corrected_leds, dtype=np.uint8).flatten()
 
-        #self.get_logger().info(f"LED Data Sent: {data.tolist()}")  # Debug Output
+        # self.get_logger().info(f"LED Data Sent: {data.tolist()}")  # Debug Output
 
         # Send data to SPI using ws2812.write2812
         ws2812.write2812(self.spi, data)  # Ensure `ws2812` is imported
@@ -307,6 +306,8 @@ def main(args=None):
     finally:
         node.destroy_node()
         rclpy.shutdown()
+
+
 
 if __name__ == '__main__':
     main()

@@ -2,7 +2,6 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="meccabot_robot">
 
   <xacro:include filename="inertial_macros.xacro"/>
-  <xacro:include filename="gazebo_control.xacro"/>
 
   <!-- Parameters -->
   <xacro:property name="wheel_radius" value="0.05"/>
@@ -10,47 +9,33 @@
   <xacro:property name="chassis_length" value="0.275"/>
   <xacro:property name="chassis_width" value="0.145"/>
   <xacro:property name="chassis_height" value="0.125"/>
-  <xacro:property name="ground_clearance" value="0.015"/>
+  <xacro:property name="ground_clearance" value="0.033"/>
+  <xacro:property name="wheel_z_offset" value="0.017"/>
 
+  <!-- Derived positioning parameters -->
   <xacro:property name="chassis_half_length" value="${chassis_length/2}"/>
   <xacro:property name="chassis_half_width" value="${chassis_width/2}"/>
-  <xacro:property name="wheel_x_offset" value="0.05"/>
-  <xacro:property name="wheel_y_offset" value="0.0"/>
-  <xacro:property name="chassis_z_offset" value="${wheel_radius + ground_clearance}"/>
-  <xacro:property name="wheel_z_offset" value="${-ground_clearance}"/>
+  <xacro:property name="chassis_z_offset" value="${ground_clearance + chassis_height/2}"/>
 
-    <!-- Define Colors -->
-    <material name="white">
-        <color rgba="1 1 1 1" />
-    </material>
+  
+  <xacro:property name="wheel_separation_length" value="0.185"/>
+  <xacro:property name="wheel_separation_width" value="0.185"/>
+  <xacro:property name="wheel_x_offset" value="${wheel_separation_length/2}"/>
+  <xacro:property name="wheel_y_offset" value="${wheel_separation_width/2}"/>
+  
 
-    <material name="orange">
-        <color rgba="1 0.3 0.1 1" />
-    </material>
+  <!-- Define Colors -->
+  <material name="white">
+    <color rgba="1 1 1 1" />
+  </material>
 
-    <material name="red">
-        <color rgba="1 0 0 1" />
-    </material>
+  <material name="green">
+    <color rgba="0.2 0.9 0.2 1"/>
+  </material>
 
-    <material name="blue">
-        <color rgba="0.0 0.0 0.8 1.0" />
-    </material>
-
-    <material name="green">
-        <color rgba="0.2 0.9 0.2 1"/>
-    </material>
-
-    <material name="darkgrey">
-        <color rgba="0.1 0.1 0.1 1.0" />
-    </material>
-
-    <material name="grey">
-        <color rgba="0.5 0.5 0.5 1.0" />
-    </material>
-
-    <material name="black">
-        <color rgba="0 0 0 1" />
-    </material>
+  <material name="grey">
+    <color rgba="0.5 0.5 0.5 1.0" />
+  </material>
 
   <!-- Base link -->
   <link name="base_link">
@@ -70,24 +55,24 @@
   <!-- Chassis -->
   <link name="chassis_link">
     <inertial>
-      <origin xyz="0 0 0.0625" rpy="0 0 0"/>
-      <mass value="5.0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <mass value="5"/>
       <inertia
-        ixx="${(1/12)*5.0*(chassis_width*chassis_width + chassis_height*chassis_height)}"
+        ixx="0.015270833333333332"
         ixy="0.0" ixz="0.0"
-        iyy="${(1/12)*5.0*(chassis_length*chassis_length + chassis_height*chassis_height)}"
+        iyy="0.03802083333333334"
         iyz="0.0"
-        izz="${(1/12)*5.0*(chassis_length*chassis_length + chassis_width*chassis_width)}"/>
+        izz="0.04027083333333333"/>
     </inertial>
     <visual>
-      <origin xyz="0 0 0.0625" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
       </geometry>
       <material name="green"/>
     </visual>
     <collision>
-      <origin xyz="0 0 0.0625" rpy="0 0 0"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
         <box size="${chassis_length} ${chassis_width} ${chassis_height}"/>
       </geometry>
@@ -107,9 +92,11 @@
         <origin xyz="0 0 0" rpy="0 0 0"/>
         <mass value="0.5"/>
         <inertia
-          ixx="0.001" ixy="0.0" ixz="0.0"
-          iyy="0.001" iyz="0.0"
-          izz="0.001"/>
+          ixx="0.00035000000000000005"
+          ixy="0.0" ixz="0.0"
+          iyy="0.00035000000000000005"
+          iyz="0.0"
+          izz="0.0006250000000000001"/>
       </inertial>
       <visual>
         <origin xyz="0 0 0" rpy="1.5708 0 0"/>
@@ -128,81 +115,60 @@
   </xacro:macro>
 
   <!-- Instantiate wheels -->
+  
   <xacro:wheel name="front_left_wheel"
-               x="${chassis_half_length - wheel_x_offset}"
-               y="${chassis_half_width + wheel_thickness/2}"
-               z="${wheel_z_offset}"
+               x="${wheel_x_offset}"
+               y="${wheel_y_offset + wheel_thickness/2}"
+               z="${wheel_z_offset - chassis_height/2}"
                rpy="0 0 0"/>
 
   <xacro:wheel name="front_right_wheel"
-               x="${chassis_half_length - wheel_x_offset}"
-               y="${-(chassis_half_width + wheel_thickness/2)}"
-               z="${wheel_z_offset}"
+               x="${wheel_x_offset}"
+               y="${-(wheel_y_offset + wheel_thickness/2)}"
+               z="${wheel_z_offset - chassis_height/2}"
                rpy="0 0 0"/>
 
   <xacro:wheel name="rear_left_wheel"
-               x="${-(chassis_half_length - wheel_x_offset)}"
-               y="${chassis_half_width + wheel_thickness/2}"
-               z="${wheel_z_offset}"
+               x="${-wheel_x_offset}"
+               y="${wheel_y_offset + wheel_thickness/2}"
+               z="${wheel_z_offset - chassis_height/2}"
                rpy="0 0 0"/>
 
   <xacro:wheel name="rear_right_wheel"
-               x="${-(chassis_half_length - wheel_x_offset)}"
-               y="${-(chassis_half_width + wheel_thickness/2)}"
-               z="${wheel_z_offset}"
+               x="${-wheel_x_offset}"
+               y="${-(wheel_y_offset + wheel_thickness/2)}"
+               z="${wheel_z_offset - chassis_height/2}"
                rpy="0 0 0"/>
 
-  <!-- Lidar -->
-  <link name="lidar_mount">
-    <visual>
-      <geometry>
-        <cylinder length="0.05" radius="0.04"/>
-      </geometry>
-      <material name="blue"/>
-    </visual>
-    <collision>
-      <geometry>
-        <cylinder length="0.05" radius="0.04"/>
-      </geometry>
-    </collision>
-  </link>
-  <joint name="lidar_joint" type="fixed">
-    <parent link="base_link"/>
-    <child link="lidar_mount"/>
-    <origin xyz="-0.050 0 ${0.14 + chassis_z_offset}" rpy="0 0 0"/>
-  </joint>
+  
+  <ros2_control name="MecanumRobot" type="system">
+    <hardware>
+      <plugin>meccabot_hardware_interface/MeccabotHardware</plugin>
+    </hardware>
 
-<ros2_control name="MecanumRobot" type="system">
-  <hardware>
-    <plugin>mecca_hardware_interface/MeccaHardware</plugin>
-  </hardware>
+    <joint name="front_left_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-  <!-- Joint 1: Front Left Wheel -->
-  <joint name="front_left_wheel_joint">
-    <command_interface name="velocity"/>
-    <state_interface name="velocity"/>
-  </joint>
+    <joint name="front_right_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-  <!-- Joint 2: Front Right Wheel -->
-  <joint name="front_right_wheel_joint">
-    <command_interface name="velocity"/>
-    <state_interface name="velocity"/>
-  </joint>
+    <joint name="rear_left_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
 
-  <!-- Joint 3: Rear Left Wheel -->
-  <joint name="rear_left_wheel_joint">
-    <command_interface name="velocity"/>
-    <state_interface name="velocity"/>
-  </joint>
-
-  <!-- Joint 4: Rear Right Wheel -->
-  <joint name="rear_right_wheel_joint">
-    <command_interface name="velocity"/>
-    <state_interface name="velocity"/>
-  </joint>
-</ros2_control>
-
-
-
+    <joint name="rear_right_wheel_joint">
+      <command_interface name="velocity"/>
+      <state_interface name="velocity"/>
+      <state_interface name="position"/>
+    </joint>
+  </ros2_control>
 
 </robot>

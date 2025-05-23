@@ -5,6 +5,7 @@ from std_msgs.msg import String  # Needed for publishing velocity commands
 from sensor_msgs.msg import JointState
 import math
 
+
 class MotorDriverNode(Node):
     def __init__(self):
         super().__init__('motor_driver_node')
@@ -43,7 +44,7 @@ class MotorDriverNode(Node):
         self.MAX_SPEED = 1100  # Maximum possible speed
         self.NORMAL_SCALE = 0.4  # Default scaling (40% of MAX_SPEED)
         self.TURBO_SCALE = 0.6   # Turbo mode scaling (60% of MAX_SPEED)
-        
+
         self.NORMAL_ROTATE_SCALE = 1.4  # Boosted rotation scale
         self.TURBO_ROTATE_SCALE = 2.0   # 30% more for turbo rotation
 
@@ -87,7 +88,6 @@ class MotorDriverNode(Node):
                 # self.get_logger().info(f"✅ Encoders: {self.encoder_positions}")
             except Exception as e:
                 self.get_logger().warn(f"❌ Failed to parse encoder data: {e}")
-
 
     def publish_joint_states(self):
         js = JointState()
