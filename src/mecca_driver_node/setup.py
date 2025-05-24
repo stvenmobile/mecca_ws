@@ -26,7 +26,7 @@ setup(
     license='MIT',
     entry_points={
         'console_scripts': [
-            'mecca_driver_node = mecca_driver_node.mecca_driver_node:main',
+            'mecca_driver_node = mecca_driver_node:main',
             'simple_serial = mecca_driver_node.simple_serial:main',
             'led_controller_node = mecca_driver_node.led_controller_node:main',
             'print_controller_parameters = scripts.print_controller_parameters:main',
