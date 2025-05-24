@@ -135,21 +135,26 @@ def generate_launch_description():
     )
     
     # === SENSOR NODES ===
-    
-    # LiDAR node (adjust port as needed)
+    # LiDAR node (A1 Lidar)
     lidar_node = Node(
         package='sllidar_ros2',
         executable='sllidar_node',
         name='sllidar_node',
         output='screen',
         parameters=[{
-            'serial_port': '/dev/ttyUSB0',  # Adjust as needed
-            'frame_id': 'lidar_link',
+            'channel_type': 'serial',
+            'serial_port': '/dev/ttyUSB1',
+            'serial_baudrate': 115200,
+            'frame_id': 'laser',              # Changed to match A1 launch
             'inverted': False,
             'angle_compensate': True,
+            'scan_mode': 'Sensitivity',       # This works from your test
             'use_sim_time': use_sim_time
         }]
     )
+
+
+
     
     return LaunchDescription([
         # Launch arguments
