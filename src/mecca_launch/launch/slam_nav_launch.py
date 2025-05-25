@@ -59,14 +59,16 @@ def generate_launch_description():
         }]
     )
     
-    # Nav2 navigation stack
+    # Nav2 navigation stack (basic components only)
     nav2_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([
-            nav2_bringup_dir, '/launch/navigation_launch.py'
+            nav2_bringup_dir, '/launch/bringup_launch.py'
         ]),
         launch_arguments={
             'use_sim_time': use_sim_time,
             'autostart': 'true',
+            'slam': 'false',  # We're using SLAM Toolbox separately
+            'map': '',        # No pre-existing map
             'params_file': os.path.join(
                 get_package_share_directory('mecca_launch'),
                 'config',
