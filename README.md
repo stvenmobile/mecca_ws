@@ -118,6 +118,62 @@ Here is a pictorial diagram of the wiring to the Raspberry Pi 5:
   ```
   - Navigate to Interface Options > I2C or SPI > Enable.
 
+
+## <a name='USBConfiguration'></a>USB Configuration and Device Management
+
+### <a name='StableDeviceNaming'></a>Stable Device Naming
+The robot uses two USB serial devices that can sometimes enumerate in different orders. To ensure consistent device naming, udev rules are provided to create stable symlinks.
+
+### <a name='InstallationofudevRules'></a>Installation of udev Rules
+```bash
+# Navigate to the utilities directory
+cd ~/mecca_ws/src/mecca_launch/utilities/udev
+
+# Run the installation script
+./install_udev_rules.sh
+
+# Reboot to ensure all changes take effect
+sudo reboot
+```
+
+### <a name='DeviceMapping'></a>Device Mapping
+After installing the udev rules, the following stable device names will be available:
+
+| **Physical Device** | **Stable Symlink** | **Original Device** | **Purpose** |
+|-------------------|------------------|------------------|------------|
+| STM32 Controller | `/dev/stm32_serial` | `/dev/ttyUSB0` or `/dev/ttyUSB1` | Motor control and encoder feedback |
+| SLLIDAR A1 | `/dev/lidar_serial` | `/dev/ttyUSB0` or `/dev/ttyUSB1` | Laser range scanning |
+
+### <a name='Troubleshooting'></a>Troubleshooting USB Issues
+If you experience USB device issues, use the diagnostic script:
+
+```bash
+cd ~/mecca_ws/src/mecca_launch/utilities/udev
+./check_usb_devices.sh
+```
+
+This will check:
+- USB device detection
+- Permission settings
+- Stable symlink creation
+- User group membership
+
+### <a name='ManualConfiguration'></a>Manual Configuration (if needed)
+If the automated setup doesn't work, you can manually configure:
+
+1. **Check device assignment:**
+   ```bash
+   # Identify which device is which
+   udevadm info /dev/ttyUSB0 | grep -E "(ID_VENDOR|DRIVER)"
+   udevadm info /dev/ttyUSB1 | grep -E "(ID_VENDOR|DRIVER)"
+   ```
+
+2. **Update launch files manually:**
+   - STM32 (CH341 driver): Usually `/dev/ttyUSB0`
+   - LIDAR (CP210x driver): Usually `/dev/ttyUSB1`
+
+
+
 ---
 ## <a name='SoftwareNotes'></a>Software Notes
 - There is a companion github repository for the STM32 project that controls PID tuning and general motor control via the serial connection between the controller board and the Raspberry PI. This repository is available here: https://github.com/stvenmobile/Car_Motion.git

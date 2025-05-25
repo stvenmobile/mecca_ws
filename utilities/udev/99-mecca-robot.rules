@@ -1,0 +1,20 @@
+# udev rules for Mecca Robot USB devices
+# This file creates stable device symlinks for consistent hardware access
+# Installation: sudo cp 99-mecca-robot.rules /etc/udev/rules.d/
+# Then: sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# STM32 Controller Board (CH341 USB-Serial converter)
+# Creates symlink: /dev/stm32_serial
+SUBSYSTEM=="tty", ATTRS{product}=="USB Serial", DRIVERS=="ch341", SYMLINK+="stm32_serial", MODE="0666", GROUP="dialout"
+
+# SLLIDAR A1 (CP2102 USB-Serial converter) 
+# Creates symlink: /dev/lidar_serial
+SUBSYSTEM=="tty", ATTRS{manufacturer}=="Silicon Labs", ATTRS{product}=="CP2102 USB to UART Bridge Controller", SYMLINK+="lidar_serial", MODE="0666", GROUP="dialout"
+
+# Alternative rules using driver names (backup identification)
+SUBSYSTEM=="tty", DRIVERS=="ch341", SYMLINK+="stm32_alt", MODE="0666", GROUP="dialout"
+SUBSYSTEM=="tty", DRIVERS=="cp210x", SYMLINK+="lidar_alt", MODE="0666", GROUP="dialout"
+
+# Set permissions for all USB serial devices to be accessible by dialout group
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", MODE="0666", GROUP="dialout"  # CH341 devices
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", MODE="0666", GROUP="dialout"  # CP210x devices

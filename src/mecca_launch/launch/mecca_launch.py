@@ -7,7 +7,7 @@ Launches all physical robot nodes and publishes robot state
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
+from launch.actions import DeclareLaunchArgument, TimerAction
 from launch.substitutions import LaunchConfiguration, Command
 from launch_ros.actions import Node
 from launch_ros.parameter_descriptions import ParameterValue
@@ -43,7 +43,7 @@ def generate_launch_description():
     
     # === PHYSICAL ROBOT NODES ===
     
-    # Main driver node (your enhanced version with odometry)
+    # Main driver node (enhanced version with odometry)
     mecca_driver_node = Node(
         package='mecca_driver_node',
         executable='mecca_driver_node',
@@ -98,14 +98,14 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
     
-    # Serial communication node
+    # Serial communication node (using stable device name)
     simple_serial_node = Node(
         package='mecca_driver_node',
         executable='simple_serial',
         name='simple_serial_node',
         output='screen',
         parameters=[{
-            'port': '/dev/stm32_serial',
+            'port': '/dev/stm32_serial',  # Use stable symlink
             'baudrate': 115200,
             'use_sim_time': use_sim_time
         }]
@@ -120,8 +120,6 @@ def generate_launch_description():
         parameters=[{'use_sim_time': use_sim_time}]
     )
     
-    # === ROBOT STATE PUBLISHERS ===
-    
     # Robot State Publisher (publishes robot_description and TF)
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
@@ -134,8 +132,18 @@ def generate_launch_description():
         output='screen'
     )
     
-    # === SENSOR NODES ===
-    # LiDAR node (A1 Lidar)
+    # === AUTONOMOUS NAVIGATION COMPONENTS ===
+    
+    # Static transform publisher (base_link -> laser frame transform)
+    base_to_laser_tf = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='base_to_laser_tf',
+        arguments=['0', '0', '0.1', '0', '0', '0', 'base_link', 'laser'],
+        parameters=[{'use_sim_time': use_sim_time}]
+    )
+    
+    # LiDAR node (using stable device name - working!)
     lidar_node = Node(
         package='sllidar_ros2',
         executable='sllidar_node',
@@ -143,18 +151,17 @@ def generate_launch_description():
         output='screen',
         parameters=[{
             'channel_type': 'serial',
-            'serial_port': '/dev/ttyUSB1',
+            'serial_port': '/dev/lidar_serial',   # Use stable symlink
             'serial_baudrate': 115200,
-            'frame_id': 'laser',              # Changed to match A1 launch
+            'frame_id': 'laser',
             'inverted': False,
             'angle_compensate': True,
-            'scan_mode': 'Sensitivity',       # This works from your test
+            'scan_mode': 'Sensitivity',
             'use_sim_time': use_sim_time
-        }]
+        }],
+        respawn=True,
+        respawn_delay=5.0
     )
-
-
-
     
     return LaunchDescription([
         # Launch arguments
@@ -173,6 +180,12 @@ def generate_launch_description():
         # Robot state publisher
         robot_state_publisher_node,
         
-        # Sensor nodes
-        lidar_node,
+        # Transform publishers
+        base_to_laser_tf,
+        
+        # Sensor nodes (with delay for LIDAR)
+        TimerAction(
+            period=5.0,  # 5 second delay for LIDAR
+            actions=[lidar_node]
+        ),
     ])
