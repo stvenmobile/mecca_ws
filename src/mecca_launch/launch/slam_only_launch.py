@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 SLAM Only Launch for Mecca Robot
-Just SLAM Toolbox for mapping - no navigation yet
+Just SLAM Toolbox for mapping - optimized for performance
 """
 
 import os
@@ -23,7 +23,7 @@ def generate_launch_description():
     # Get launch configurations
     use_sim_time = LaunchConfiguration('use_sim_time')
     
-    # SLAM Toolbox node (optimized for real-time performance)
+    # SLAM Toolbox node (optimized for performance with larger buffers)
     slam_toolbox_node = Node(
         package='slam_toolbox',
         executable='async_slam_toolbox_node',
@@ -32,26 +32,28 @@ def generate_launch_description():
         parameters=[{
             'use_sim_time': use_sim_time,
             'odom_frame': 'odom',
-            'map_frame': 'map',
+            'map_frame': 'map', 
             'base_frame': 'base_link',
             'scan_topic': '/scan',
             'mode': 'mapping',
             'debug_logging': False,
-            'throttle_scans': 1,
-            'transform_publish_period': 0.05,  # Faster transform updates (was 0.02)
-            'map_update_interval': 2.0,        # Faster map updates (was 5.0)
-            'resolution': 0.05,
-            'max_laser_range': 12.0,
-            'minimum_time_interval': 0.1,      # Faster processing (was 0.5)
-            'transform_timeout': 0.5,          # More lenient timeout (was 0.2)
-            'tf_buffer_duration': 30.0,
+            'throttle_scans': 5,              # Process every 5th scan
+            'transform_publish_period': 0.2,  # Slower transform updates
+            'map_update_interval': 10.0,      # Slower map updates
+            'resolution': 0.15,               # Lower resolution for speed
+            'max_laser_range': 6.0,           # Shorter range
+            'minimum_time_interval': 1.0,     # Slower processing
+            'transform_timeout': 5.0,         # Much longer timeout
+            'tf_buffer_duration': 60.0,       # Longer TF buffer
             'enable_interactive_mode': True,
             'use_scan_matching': True,
             'use_scan_barycenter': True,
-            'minimum_travel_distance': 0.3,    # Less travel required (was 0.5)
-            'minimum_travel_heading': 0.3,     # Less rotation required (was 0.5)
-            'scan_buffer_size': 5,             # Smaller buffer (was 10)
-            'do_loop_closing': True
+            'minimum_travel_distance': 1.0,   # Require more movement
+            'minimum_travel_heading': 1.0,    # Require more rotation
+            'scan_buffer_size': 10,           # Larger scan buffer
+            'scan_buffer_maximum_scan_distance': 3.0,  # Limit buffer distance
+            'do_loop_closing': False,         # Disable for performance
+            'autostart': True
         }]
     )
     

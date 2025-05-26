@@ -1,3 +1,7 @@
 build/
 install/
 log/
+
+# ROS2 tf frame diagnostic files
+frames_*.gv
+frames_*.pdf
