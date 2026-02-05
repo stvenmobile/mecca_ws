@@ -61,7 +61,7 @@ private:
   // Python script: scaled_x = linear_x * MAX_SPEED * speed_scale
   // If we assume linear_x is m/s, and MAX_SPEED=1100.
   // Let's deduce the conversion factor.
-  const double CMD_SCALE_FACTOR = 1100.0; // Needs tuning based on Python script analysis
+  const double CMD_SCALE_FACTOR = 500.0; // Tuned down for smoothness (was 1100.0)
 };
 
 }  // namespace mecca_hardware_interface
