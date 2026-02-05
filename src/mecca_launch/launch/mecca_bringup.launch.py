@@ -52,7 +52,8 @@ def generate_launch_description():
                 executable="spawner",
                 arguments=[
                     "mecanum_drive_controller",
-                    "--param-file",
+                ],
+                parameters=[
                     PathJoinSubstitution([
                         FindPackageShare("mecca_driver_node"),
                         "config",
