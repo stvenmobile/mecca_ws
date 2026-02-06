@@ -61,7 +61,7 @@ private:
   // Python script: scaled_x = linear_x * MAX_SPEED * speed_scale
   // If we assume linear_x is m/s, and MAX_SPEED=1100.
   // Let's deduce the conversion factor.
-  const double CMD_SCALE_FACTOR = 1500.0; // Boosted power to overcome friction (was 500.0)
+  const double CMD_SCALE_FACTOR = 2500.0; // Increased to 2500 (Max 3000) for full power
 };
 
 }  // namespace mecca_hardware_interface

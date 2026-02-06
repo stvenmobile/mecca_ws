@@ -205,7 +205,7 @@ hardware_interface::return_type MeccaHardware::write(const rclcpp::Time &, const
   // If we assume max speed is around 0.5 m/s?
   // Let's use a factor of 1000 for now. 1 m/s = 1000 command units.
   
-  int cmd_x = static_cast<int>(vx * CMD_SCALE_FACTOR);
+  int cmd_x = static_cast<int>(vx * CMD_SCALE_FACTOR) * -1; // Inverted to match joystick direction
   int cmd_y = static_cast<int>(vy * CMD_SCALE_FACTOR);
   int cmd_rot = static_cast<int>(omega * CMD_SCALE_FACTOR * 0.5); // Rotation usually scaled differently
 
