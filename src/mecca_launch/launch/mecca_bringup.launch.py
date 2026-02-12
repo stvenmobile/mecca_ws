@@ -1,17 +1,25 @@
 from launch import LaunchDescription
 from launch.actions import TimerAction
-from launch_ros.actions import Node
+from launch_ros.actions import LifecycleNode, Node
 from launch.substitutions import Command, PathJoinSubstitution, FindExecutable
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
+    # --- 1. Path Resolutions ---
     controllers_config = PathJoinSubstitution([
         FindPackageShare("mecca_driver_node"),
         "config",
         "controllers.yaml"
     ])
 
+    serial_config = PathJoinSubstitution([
+        FindPackageShare("mecca_driver_node"),
+        "config",
+        "serial_bridge.yaml"
+    ])
+
+    # --- 2. URDF Processing ---
     robot_description_content = ParameterValue(
         Command([
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -25,53 +33,58 @@ def generate_launch_description():
         value_type=str
     )
 
-    # 1. Robot State Publisher (Required for Controller Manager)
+    # --- 3. Core Nodes ---
+    
+    # Publishes transforms and silences the root link inertia warning
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        parameters=[{"robot_description": robot_description_content}]
+        parameters=[{
+            "robot_description": robot_description_content,
+            "ignore_root_link_inertia": True
+        }]
     )
 
-    # 2. Main ros2_control_node
+    # Manages the hardware interface and controller loading
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[
-            {"robot_description": robot_description_content},
-            controllers_config
-        ],
+        parameters=[{"robot_description": robot_description_content}, controllers_config],
         output="screen"
     )
 
-    # 3. Mecca Driver Node (Your Python Logic)
+    # The Serial Bridge (Lifecycle-ready, activated in startup script)
+    serial_bridge_node = LifecycleNode(
+        package='serial_driver',
+        executable='serial_bridge',  
+        name='serial_bridge',
+        namespace='',
+        parameters=[serial_config],
+        output="screen"
+    )
+
+    # Serial translator to publish human-readable data
+    serial_translator_node = Node(
+        package='mecca_driver_node',
+        executable='serial_translator',
+        name='serial_translator',
+        output='screen'
+    )
+
+    # Custom Driver Logic for Byte-Mode Parsing
     mecca_driver_node = Node(
         package='mecca_driver_node',
         executable='mecca_driver_node',  
         name='motor_driver_node',
-        output='screen',
-        remappings=[('safe_cmd_vel', '/cmd_vel')]
-    )
-
-    # 4. Serial Bridge Node - Fixed Parameter Types
-    serial_bridge_node = Node(
-        package='serial_driver',
-        executable='serial_bridge',  
-        name='serial_bridge',
-        parameters=[{
-            'device_name': '/dev/ttyUSB0',
-            'baud_rate': 115200,      # Baud rate is usually an integer
-            'flow_control': 'none',
-            'parity': 'none',
-            'stop_bits': '1',         # MUST BE STRING
-            'data_bits': '8'          # MUST BE STRING
-        }],
         output='screen'
     )
 
-    # 5. Spawner for Mecanum Drive Controller
+    # --- 4. Delayed Spawner ---
+    # We keep a 6-second delay here to ensure the shell script has finished 
+    # the 'configure' and 'activate' steps before the controller starts up.
     mecanum_controller_spawner = TimerAction(
-        period=3.0,
+        period=6.0,
         actions=[
             Node(
                 package="controller_manager",
@@ -86,5 +99,6 @@ def generate_launch_description():
         ros2_control_node,
         mecca_driver_node,
         serial_bridge_node,
+        serial_translator_node,
         mecanum_controller_spawner
     ])

@@ -1,0 +1,17 @@
+serial_bridge:
+  ros__parameters:
+    # Physical Connection
+    device_name: "/dev/ttyUSB0"
+    baud_rate: 115200
+    flow_control: "none"
+    parity: "none"
+    stop_bits: "1"
+    data_bits: "8"
+
+    # Data Handling (Byte Mode)
+    use_native_type: true
+    
+    # Critical for real-time feedback loop
+    # This prevents the bridge from waiting for a large buffer to fill
+    receive_timeout_ms: 1
+    receiver_buffer_size: 1  # Publish every byte immediately

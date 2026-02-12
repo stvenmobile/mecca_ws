@@ -26,7 +26,8 @@ setup(
     entry_points={
         'console_scripts': [
             # format: 'alias = module_folder.filename_without_extension:main_function'
-            'mecca_driver_node = mecca_driver_node.mecca_driver_node:main'
+            'mecca_driver_node = mecca_driver_node.mecca_driver_node:main',
+            'serial_translator = mecca_driver_node.serial_translator_node:main'
         ],
     },
 )
