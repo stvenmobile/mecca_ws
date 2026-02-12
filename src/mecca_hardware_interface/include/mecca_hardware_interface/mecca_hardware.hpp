@@ -38,6 +38,12 @@ private:
     double velocity = 0.0;
   };
 
+  // Needed for velocity calcs
+  rclcpp::Time last_timestamp_;
+  std::vector<double> last_positions_;
+  bool first_read_ = true;
+    
+
   std::vector<JointState> hw_states_;
   std::vector<double> hw_commands_;
 
@@ -57,11 +63,10 @@ private:
   const double RADS_PER_TICK = (2.0 * M_PI) / TICKS_PER_REV;
   
   // Command Scaling (From Python Script)
-  // The STM32 expects integers around 0-1100 range roughly corresponding to mm/s or raw PWM?
-  // Python script: scaled_x = linear_x * MAX_SPEED * speed_scale
-  // If we assume linear_x is m/s, and MAX_SPEED=1100.
-  // Let's deduce the conversion factor.
-  const double CMD_SCALE_FACTOR = 2500.0; // Increased to 2500 (Max 3000) for full power
+  // The STM32 expects integers in mm/s for PID control.
+  // ROS uses m/s.
+  // 1 m/s = 1000 mm/s.
+  const double CMD_SCALE_FACTOR = 500.0; // Corrected to 1000 to match mm/s
 };
 
 }  // namespace mecca_hardware_interface

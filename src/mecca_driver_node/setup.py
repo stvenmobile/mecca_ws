@@ -1,4 +1,4 @@
-from setuptools import setup, find_packages
+from setuptools import find_packages, setup
 import os
 from glob import glob
 
@@ -7,29 +7,26 @@ package_name = 'mecca_driver_node'
 setup(
     name=package_name,
     version='0.0.1',
-    packages=find_packages(include=[package_name, f'{package_name}.*']),
+    # find_packages handles the nested folder structure
+    packages=find_packages(exclude=['test']),
     data_files=[
+        ('share/ament_index/resource_index/packages',
+            ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        ('share/' + package_name + '/config', glob('config/*.yaml')),
-        ('share/ament_index/resource_index/packages', ['resource/' + package_name]),
-        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
-        (os.path.join('lib', package_name), glob('scripts/*.py')),
+        # Correctly installs the config folder for controllers.yaml
+        (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
     ],
     install_requires=['setuptools'],
-    extras_require={
-        'test': ['pytest'],
-    },
     zip_safe=True,
-    maintainer='steve phillips',
-    maintainer_email='stvenmobile@gmail.com',
-    description='ROS2 Node for Motor Driver Communication',
-    license='MIT',
+    maintainer='steve',
+    maintainer_email='steve@todo.todo',
+    description='Driver node for Mecca robot STM32 bridge',
+    license='Apache-2.0',
+    # tests_require removed to eliminate the UserWarning
     entry_points={
         'console_scripts': [
-            'mecca_driver_node = mecca_driver_node.mecca_driver_node:main',          # Fixed
-            'simple_serial = mecca_driver_node.simple_serial:main',                 # Fixed  
-            'led_controller_node = mecca_driver_node.led_controller_node:main',     # Fixed
-            'print_controller_parameters = scripts.print_controller_parameters:main',
+            # format: 'alias = module_folder.filename_without_extension:main_function'
+            'mecca_driver_node = mecca_driver_node.mecca_driver_node:main'
         ],
     },
 )
