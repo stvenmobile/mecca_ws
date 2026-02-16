@@ -1,25 +1,19 @@
 from launch import LaunchDescription
 from launch.actions import TimerAction
-from launch_ros.actions import LifecycleNode, Node
+from launch_ros.actions import Node
 from launch.substitutions import Command, PathJoinSubstitution, FindExecutable
 from launch_ros.substitutions import FindPackageShare
 from launch_ros.parameter_descriptions import ParameterValue
 
 def generate_launch_description():
-    # --- 1. Path Resolutions ---
+    # 1. Path to your unified controllers.yaml
     controllers_config = PathJoinSubstitution([
         FindPackageShare("mecca_driver_node"),
         "config",
         "controllers.yaml"
     ])
 
-    serial_config = PathJoinSubstitution([
-        FindPackageShare("mecca_driver_node"),
-        "config",
-        "serial_bridge.yaml"
-    ])
-
-    # --- 2. URDF Processing ---
+    # 2. Generate robot_description from xacro
     robot_description_content = ParameterValue(
         Command([
             PathJoinSubstitution([FindExecutable(name="xacro")]),
@@ -33,63 +27,67 @@ def generate_launch_description():
         value_type=str
     )
 
-    # --- 3. Core Nodes ---
-    
-    # Publishes transforms and silences the root link inertia warning
+    # 3. Robot State Publisher
     robot_state_publisher_node = Node(
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        parameters=[{
-            "robot_description": robot_description_content,
-            "ignore_root_link_inertia": True
-        }]
+        parameters=[{"robot_description": robot_description_content}]
     )
 
-    # Manages the hardware interface and controller loading
+    # 4. Main ros2_control_node (Controller Manager)
+    # It MUST load the controllers_config to know the 'type' of each controller
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
-        parameters=[{"robot_description": robot_description_content}, controllers_config],
+        parameters=[
+            {"robot_description": robot_description_content},
+            controllers_config
+        ],
         output="screen"
     )
 
-    # The Serial Bridge (Lifecycle-ready, activated in startup script)
-    serial_bridge_node = LifecycleNode(
-        package='serial_driver',
-        executable='serial_bridge',  
-        name='serial_bridge',
-        namespace='',
-        parameters=[serial_config],
-        output="screen"
-    )
-
-    # Serial translator to publish human-readable data
-    serial_translator_node = Node(
-        package='mecca_driver_node',
-        executable='serial_translator',
-        name='serial_translator',
-        output='screen'
-    )
-
-    # Custom Driver Logic for Byte-Mode Parsing
-    mecca_driver_node = Node(
-        package='mecca_driver_node',
-        executable='mecca_driver_node',  
-        name='motor_driver_node',
-        output='screen'
-    )
-
-    # --- 4. Delayed Spawner ---
-    # We keep a 6-second delay here to ensure the shell script has finished 
-    # the 'configure' and 'activate' steps before the controller starts up.
+    # 5. Spawner for Mecanum Drive Controller
+    # Remaps the stamped 'reference' topic to standard '/cmd_vel'
     mecanum_controller_spawner = TimerAction(
-        period=6.0,
+        period=3.0,
         actions=[
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=["mecanum_drive_controller"]
+                arguments=[
+                    "mecanum_drive_controller",
+                    "--controller-ros-args=-p use_stamped_vel:=false", # Single string, no spaces between flag and value
+                ],
+                remappings=[
+                    ('/mecanum_drive_controller/reference', '/cmd_vel'),
+                ]
+            )
+        ]
+    )
+
+    # 6. Spawner for Joint State Broadcaster
+    joint_broadcaster_spawner = TimerAction(
+        period=3.5,
+        actions=[
+            Node(
+                package="controller_manager",
+                executable="spawner",
+                arguments=["joint_broad"]
+            )
+        ]
+    )
+
+    # 7. LED Controller Node
+    # Starts the WS2812 animation controller
+    led_controller_node = TimerAction(
+        period=4.0, # Starts slightly after the joint broadcaster
+        actions=[
+            Node(
+                package="mecca_driver_node",
+                executable="led_controller_node",
+                name="led_controller",
+                output="screen"
             )
         ]
     )
@@ -97,8 +95,7 @@ def generate_launch_description():
     return LaunchDescription([
         robot_state_publisher_node,
         ros2_control_node,
-        mecca_driver_node,
-        serial_bridge_node,
-        serial_translator_node,
-        mecanum_controller_spawner
+        mecanum_controller_spawner,
+        joint_broadcaster_spawner,
+        led_controller_node # 🏁 Added to the list
     ])

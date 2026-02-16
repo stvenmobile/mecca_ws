@@ -17,20 +17,20 @@ const std::string HARDWARE_VERSION = "3.0.0";
 
 hardware_interface::CallbackReturn MeccaHardware::on_init(const hardware_interface::HardwareInfo & info)
 {
-  if (hardware_interface::SystemInterface::on_init(info) != hardware_interface::CallbackReturn::SUCCESS) {
-    return hardware_interface::CallbackReturn::ERROR;
-  }
+  // In newer Jazzy, we don't call the base class init manually. 
+  // The framework handles it. We just store the info and proceed.
+  this->info_ = info; 
 
-  hw_states_.resize(info.joints.size());
-  hw_commands_.resize(info.joints.size(), 0.0);
+  hw_states_.resize(info_.joints.size());
+  hw_commands_.resize(info_.joints.size(), 0.0);
 
-  for (const auto & [name, value] : info.hardware_parameters) {
+  for (const auto & [name, value] : info_.hardware_parameters) {
     if (name == "wheel_radius") wheel_radius_ = std::stod(value);
     else if (name == "wheel_separation_x") wheel_separation_x_ = std::stod(value);
     else if (name == "wheel_separation_y") wheel_separation_y_ = std::stod(value);
   }
 
-  RCLCPP_INFO(rclcpp::get_logger("MeccaHardware"), "MeccaHardware Version: %s (USB Validated)", HARDWARE_VERSION.c_str());
+  RCLCPP_INFO(rclcpp::get_logger("MeccaHardware"), "MeccaHardware Version: %s (Jazzy Framework Init)", HARDWARE_VERSION.c_str());
   return hardware_interface::CallbackReturn::SUCCESS;
 }
 
@@ -73,14 +73,12 @@ hardware_interface::return_type MeccaHardware::read(const rclcpp::Time &, const 
 {
   if (serial_port_ < 0) return hardware_interface::return_type::OK;
 
-  // 1. Send Request at 10Hz with CRLF matching Python test
   static int req_cnt = 0;
   if (req_cnt++ % 10 == 0) {
     const char* req = "I ENC\r\n";
     ::write(serial_port_, req, strlen(req));
   }
 
-  // 2. Read into buffer
   char buf[512];
   int n = ::read(serial_port_, buf, sizeof(buf) - 1);
   
@@ -88,7 +86,6 @@ hardware_interface::return_type MeccaHardware::read(const rclcpp::Time &, const 
     buf[n] = 0;
     serial_buffer_ += buf;
     
-    // 3. Process complete lines
     size_t pos;
     while ((pos = serial_buffer_.find_first_of("\r\n")) != std::string::npos) {
       std::string line = serial_buffer_.substr(0, pos);
@@ -114,7 +111,6 @@ void MeccaHardware::parseSerialData(const std::string & line) {
     if (p3) m3 = atoi(p3 + 3);
     if (p4) m4 = atoi(p4 + 3);
     
-    // 1. Get current time and calculate delta-t
     rclcpp::Time current_time = rclcpp::Clock().now();
     
     if (first_read_) {
@@ -125,14 +121,12 @@ void MeccaHardware::parseSerialData(const std::string & line) {
 
     double dt = (current_time - last_timestamp_).seconds();
     
-    // 2. Map current positions (using the verified M4, M2, M3, M1 order)
     double current_pos[4];
     current_pos[0] = m4 * RADS_PER_TICK; // FL
     current_pos[1] = m2 * RADS_PER_TICK; // FR
     current_pos[2] = m3 * RADS_PER_TICK; // RL
     current_pos[3] = m1 * RADS_PER_TICK; // RR
 
-    // 3. Calculate Velocities (rad/s)
     if (dt > 0.0) {
         for (size_t i = 0; i < 4; i++) {
             hw_states_[i].velocity = (current_pos[i] - last_positions_[i]) / dt;
@@ -171,7 +165,6 @@ hardware_interface::return_type MeccaHardware::write(const rclcpp::Time &, const
 
 bool MeccaHardware::openSerialPort(const std::string & port_name, int baud_rate)
 {
-    // Use O_NDELAY for non-blocking open
     serial_port_ = ::open(port_name.c_str(), O_RDWR | O_NOCTTY | O_NDELAY); 
     if (serial_port_ < 0) return false;
 
@@ -183,7 +176,6 @@ bool MeccaHardware::openSerialPort(const std::string & port_name, int baud_rate)
 
     cfmakeraw(&tty);
     
-    // Select speed based on parameter to fix unused parameter warning
     speed_t speed = B115200;
     if (baud_rate == 9600) speed = B9600;
     else if (baud_rate == 57600) speed = B57600;
@@ -194,7 +186,6 @@ bool MeccaHardware::openSerialPort(const std::string & port_name, int baud_rate)
     tty.c_cflag &= ~CRTSCTS;
     tty.c_cflag |= (CLOCAL | CREAD);
     
-    // Immediate return for non-blocking loop
     tty.c_cc[VMIN]  = 0;
     tty.c_cc[VTIME] = 0; 
 
