@@ -13,8 +13,8 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
         ('share/' + package_name, ['package.xml']),
-        # Correctly installs the config folder for controllers.yaml
         (os.path.join('share', package_name, 'config'), glob('config/*.yaml')),
+        (os.path.join('share', package_name, 'launch'), glob('launch/*.py')),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
@@ -22,7 +22,6 @@ setup(
     maintainer_email='steve@todo.todo',
     description='Driver node for Mecca robot STM32 bridge',
     license='Apache-2.0',
-    # tests_require removed to eliminate the UserWarning
     entry_points={
     'console_scripts': [
         'mecca_driver_node = mecca_driver_node.mecca_driver_node:main',

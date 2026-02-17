@@ -43,6 +43,8 @@ find_package(std_srvs REQUIRED)
 include_directories(
   ${SLLIDAR_SDK_PATH}/include
   ${SLLIDAR_SDK_PATH}/src
+  # Added to resolve arch/linux/arch_linux.h and sdkcommon.h
+  ${SLLIDAR_SDK_PATH}/src/arch/linux
   ${Boost_INCLUDE_DIRS}
 )
 
@@ -78,5 +80,6 @@ install(
 ament_export_dependencies(rclcpp)
 ament_export_dependencies(std_msgs)
 ament_export_dependencies(sensor_msgs)
-ament_export_include_directories(include)
+# Export the SDK include path so other packages can find it
+ament_export_include_directories(include ${SLLIDAR_SDK_PATH}/include)
 ament_package()

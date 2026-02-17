@@ -14,9 +14,10 @@ def generate_launch_description():
     ])
 
     # 2. Generate robot_description from xacro
+    # We wrap the Command in ParameterValue to force it to be treated as a raw string
     robot_description_content = ParameterValue(
         Command([
-            PathJoinSubstitution([FindExecutable(name="xacro")]),
+            FindExecutable(name="xacro"),
             " ",
             PathJoinSubstitution([
                 FindPackageShare("mecca_description"),
@@ -35,8 +36,7 @@ def generate_launch_description():
         parameters=[{"robot_description": robot_description_content}]
     )
 
-    # 4. Main ros2_control_node (Controller Manager)
-    # It MUST load the controllers_config to know the 'type' of each controller
+    # 4. Main ros2_control_node
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
