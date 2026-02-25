@@ -33,7 +33,10 @@ def generate_launch_description():
         package="robot_state_publisher",
         executable="robot_state_publisher",
         name="robot_state_publisher",
-        parameters=[{"robot_description": robot_description_content}]
+        parameters=[{
+            "robot_description": robot_description_content,
+            "use_sim_time": False  # Add this explicitly
+        }]
     )
 
     # 4. Main ros2_control_node
@@ -42,26 +45,22 @@ def generate_launch_description():
         executable="ros2_control_node",
         parameters=[
             {"robot_description": robot_description_content},
+            {"use_sim_time": False}, # Add this explicitly
             controllers_config
         ],
         output="screen"
     )
+    
 
     # 5. Spawner for Mecanum Drive Controller
-    # Remaps the stamped 'reference' topic to standard '/cmd_vel'
     mecanum_controller_spawner = TimerAction(
         period=3.0,
         actions=[
             Node(
                 package="controller_manager",
                 executable="spawner",
-                arguments=[
-                    "mecanum_drive_controller",
-                    "--controller-ros-args=-p use_stamped_vel:=false", # Single string, no spaces between flag and value
-                ],
-                remappings=[
-                    ('/mecanum_drive_controller/reference', '/cmd_vel'),
-                ]
+                arguments=["mecanum_drive_controller"],
+                # No remapping needed here anymore
             )
         ]
     )
@@ -92,10 +91,43 @@ def generate_launch_description():
         ]
     )
 
+    # 8. Add the path to your joy_teleop config
+    joy_teleop_config = PathJoinSubstitution([
+        FindPackageShare("mecca_launch"), # Move it here for best practice
+        "config",
+        "joy_teleop.yaml"
+    ])
+
+    # 9. Revised Joy Node for Jazzy
+    joy_node = Node(
+        package='joy',
+        executable='joy_node',
+        name='joy_node',
+        parameters=[{
+            'device_id': 0,             # Standard for /dev/input/js0
+            'deadzone': 0.05,
+            'autorepeat_rate': 20.0,    # Critical for continuous cmd_vel
+        }]
+    )
+
+    # 10. Teleop Node - FORCED TO STAMPED
+    teleop_node = Node(
+        package='teleop_twist_joy',
+        executable='teleop_node',
+        name='teleop_twist_joy_node',
+        parameters=[
+            joy_teleop_config, 
+            {'publish_stamped_twist': True} # This is the magic switch
+        ],
+        remappings=[('/cmd_vel', '/mecanum_drive_controller/reference')]
+    )
+
     return LaunchDescription([
         robot_state_publisher_node,
         ros2_control_node,
         mecanum_controller_spawner,
         joint_broadcaster_spawner,
-        led_controller_node # 🏁 Added to the list
+        led_controller_node,
+        joy_node,   
+        teleop_node
     ])

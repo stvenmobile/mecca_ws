@@ -15,21 +15,22 @@ def generate_launch_description():
             name='joy_node',
             output='screen',
             parameters=[{
-                'dev': '/dev/input/js0', # Default joystick device. Adjust if needed.
-                'deadzone': 0.05,        # Small deadzone to prevent drift. Adjust as needed.
-                'autorepeat_rate': 20.0, # Rate at which joystick messages are repeated
+                'device_filename': '/dev/input/js0', 
+                'deadzone': 0.05,
+                'autorepeat_rate': 20.0,
             }]
         ),
 
         # teleop_twist_joy node for converting joystick inputs to Twist messages
         Node(
             package='teleop_twist_joy',
-            executable='teleop_node', # The executable for teleop_twist_joy
+            executable='teleop_node', 
             name='teleop_twist_joy_node',
             output='screen',
             parameters=[joy_teleop_config],
             remappings=[
-                ('/cmd_vel', '/mecanum_drive_controller/cmd_vel_unstamped') # Assuming the mecanum controller expects cmd_vel_unstamped
+                # Updated to match the stamped input expected by the mecanum controller
+                ('/cmd_vel', '/mecanum_drive_controller/cmd_vel') 
             ]
         ),
     ])

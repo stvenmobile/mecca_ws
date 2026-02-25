@@ -18,14 +18,27 @@ mecanum_drive_controller:
     rear_right_wheel_command_joint_name: "rear_right_wheel_joint"
     
     # Use 'reference_unstamped' for standard Twist from /cmd_vel
-    use_stamped_vel: false 
+    use_stamped_vel: true
     open_loop: true
     enable_odom_tf: true
     base_frame_id: "base_link"
     odom_frame_id: "odom"
     publish_rate: 50.0
+    qos:
+      service_quality:
+        reliability: reliable
+        durability: volatile
+
 
     kinematics:
       wheel_separation_x: 0.175
       wheel_separation_y: 0.175
       wheels_radius: 0.05
+      sum_of_robot_center_projection_on_X_Y_axis: 0.25 # (length + width)/2
+
+    # Command interface configuration
+    command_interfaces:
+      - velocity
+    state_interfaces:
+      - position
+      - velocity

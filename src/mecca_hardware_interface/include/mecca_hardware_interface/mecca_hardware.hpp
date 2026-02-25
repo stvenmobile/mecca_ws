@@ -53,20 +53,20 @@ private:
   
   // Robot Parameters (Defaults, overwritten by info)
   // NOTE: These need to match the python script for consistency
-  // wheel_radius = 0.05, wheel_base = 0.175, track_width = 0.175
-  double wheel_radius_ = 0.05;
+  // wheel_radius = 0.048, wheel_base = 0.175, track_width = 0.175
+  double wheel_radius_ = 0.048;
   double wheel_separation_x_ = 0.175; // Wheel base
   double wheel_separation_y_ = 0.175; // Track width
   
   // Encoder Params
-  const double TICKS_PER_REV = 2420.0;
+  const double TICKS_PER_REV = 650.0;
   const double RADS_PER_TICK = (2.0 * M_PI) / TICKS_PER_REV;
   
   // Command Scaling (From Python Script)
   // The STM32 expects integers in mm/s for PID control.
   // ROS uses m/s.
   // 1 m/s = 1000 mm/s.
-  const double CMD_SCALE_FACTOR = 500.0; // Corrected to 1000 to match mm/s
+  const double CMD_SCALE_FACTOR = 1000.0; // Corrected to 1000 to match mm/s
 };
 
 }  // namespace mecca_hardware_interface
