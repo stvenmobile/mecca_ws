@@ -18,61 +18,35 @@ This is a **ROS2 Jazzy** project supporting a **Mecanum Wheels** robot.
 - [How to Use](#how-to-use)
 - [Future Enhancements](#future-enhancements)
 
----
-## <a name='SystemOverview'></a>System Overview
-
-Mecca operates in two distinct modes depending on the use case:
-
-**Joystick Teleop Mode** — Direct serial control, no ros2_control overhead:
-- Joystick input → `teleop_twist_joy` → `teleop_serial_bridge_node` → `simple_serial_node` → STM32
-- Responsive, no cmd_vel timeout issues, LED strip reflects motion state
-
-**SLAM / Autonomous Nav Mode** — Full ros2_control stack for Nav2 integration:
-- `ros2_control` + `mecanum_drive_controller` manages wheel velocity commands
-- Hardware interface (`mecca_hardware_interface`) handles serial I/O at 30 Hz
-- Alternates velocity commands (`V vx vy vz`) with encoder polls (`I ENC`) each cycle
-- `open_loop: true` — velocity commanded from reference, odometry integration planned
-
-The **STM32 controller board** listens on the serial port for motor commands from the Raspberry Pi and uses a **PID algorithm** to maintain precise wheel speeds.
-
----
-## <a name='HardwareComponents'></a>Hardware Components <!-- omit in toc -->
-
-| #  | Item                                                         |
-|----|--------------------------------------------------------------|
-| 1  | HiWonder Large Metal 4WD Vehicle Chassis with Mecanum Wheels |
-| 1  | Yahboom YB-ERF01-V3.0 STM32 robot controller                |
-| 1  | Raspberry Pi 5 running Ubuntu 24.04 and ROS2 Jazzy           |
-| 4  | JGB37-520 12V 205RPM Motors with Encoders                    |
-| 1  | SLLIDAR A1 (LIDAR for SLAM)                                  |
-| 1  | VL53L1X Range Sensor (ToF, future obstacle avoidance)        |
-| 1  | WS2812 Strip RGB (7 LEDs)                                    |
-| 1  | 8BitDo Ultimate C 2.4G Wireless Controller with USB dongle   |
-| 1  | 12V Volt Meter for battery status indication                 |
-| 1  | 11.1V 3S LiPo Battery                                        |
-| 1  | Double Pole Double Throw rocker switch                       |
-| 1  | Panel mount banana jack for bench power supply input         |
-| 1  | USB-A to USB-C cable (STM32 to Raspberry Pi)                 |
-
----
-## <a name='ChassisandConstruction'></a>Chassis and Construction
-- The **aluminum chassis and mecanum wheels** were obtained from HiWonder as part of this kit:
-  - [Hiwonder Large Metal 4WD Vehicle Chassis](https://www.hiwonder.com/products/large-metal-4wd-vehicle-chassis-green)
-- The motors were later replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board.
-  - [Yahboom JGB37-520 Motors](https://category.yahboom.net/products/md520)
+@mecca:~/mecca_ws$ git log --oneline --graph --all--- * a2401e4 (HEAD -> main) Updated README.md file.## <a name='SystemOverview'></a>System Overview
+| * a4714ad (origin/main, origin/HEAD) Added simpole_serial.py for joystick mode, along with joystick_teleop.launch.py. / Mecca operates in two distinct modes depending on the use case:
+* 5910057 Ros Control updates **Joystick Teleop Mode** — Direct serial control, no ros2_control overhead: - Joystick input → `teleop_twist_joy` → `teleop_serial_bridge_node` → `simple_serial_node` → 
+STM32 - Responsive, no cmd_vel timeout issues, LED strip reflects motion state * 3464753 deleted extraneous file. **SLAM / Autonomous Nav Mode** — Full ros2_control stack for Nav2 integration: - 
+`ros2_control` + `mecanum_drive_controller` manages wheel velocity commands - Hardware interface (`mecca_hardware_interface`) handles serial I/O at 30 Hz - Alternates velocity commands (`V vx vy vz`) 
+with encoder polls (`I ENC`) each cycle - `open_loop: true` — velocity commanded from reference, odometry integration planned * 8fbee99 Fixed repository structure: moved .git to workspace root The 
+**STM32 controller board** listens on the serial port for motor commands from the Raspberry Pi and uses a **PID algorithm** to maintain precise wheel speeds. * 484ab90 Updates to 
+setup.py/CMakeLists.txt. --- * 0a7da0a Finalized standard ROS 2 structure and cleaned up nesting## <a name='HardwareComponents'></a>Hardware Components <!-- omit in toc --> * c3fec41 Working on LED 
+Controller * 592c93f Updated serial bridege and necca_driver_node communicaitons.| # | Item | * a66bd45 Changing to ROS2 Control instead of simple serial 
+python.|----|--------------------------------------------------------------| * 9da6e54 Invert Rotation to fix motor wiring swap| 1 | HiWonder Large Metal 4WD Vehicle Chassis with Mecanum Wheels | * 
+3b3e7a9 Invert X direction and boost power to 2500| 1 | Yahboom YB-ERF01-V3.0 STM32 robot controller | * 60f6e7c Boost CMD_SCALE_FACTOR to 1500 to overcome friction| 1 | Raspberry Pi 5 running Ubuntu 
+24.04 and ROS2 Jazzy | * 4e4bf60 Reduce speed scale for smoother control| 4 | JGB37-520 12V 205RPM Motors with Encoders | * a2c65a2 Implement serial communication in hardware interface| 1 | SLLIDAR A1 
+(LIDAR for SLAM) | * 3218c34 Fix ros2_control configuration and launch files for successful bringup| 1 | VL53L1X Range Sensor (ToF, future obstacle avoidance) | * b954f28 Confirmed Jazzy Golden Build 
+for Mecca| 1 | WS2812 Strip RGB (7 LEDs) | * c24bcd4 Updated changes for SLAM navigation.| 1 | 8BitDo Ultimate C 2.4G Wireless Controller with USB dongle | * 01e0ba3 Updated launch files.| 1 | 12V Volt 
+Meter for battery status indication | * 7107b66 Launch file updates.| 1 | 11.1V 3S LiPo Battery | * 64a7ee0 Updated mecca_driver_node.py.| 1 | Double Pole Double Throw rocker switch | * e8aad21 Adding 
+launch file for navigation.| 1 | Panel mount banana jack for bench power supply input | * c4c737b Updated urdf, and minor cleanups.| 1 | USB-A to USB-C cable (STM32 to Raspberry Pi) | * 8092589 
+Resolving comflict with math.py. ---
+|\ ## <a name='ChassisandConstruction'></a>Chassis and Construction * f0c88e6 Restructure mecca_driver_node layout and enable colcon test compatibility- The **aluminum chassis and mecanum wheels** were 
+| obtained from HiWonder as part of this kit:
+* | ebd0a18 Add physical launch file - mecca_launch.py.  - [Hiwonder Large Metal 4WD Vehicle Chassis](https://www.hiwonder.com/products/large-metal-4wd-vehicle-chassis-green) - The motors were later 
+replaced with **Yahboom JGB37-520 motors** for better integration with the STM32 board. * | 6f40ac4 Cleanup unused directory.  - [Yahboom JGB37-520 Motors](https://category.yahboom.net/products/md520) 
 - Additional **3D-printed components** were added to extend the chassis to look like a truck cab and provide mounting for additional components.
-
----
-## <a name='Wiring'></a>Wiring
-
-### <a name='YB-ERF01-V3-0-Controller-Wiring'></a>YB-ERF01-V3.0 Controller Wiring <!-- omit in toc -->
-
-![Controller Board ](images/YB-ERF01-V3.0.png)
-
-| Reference | Connection |
-|-----------|------------------------------------------------|
-| 1. | The Deans connector is connected to the center poles of the DPDT Rocker Switch. |
-| 4. | The USB-C connector is connected to one of the USB-A ports on the Raspberry Pi. |
+|/
+* 00c4e52 Remove unused config directory from mecca_description--- * 9f6d998 Minor updates to launch file## <a name='Wiring'></a>Wiring * 3bd514c hardware interface updates. * c2f7e45 working on 
+hardware interface.### <a name='YB-ERF01-V3-0-Controller-Wiring'></a>YB-ERF01-V3.0 Controller Wiring <!-- omit in toc --> * fd8410e Initial version of mecca_hardware_interface for ROS COntrol. * 
+c8515cd fixing wheel orientation.![Controller Board ](images/YB-ERF01-V3.0.png) * a15e899 Refined wheel orientation, joystick behavior, and removed deprecated packages * e8ecb41 Add missing startup 
+script for systemd robot service| Reference | Connection | * cffd693 updating with latest driver packages from physical robot|-----------|------------------------------------------------| * 80b2243 
+Updated dev workspace structure for ROS2 Jazzy.| 1. | The Deans connector is connected to the center poles of the DPDT Rocker Switch. |
+:| 4. | The USB-C connector is connected to one of the USB-A ports on the Raspberry Pi. |
 | 5. | The USB-C connector on the controller board is connected to the USB-C power input jack on the Raspberry Pi 5. |
 | 6. | The 5V barrel jack output is connected to the Vin and GND for the WS2812 RGB LED strip. |
 | 10. | The power switch on the controller board is left in the ON position. |
