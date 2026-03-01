@@ -25,7 +25,9 @@ setup(
     entry_points={
     'console_scripts': [
         'mecca_driver_node = mecca_driver_node.mecca_driver_node:main',
-        'led_controller_node = mecca_driver_node.led_controller_node:main'
+        'led_controller_node = mecca_driver_node.led_controller_node:main',
+        'simple_serial_node = mecca_driver_node.simple_serial:main',
+        'teleop_serial_bridge_node = mecca_driver_node.teleop_serial_bridge_node:main',
     ],
     },
 )

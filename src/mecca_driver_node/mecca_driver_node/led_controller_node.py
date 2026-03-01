@@ -1,298 +1,269 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import String
+from geometry_msgs.msg import TwistStamped
 from mecca_driver_node import ws2812
 import spidev
 import time
 import numpy as np
 from numpy import sin, pi
 import threading
+import queue
 
-# Define LED strip configuration
-LED_COUNT = 7  # Number of LEDs in your strip
-SPI_BUS = 0     # SPI bus number
-SPI_DEVICE = 0  # SPI device number
+LED_COUNT  = 7
+SPI_BUS    = 0
+SPI_DEVICE = 0
+
+# Velocity thresholds for state classification
+_LIN_THRESH = 0.02   # m/s   — ignore linear velocities below this
+_ROT_THRESH = 0.05   # rad/s — ignore rotation below this
+_K          = 0.175  # m     — (wheel_sep_x + wheel_sep_y) / 2; scales angular to linear for comparison
 
 
 class LEDControllerNode(Node):
+
     def __init__(self):
         super().__init__('led_controller_node')
+        self.num_leds = LED_COUNT
 
-        # Define LED count properly
-        self.num_leds = LED_COUNT  # Use the global constant defined at the top
-
-        # Initialize SPI for LED control
         self.spi = spidev.SpiDev()
         self.spi.open(SPI_BUS, SPI_DEVICE)
-        self.spi.max_speed_hz = 6400000  # 8MHz SPI clock
+        self.spi.max_speed_hz = 6400000
 
-        self.get_logger().info("LED Controller Node Started")
+        self._state          = 'stop'
+        self._stop_event     = threading.Event()
+        self._current_thread: threading.Thread | None = None
 
-        # Run startup sequence
+        # State changes are handled in a worker thread so _reference_cb
+        # never blocks the ROS spin loop (thread.join in _start_animation
+        # can take up to 600 ms, which delays message delivery and triggers
+        # the mecanum controller's cmd_vel_timeout → V 0 0 0 → motors stop).
+        self._state_queue  = queue.Queue(maxsize=1)
+        self._state_worker = threading.Thread(target=self._state_worker_fn,
+                                              daemon=True, name='led_state_worker')
+        self._state_worker.start()
+
+        self.get_logger().info('LED Controller Node Started')
+
         self.startup_sequence()
+        self._set_state('stop')
 
-        # Set initial state to stopped (white lights)
-        self.set_leds((255, 255, 255))
+        # Automatic state-driven LEDs from motion commands
+        self.create_subscription(
+            TwistStamped,
+            '/mecanum_drive_controller/reference',
+            self._reference_cb,
+            10)
 
-        # ROS2 subscriber for LED commands
-        self.create_subscription(String, 'led_commands', self.led_command_callback, 10)
+        # Manual override topic (testing / external control)
+        self.create_subscription(String, 'led_commands', self._led_command_cb, 10)
 
+    # ── State machine ──────────────────────────────────────────────────────────
 
-    def led_command_callback(self, msg):
-        """Handle incoming commands and trigger corresponding LED effects."""
-        command = msg.data.strip().lower()
-        if command == "fwd":
-            self.set_forward_effect()
-        elif command == "bwd":
-            self.set_backward_effect()
-        elif command == "left":
-            self.set_turn_effect("LEFT")
-        elif command == "right":
-            self.set_turn_effect("RIGHT")
-        elif command == "stop":
-            self.set_stop_effect()
-        elif command == "start":
-            self.startup_sequence()
-        elif command == "rainbow":
-            self.set_rainbow_wave_effect()
-        elif command == "test":
-            self.run_test_sequence()
-        elif command == "idle":
-            pass  # do nothing for idle
+    def _classify(self, twist):
+        """Classify a Twist into a motion-state string."""
+        lx = twist.linear.x
+        ly = twist.linear.y
+        az = twist.angular.z
+
+        if abs(lx) < _LIN_THRESH and abs(ly) < _LIN_THRESH and abs(az) < _ROT_THRESH:
+            return 'stop'
+
+        # Scale angular to equivalent wheel-rim speed for fair comparison
+        az_equiv = abs(az) * _K
+
+        if abs(lx) >= abs(ly) and abs(lx) >= az_equiv:
+            return 'forward' if lx > 0 else 'reverse'
+        if abs(ly) >= abs(lx) and abs(ly) >= az_equiv:
+            return 'strafe_left' if ly > 0 else 'strafe_right'
+        return 'rotate_left' if az > 0 else 'rotate_right'
+
+    def _state_worker_fn(self):
+        """Consume state changes off the queue without blocking the ROS spin thread."""
+        while True:
+            try:
+                state = self._state_queue.get(timeout=0.5)
+                self._set_state(state)
+            except queue.Empty:
+                pass
+
+    def _reference_cb(self, msg: TwistStamped):
+        new_state = self._classify(msg.twist)
+        if new_state != self._state:
+            self._state = new_state          # optimistic update — deduplicates rapid changes
+            try:
+                self._state_queue.put_nowait(new_state)
+            except queue.Full:
+                pass                         # a state change is already queued; drop this one
+
+    def _set_state(self, state: str):
+        self._state = state
+        self.get_logger().debug(f'LED state → {state}')
+        effects = {
+            'forward':      self._anim_forward,
+            'reverse':      self._anim_reverse,
+            'strafe_left':  lambda: self._anim_scroll((0, 255, 0),    forward=True),
+            'strafe_right': lambda: self._anim_scroll((0, 255, 0),    forward=False),
+            'rotate_left':  lambda: self._anim_scroll((255, 165, 0),  forward=True),
+            'rotate_right': lambda: self._anim_scroll((255, 165, 0),  forward=False),
+            'stop':         self._anim_stop,
+        }
+        self._start_animation(effects.get(state, self._anim_stop))
+
+    def _start_animation(self, fn):
+        """Stop the running animation, wait for it to finish, then start fn."""
+        self._stop_event.set()
+        if self._current_thread is not None and self._current_thread.is_alive():
+            self._current_thread.join(timeout=0.6)   # wait for thread to see the event
+        self._stop_event.clear()
+        self._current_thread = threading.Thread(target=fn, daemon=True)
+        self._current_thread.start()
+
+    # ── Animations (all non-blocking; check _stop_event in loops) ─────────────
+
+    def _anim_forward(self):
+        """Blue ping-pong sweep — indicates forward motion."""
+        sequence = [
+            (1, 0, 0, 0, 0, 0, 1),
+            (0, 1, 0, 0, 0, 1, 0),
+            (0, 0, 1, 0, 1, 0, 0),
+            (0, 0, 0, 1, 0, 0, 0),
+            (0, 0, 1, 0, 1, 0, 0),
+            (0, 1, 0, 0, 0, 1, 0),
+            (1, 0, 0, 0, 0, 0, 1),
+        ]
+        while not self._stop_event.is_set():
+            for step in sequence:
+                if self._stop_event.is_set():
+                    break
+                self.update_strip([(0, 0, 255) if v else (0, 0, 0) for v in step])
+                time.sleep(0.05)
+
+    def _anim_reverse(self):
+        """Red flash — indicates reverse motion."""
+        while not self._stop_event.is_set():
+            self.update_strip([(255, 0, 0)] * self.num_leds)
+            time.sleep(0.4)
+            if self._stop_event.is_set():
+                break
+            self.update_strip([(0, 0, 0)] * self.num_leds)
+            time.sleep(0.2)
+
+    def _anim_scroll(self, color, forward=True):
+        """Sequential fill scrolling left or right.
+        Green  = strafe.
+        Orange = rotate.
+        """
+        order = range(self.num_leds) if forward else range(self.num_leds - 1, -1, -1)
+        while not self._stop_event.is_set():
+            leds = [(0, 0, 0)] * self.num_leds
+            for i in order:
+                if self._stop_event.is_set():
+                    break
+                leds[i] = color
+                self.update_strip(leds)
+                time.sleep(0.08)
+            if not self._stop_event.is_set():
+                self.update_strip([(0, 0, 0)] * self.num_leds)
+                time.sleep(0.05)
+
+    def _anim_stop(self):
+        """First and last LED white — robot idle."""
+        leds        = [(0, 0, 0)] * self.num_leds
+        leds[0]     = (255, 255, 255)
+        leds[-1]    = (255, 255, 255)
+        self.update_strip(leds)
+        # Static pattern — no loop needed
+
+    # ── Manual override (led_commands topic) ──────────────────────────────────
+
+    _CMD_MAP = {
+        'fwd':   'forward',
+        'bwd':   'reverse',
+        'left':  'strafe_left',
+        'right': 'strafe_right',
+        'stop':  'stop',
+    }
+
+    def _led_command_cb(self, msg):
+        cmd = msg.data.strip().lower()
+        if cmd == 'rainbow':
+            self._start_animation(self.set_rainbow_wave_effect)
+        elif cmd == 'test':
+            threading.Thread(target=self.run_test_sequence, daemon=True).start()
+        elif cmd in self._CMD_MAP:
+            self._set_state(self._CMD_MAP[cmd])
         else:
-            self.get_logger().warn(f"Unknown LED command: {command}")
+            self.get_logger().warn(f'Unknown LED command: {cmd}')
 
+    # ── Startup / rainbow / test ───────────────────────────────────────────────
 
     def startup_sequence(self):
-        self.set_rainbow_wave_effect()
-        time.sleep(2)
-
-    def on_shutdown(self):
-        """Turn off LEDs when the node shuts down"""
-        self.set_leds((0, 0, 0))  # Set all LEDs to black (off)
-        self.spi.close() # close the SPI channel gracefully
-        self.get_logger().info("LEDs turned off, SPI channel closed on shutdown.")
-
-
-    def set_forward_effect(self):
-        """ Forward movement effect: Hardcoded sequence for precise LED transitions. """
-
-        # Define LED sequence (0 = Off, 1 = Blue)
-        sequence = [
-            [(1, 0, 0, 0, 0, 0, 1)],  # Step 1
-            [(0, 1, 0, 0, 0, 1, 0)],  # Step 2
-            [(0, 0, 1, 0, 1, 0, 0)],  # Step 3
-            [(0, 0, 0, 1, 0, 0, 0)],  # Step 4 (Center flash)
-            [(0, 0, 1, 0, 1, 0, 0)],  # Step 5
-            [(0, 1, 0, 0, 0, 1, 0)],  # Step 6
-            [(1, 0, 0, 0, 0, 0, 1)]   # Step 7 (Back to start)
-        ]
-
-        end_time = time.time() + 1.0
-        while time.time() < end_time:
-            for step in sequence:
-                led_array = [(0, 0, 255) if val else (0, 0, 0) for val in step[0]]
-                self.update_strip(led_array)
-                time.sleep(0.03)  # Adjust delay for smoother effect
-
-            # time.sleep(0.5)  # Small pause before repeating the sequence
-
-
-    def set_backward_effect(self):
-        """BWD: Flashes red at 0.5s intervals for 2 seconds."""
-        red_array = [(255, 0, 0)] * LED_COUNT
-        off_array = [(0, 0, 0)] * LED_COUNT
-        end_time = time.time() + 1.0
-        while time.time() < end_time:
-            self.set_leds((255, 0, 0))  # Red
-            self.update_strip(red_array)
-            time.sleep(0.5)
-            self.set_leds((0, 0, 0))    # Off
-            self.update_strip(off_array)
-            time.sleep(0.3)
-        self.set_leds((0, 0, 0))
-        self.update_strip(off_array)
-
-
-    def set_turn_effect(self, direction):
-        """ Green scrolling effect: moves left/right based on turn direction """
-        off_array = [(0, 0, 0)] * LED_COUNT
-        end_time = time.time() + 1.0
-        # Stop any previously running turn effect
-        time.sleep(0.1)  # Allow any old animation to stop
-        led_array = [(0, 0, 0)] * LED_COUNT  # Start with all off
-
-        if direction == "LEFT":
-            while time.time() < end_time:
-                for i in range(self.num_leds):
-                    led_array[i] = (0, 255, 0)  # Green
-                    self.update_strip(led_array)
-                    time.sleep(0.10)  # Adjust scrolling speed
-                # self.set_leds((0, 0, 0))
-                self.update_strip([(0, 0, 0)] * self.num_leds)
-
-        elif direction == "RIGHT":
-            while time.time() < end_time:
-                for i in reversed(range(self.num_leds)):
-                    led_array[i] = (0, 255, 0)  # Green
-                    self.update_strip(led_array)
-                    time.sleep(0.10)  # Adjust scrolling speed
-                # self.set_leds((0, 0, 0))
-                self.update_strip([(0, 0, 0)] * self.num_leds)
-
-        # **🚀 Exit condition: Turn off LEDs when turning stops**
-        self.update_strip(off_array)
-
-
-
-    def set_stop_effect(self):
-        """ Stop effect: Only first and last LED white to conserve power """
-
-        self.turning = False  # Stop any running turn animation
-        time.sleep(0.1)  # Small delay to ensure the previous animation stops
-
-        led_array = [(0, 0, 0)] * self.num_leds  # Start with all off
-        led_array[0] = (255, 255, 255)  # First LED White
-        led_array[-1] = (255, 255, 255)  # Last LED White
-        self.update_strip(led_array)
-
-        # self.get_logger().info("Stopped all animations and reset to STOP effect.")
-
+        self.set_rainbow_wave_effect(duration=2)
+        time.sleep(2.5)
 
     def set_rainbow_wave_effect(self, duration=6):
-        """ Rainbow wave effect that runs for a set duration and then turns off. """
-
-        self.running_effect = False  # Stop any previously running effect
-        time.sleep(0.1)  # Small delay to ensure old animation stops
-
-        self.running_effect = True  # Indicate an active effect
-        tStart = time.time()
+        self._stop_event.set()
+        if self._current_thread is not None and self._current_thread.is_alive():
+            self._current_thread.join(timeout=0.6)
+        self._stop_event.clear()
+        tStart  = time.time()
         indices = 4 * np.array(range(self.num_leds), dtype=np.uint32) * pi / self.num_leds
-        period0, period1, period2 = 2.0, 2.1, 2.2  # Slight offsets for smooth transitions
+        stop    = self._stop_event   # capture reference for the thread
 
-        def animate_rainbow():
-            while self.running_effect and (time.time() - tStart < duration):
+        def _run():
+            period0, period1, period2 = 2.0, 2.1, 2.2
+            while not stop.is_set() and (time.time() - tStart < duration):
                 t = time.time() - tStart
                 f = np.zeros((self.num_leds, 3))
-
-                # Generate sinusoidal color wave
-                f[:, 0] = sin(2 * pi * t / period0 + indices)  # Red channel
-                f[:, 1] = sin(2 * pi * t / period1 + indices)  # Green channel
-                f[:, 2] = sin(2 * pi * t / period2 + indices)  # Blue channel
-
-                # Normalize and scale intensity
+                f[:, 0] = sin(2 * pi * t / period0 + indices)
+                f[:, 1] = sin(2 * pi * t / period1 + indices)
+                f[:, 2] = sin(2 * pi * t / period2 + indices)
                 f = (255 * ((f + 1.0) / 2.0)).astype(np.uint8)
-
-                # Convert to list and update LED strip
                 self.update_strip([tuple(c) for c in f])
-
-                time.sleep(0.05)  # Controls speed of the wave effect
-
-            # Ensure LEDs turn off after effect completes
+                time.sleep(0.05)
             self.update_strip([(0, 0, 0)] * self.num_leds)
-            self.get_logger().info("Rainbow effect completed, LEDs turned off.")
+            self.get_logger().info('Rainbow effect complete.')
 
-        # Run the effect in a separate thread
-        threading.Thread(target=animate_rainbow, daemon=True).start()
+        self._current_thread = threading.Thread(target=_run, daemon=True)
+        self._current_thread.start()
 
-
-    def color_sequence(self):
-        led_array = [(0, 0, 0)] * LED_COUNT
-        """Flash the LED strip Red → Blue → Green three times"""
-
-        sequence = [(255, 0, 0), (0, 0, 255), (0, 255, 0)]  # Red → Blue → Green
-        # self.get_logger().info(f"LED_COUNT: {LED_COUNT}")
-        for _ in range(2):  # Three cycles
-            for color in sequence:
-                self.set_leds(color)
-                self.update_strip([(color)] * LED_COUNT)  # Force update
-                time.sleep(0.5)  # Half-second delay
-            time.sleep(0.5)
-        self.set_leds((0, 0, 0))    # Off
-        self.update_strip(led_array)
-
-
-    #########################################################
-    # Test each light pattern for seven seconds in sequence #
-    #########################################################
     def run_test_sequence(self):
-        self.get_logger().info("Starting LED Test Sequence")
-        self.color_sequence()
-        time.sleep(3)
+        self.get_logger().info('Starting LED test sequence')
+        for state in ['forward', 'reverse', 'strafe_left', 'strafe_right',
+                      'rotate_left', 'rotate_right', 'stop']:
+            self.get_logger().info(f'  Testing: {state}')
+            self._set_state(state)
+            time.sleep(3)
+        self.get_logger().info('LED test sequence complete')
 
-        # Rainbow effect
-        self.get_logger().info("Starting Rainbow effect.")
-        self.set_rainbow_wave_effect()
-        time.sleep(7)
-
-        # FWD Effect
-        self.get_logger().info("Starting FWD effect.")
-        self.set_forward_effect()
-        time.sleep(3)
-
-        # BWD Effect
-        self.get_logger().info("Starting BWD effect.")
-        self.set_backward_effect()
-        time.sleep(3)
-
-        # LEFT Turn Effect
-        self.get_logger().info("Starting Left Turn effect.")
-        self.set_turn_effect("LEFT")
-        time.sleep(3)
-        self.set_stop_effect()  # Stop turning before switching effects
-
-        # RIGHT Turn Effect
-        self.get_logger().info("Starting Right Turn effect.")
-        self.set_turn_effect("RIGHT")
-        time.sleep(3)
-        self.set_stop_effect()  # Stop turning before switching effects
-
-        # Stop Effect
-        self.get_logger().info("Starting Stop effect.")
-        self.set_stop_effect()
-        time.sleep(3)
-
-        self.update_strip([(0, 0, 0)] * self.num_leds)
-        self.get_logger().info("LED Test Sequence Complete")
-
-
-    def set_leds(self, color):
-        """Set all LEDs to a static color."""
-        data = [self.encode_color(color) for _ in range(LED_COUNT)]
-        data = [val for sublist in data for val in sublist]  # Flatten list
-        self.spi.xfer2(data)
-
+    # ── Low-level strip control ───────────────────────────────────────────────
 
     def update_strip(self, led_array):
-        """ Update LED strip with a color pattern based on motion """
         if len(led_array) != self.num_leds:
-            self.get_logger().warn(f"LED array size mismatch: Expected {self.num_leds}, got {len(led_array)}")
+            self.get_logger().warn(
+                f'LED array size mismatch: expected {self.num_leds}, got {len(led_array)}')
+            return
+        corrected = [(g, r, b) for (r, g, b) in led_array]   # WS2812 GRB order
+        ws2812.write2812(self.spi, np.array(corrected, dtype=np.uint8).flatten())
 
-        # Swap Red and Green for WS2812 GRB order
-        corrected_leds = [(led[1], led[0], led[2]) for led in led_array]
-
-        # Convert list of RGB tuples into a flat numpy array
-        data = np.array(corrected_leds, dtype=np.uint8).flatten()
-
-        # self.get_logger().info(f"LED Data Sent: {data.tolist()}")  # Debug Output
-
-        # Send data to SPI using ws2812.write2812
-        ws2812.write2812(self.spi, data)  # Ensure `ws2812` is imported
-
+    def set_leds(self, color):
+        data = [val for c in [self.encode_color(color)] * LED_COUNT for val in c]
+        self.spi.xfer2(data)
 
     def encode_color(self, color):
-        """Convert an RGB color tuple to SPI-compatible format."""
         return [
-            (color[1] >> 1) | 0x80,  # Green
-            (color[0] >> 1) | 0x80,  # Red
-            (color[2] >> 1) | 0x80,  # Blue
+            (color[1] >> 1) | 0x80,   # Green
+            (color[0] >> 1) | 0x80,   # Red
+            (color[2] >> 1) | 0x80,   # Blue
         ]
 
     def destroy_node(self):
-        """Shutdown sequence and close SPI connection."""
-        self.set_leds((0, 0, 0))  # Turn off LEDs
+        self._stop_event.set()
+        time.sleep(0.1)
+        self.update_strip([(0, 0, 0)] * self.num_leds)
         self.spi.close()
-        self.get_logger().info("LED Controller Node Stopped")
+        self.get_logger().info('LED Controller Node Stopped')
         super().destroy_node()
 
 
@@ -302,11 +273,10 @@ def main(args=None):
     try:
         rclpy.spin(node)
     except KeyboardInterrupt:
-        node.get_logger().info("Shutting down LED Controller Node.")
+        node.get_logger().info('Shutting down LED Controller Node.')
     finally:
         node.destroy_node()
         rclpy.shutdown()
-
 
 
 if __name__ == '__main__':

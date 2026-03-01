@@ -3,6 +3,9 @@
 
   <xacro:include filename="inertial_macros.xacro"/>
 
+  <!-- Launch arguments -->
+  <xacro:arg name="hw_debug" default="false"/>
+
   <!-- Parameters -->
   <xacro:property name="wheel_radius" value="0.05"/>
   <xacro:property name="wheel_thickness" value="0.03"/>
@@ -188,6 +191,11 @@
   <ros2_control name="MecanumRobot" type="system">
     <hardware>
       <plugin>mecca_hardware_interface/MeccaHardware</plugin>
+      <param name="serial_port">/dev/stm32_serial</param>
+      <param name="wheel_radius">0.048</param>
+      <param name="wheel_separation_x">0.175</param>
+      <param name="wheel_separation_y">0.175</param>
+      <param name="hw_debug">$(arg hw_debug)</param>
     </hardware>
 
     <joint name="front_left_wheel_joint">
