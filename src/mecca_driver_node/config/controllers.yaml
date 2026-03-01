@@ -18,8 +18,12 @@ mecanum_drive_controller:
     rear_right_wheel_command_joint_name: "rear_right_wheel_joint"
     
     # Use 'reference_unstamped' for standard Twist from /cmd_vel
-    use_stamped_vel: true
+    use_stamped_vel: false
     open_loop: true
+    # Hold the last command for up to N seconds before halting.
+    # 0.5 s was too short — wireless joystick dropouts triggered the timeout
+    # and sent V 0 0 0 every 1-2 s, causing constant STOP_BRAKE on the STM32.
+    cmd_vel_timeout: 2.0
     enable_odom_tf: true
     base_frame_id: "base_link"
     odom_frame_id: "odom"
@@ -33,7 +37,7 @@ mecanum_drive_controller:
     kinematics:
       wheel_separation_x: 0.175
       wheel_separation_y: 0.175
-      wheels_radius: 0.05
+      wheels_radius: 0.048
       sum_of_robot_center_projection_on_X_Y_axis: 0.25 # (length + width)/2
 
     # Command interface configuration

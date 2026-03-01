@@ -1,35 +1,27 @@
 teleop_twist_joy_node:
-
   ros__parameters:
-
-    enable_button: 5          # RB Button
-    enable_turbo_button: 0    # A Button
-    panic_button: 1           # B Button (for Emergency Stop)
-    deadzone: 0.25            # Adjust as needed
-
+    require_enable_button: true   # Hold R1/RB (Button 5) to move
+    enable_button: 5              # R1 / RB
+    enable_turbo_button: 0        # A Button — hold with enable_button for turbo
+    deadzone: 0.15                # Filters stick jitter
 
     axis_linear:
-      x: 1                    # Left Stick Fwd/Back
-      y: 0                    # Left Stick Left/Right
-      z: 0                    # Not used (Mecanum doesn't need vertical)
+      x: 1                        # Left Stick Forward/Back
+      y: 0                        # Left Stick Left/Right (strafe)
 
     axis_angular:
-      yaw: 3                  # Right Stick Left/Right
+      yaw: 3                      # Right Stick Left/Right (rotate)
 
     scale_linear:
-      x: 1.0
-      y: 1.0
-      z: 0.0
-
-    scale_angular:
-      yaw: 1.4                # Adjust to control rotation speed
+      x: 0.60                     # Normal forward/reverse speed (m/s)
+      y: 0.60                     # Normal strafe speed (m/s)
 
     scale_linear_turbo:
-      x: 2.0
-      y: 2.0
-      z: 0.0
+      x: 1.0
+      y: 1.0
+
+    scale_angular:
+      yaw: 2.0                    # Normal rotation speed (rad/s)
 
     scale_angular_turbo:
-      yaw: 2.0                # Faster rotation in Turbo mode
-
-    
+      yaw: 3.0
